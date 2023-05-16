@@ -1,0 +1,35 @@
+.zodiac {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+.zodiac-inner {
+  width: 100%;
+}
+
+.zodiac-track,
+.zodiac-inner {
+  overflow: hidden;
+}
+
+.zodiac-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  touch-action: pan-y;
+  cursor: grab;
+  transition: transform 0s ease 0s;
+  will-change: transform;
+}
+.zodiac-track.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.zodiac-controls {
+  position: absolute;
+}
+
+/*# sourceMappingURL=zodiac.css.map */

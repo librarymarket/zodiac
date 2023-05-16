@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "stylelint-config-twbs-bootstrap"
+  ],
+  "rules": {
+    "declaration-property-value-disallowed-list": {
+      "border": "none",
+      "outline": "none"
+    },
+    "scss/dollar-variable-default": [
+      true,
+      {
+        "ignore": "local"
+      }
+    ],
+    "scss/selector-no-union-class-name": true
+  }
+}

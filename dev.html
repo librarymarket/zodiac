@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="dist/css/zodiac.css">
+</head>
+<body>
+  <div class="vh-100 w-100 d-flex align-items-center">
+    <div class="container my-5">
+      <div id="zodiac" class="zodiac">
+        <div class="d-flex w-100">
+          <button class="btn btn-outline-dark rounded-pill my-auto me-3" data-zodiac-direction="left">
+            <i class="bi bi-chevron-left"></i>
+            <span class="visually-hidden">Prev</span>
+          </button>
+          <div class="zodiac-inner">
+            <div class="zodiac-track"></div>
+          </div>
+          <button class="btn btn-outline-dark rounded-pill my-auto ms-3" data-zodiac-direction="right">
+            <i class="bi bi-chevron-right"></i>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="zodiac--2" class="zodiac mt-3">
+        <div class="d-flex w-100">
+          <button class="btn btn-outline-dark rounded-pill my-auto me-3" data-zodiac-direction="left">
+            <i class="bi bi-chevron-left"></i>
+            <span class="visually-hidden">Prev</span>
+          </button>
+          <div class="zodiac-inner">
+            <div class="zodiac-track"></div>
+          </div>
+          <button class="btn btn-outline-dark rounded-pill my-auto ms-3" data-zodiac-direction="right">
+            <i class="bi bi-chevron-right"></i>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Generate test content.
+     */
+    function createItem(index) {
+      return [
+        '<div class="zodiac-item">',
+        `  <a href="https://google.com" target="_blank" class="card card-body display-4 text-center text-dark">${index}</a>`,
+        '</div>',
+      ].join('');
+    }
+
+    document.querySelectorAll('.zodiac-track').forEach((track, index) => {
+      for (let i = 0; i < 7; i++) {
+        const template = document.createElement('template');
+
+        template.innerHTML = createItem(i + 1);
+
+        track.appendChild(template.content.firstChild);
+      }
+    });
+  </script>
+
+  <script src="dist/zodiac.js"></script>
+  <script>
+    const settings = {
+      itemsPerView: 2,
+      mediaQueryOptions: {
+        "(min-width: 768px)": {
+          itemsPerView: 3,
+        },
+        "(min-width: 992px)": {
+          itemsPerView: 4,
+        },
+        "(min-width: 1200px)": {
+          itemsPerView: 5,
+        },
+        "(min-width: 1400px)": {
+          itemsPerView: 6,
+        },
+      },
+    };
+
+    window.addEventListener('load', () => {
+      const zodiac1 = new Zodiac('#zodiac', settings).mount();
+      const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
+
+      console.log(zodiac1);
+      console.log(zodiac2);
+    });
+  </script>
+</body>
+</html>
