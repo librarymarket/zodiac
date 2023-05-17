@@ -14,7 +14,7 @@ options made available by Zodiac.
 We recommend installing Zodiac via NPM in most cases:
 
 ``` shell
-npm i @library-market/zodiac
+npm i @librarymarket/zodiac
 ```
 
 Zodiac can also be manually downloaded from its releases page.
@@ -26,14 +26,14 @@ addition to minified and ES module versions.
 <html>
   <head>
     <!-- ... -->
-    <link href="node_modules/@library-market/zodiac/dist/zodiac.css" rel="stylesheet">
+    <link href="node_modules/@librarymarket/zodiac/dist/zodiac.css" rel="stylesheet">
   </head>
   <body>
     <div id="zodiac" class="zodiac">
       <!-- ... -->
     </div>
 
-    <script src="node_modules/@library-market/zodiac/dist/zodiac.js"></script>
+    <script src="node_modules/@librarymarket/zodiac/dist/zodiac.js"></script>
     <script>
       new Zodiac('#zodiac').mount();
     </script>
