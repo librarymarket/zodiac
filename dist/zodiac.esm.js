@@ -376,18 +376,6 @@ var EventBus = /*#__PURE__*/function () {
  */
 var Options = /*#__PURE__*/function () {
   /**
-   * The base options unrestricted by any media query.
-   */
-
-  /**
-   * The media queries configured with options.
-   */
-
-  /**
-   * A collection of options applied at the specific media query.
-   */
-
-  /**
    * Constructs a slider option set.
    *
    * A default set of options is used if no user options are provided.
@@ -403,6 +391,9 @@ var Options = /*#__PURE__*/function () {
     var _this = this;
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     _classCallCheck(this, Options);
+    /**
+     * The base options unrestricted by any media query.
+     */
     _defineProperty(this, "baseOptions", {
       autoplay: true,
       autoplaySpeed: 5000,
@@ -416,7 +407,13 @@ var Options = /*#__PURE__*/function () {
       pauseOnHover: true,
       transitionSpeed: 500
     });
+    /**
+     * The media queries configured with options.
+     */
     _defineProperty(this, "mediaQueryLists", []);
+    /**
+     * A collection of options applied at the specific media query.
+     */
     _defineProperty(this, "mediaQueryOptions", {});
     this.eventBus = eventBus;
 
@@ -548,7 +545,6 @@ var ComponentBase = /*#__PURE__*/function () {
 // required for the mixin's constructor.
 // @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 /**
  * A mixin that rebuilds the options when they are changed.
  *
@@ -586,10 +582,6 @@ var Utilities = /*#__PURE__*/function () {
   _createClass(Utilities, null, [{
     key: "range",
     value:
-    /**
-     * CSS selectors for focusable elements.
-     */
-
     /**
      * Generates an array of numbers starting at a given position.
      *
@@ -629,6 +621,9 @@ var Utilities = /*#__PURE__*/function () {
   }]);
   return Utilities;
 }();
+/**
+ * CSS selectors for focusable elements.
+ */
 _defineProperty(Utilities, "focusableSelectors", ['* a', '* area', '* input', '* select', '* textarea', '* button', '* iframe', '* object', '* embed', '* *[tabindex]', '* *[contenteditable]']);
 
 /**
@@ -841,6 +836,9 @@ var ItemState = /*#__PURE__*/function (_ComponentBase) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
+    /**
+     * The class that indicates an item is active.
+     */
     _defineProperty(_assertThisInitialized(_this), "activeClass", 'active');
     return _this;
   }
@@ -1093,6 +1091,10 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
 }(ComponentBase);
 
 /**
+ * A map of events that will represent dragging.
+ */
+
+/**
  * Adds dragging capabilities to the slider (for both mouse & touch inputs).
  */
 var Drag = /*#__PURE__*/function (_ComponentBase) {
@@ -1105,16 +1107,49 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
+    /**
+     * The class used to indicate that the slider is being dragged.
+     */
     _defineProperty(_assertThisInitialized(_this), "draggingClass", 'dragging');
+    /**
+     * The value used to track and apply the `translate` CSS while dragging.
+     */
     _defineProperty(_assertThisInitialized(_this), "dragPosition", 0);
+    /**
+     * The `AbortController` for the `this.move()` method.
+     */
     _defineProperty(_assertThisInitialized(_this), "moveController", null);
+    /**
+     * Events that move the slider when dragging.
+     */
     _defineProperty(_assertThisInitialized(_this), "moveEventKeys", ['mousemove', 'touchmove']);
+    /**
+     * A flag used to determine whether the clicking of links is disallowed.
+     */
     _defineProperty(_assertThisInitialized(_this), "preventClick", false);
+    /**
+     * The position that will be given to `Zodiac` after the dragging has stopped.
+     */
     _defineProperty(_assertThisInitialized(_this), "snapPosition", 0);
+    /**
+     * Events that signal when dragging should begin.
+     */
     _defineProperty(_assertThisInitialized(_this), "startEventKeys", ['mousedown', 'touchstart']);
+    /**
+     * The position of the event dispatcher at the start of the dragging process.
+     */
     _defineProperty(_assertThisInitialized(_this), "startingEventPosition", 0);
+    /**
+     * The `AbortController` for the `this.stop()` method.
+     */
     _defineProperty(_assertThisInitialized(_this), "stopController", null);
+    /**
+     * Events that signal when dragging should end.
+     */
     _defineProperty(_assertThisInitialized(_this), "stopEventKeys", ['mouseup', 'mouseleave', 'touchend', 'touchcancel']);
+    /**
+     * How far the slider must be dragged before moving begins.
+     */
     _defineProperty(_assertThisInitialized(_this), "threshold", 20);
     return _this;
   }
