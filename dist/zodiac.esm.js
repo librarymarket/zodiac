@@ -1431,6 +1431,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
       // converted to a negative number to animate the slider since it will
       // eventually be passed into `translate3d`.
       this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
+      this.snapPosition = this.getSnapPosition(this.dragPosition);
 
       // Determine the position of the event dispatcher by subtracting the event
       // dispatcher's position on the screen by the slider's offset of it's
