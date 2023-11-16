@@ -567,7 +567,9 @@ var Zodiac = (function () {
           var _this = this;
           _get(_getPrototypeOf(UpdatingEffectiveOptions.prototype), "mount", this).call(this, zodiac);
           this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], function () {
+            _this.zodiac.getEventBus().emit(['updateEffectiveOptions.before']);
             _this.options = _this.zodiac.getEffectiveOptions();
+            _this.zodiac.getEventBus().emit(['updateEffectiveOptions.after']);
           });
         }
       }]);
@@ -673,7 +675,7 @@ var Zodiac = (function () {
 
         // Reconfigure autoplay and pause on hover configuration when the options
         // are rebuilt.
-        this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], function () {
+        this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
           _this.abortController.abort();
           _this.abortController = new AbortController();
           _this.stop();
@@ -1081,7 +1083,7 @@ var Zodiac = (function () {
       key: "updateTrackOnResize",
       value: function updateTrackOnResize() {
         var _this2 = this;
-        this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], function () {
+        this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
           _this2.zodiac.getEventBus().emit(['trackUpdated.before']);
           _this2.setItemWidth();
           _this2.setTrackWidth();

@@ -42,7 +42,7 @@ export class Autoplay extends ComponentBase {
 
     // Reconfigure autoplay and pause on hover configuration when the options
     // are rebuilt.
-    this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], () => {
+    this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
       this.abortController.abort();
 
       this.abortController = new AbortController();
