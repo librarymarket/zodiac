@@ -335,6 +335,8 @@ export class Drag extends ComponentBase {
     // eventually be passed into `translate3d`.
     this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
 
+    this.snapPosition = this.getSnapPosition(this.dragPosition);
+
     // Determine the position of the event dispatcher by subtracting the event
     // dispatcher's position on the screen by the slider's offset of it's
     // parent element.
