@@ -62,7 +62,9 @@ export function UpdateEffectiveOptions<TBase extends UpdateEffectiveOptionsContr
       super.mount(zodiac);
 
       this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], () => {
+        this.zodiac.getEventBus().emit(['updateEffectiveOptions.before']);
         this.options = this.zodiac.getEffectiveOptions();
+        this.zodiac.getEventBus().emit(['updateEffectiveOptions.after']);
       });
     }
 

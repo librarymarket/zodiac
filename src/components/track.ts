@@ -91,7 +91,7 @@ export class Track extends ComponentBase {
    * Update the track and item width when the window is resized.
    */
   protected updateTrackOnResize(): void {
-    this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], () => {
+    this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
       this.zodiac.getEventBus().emit(['trackUpdated.before']);
       this.setItemWidth();
       this.setTrackWidth();
