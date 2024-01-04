@@ -5,6 +5,7 @@ import { ComponentInterface, UpdateEffectiveOptions } from './components/compone
 import { Autoplay } from './components/autoplay';
 import { Controls } from './components/controls';
 import { ItemState } from './components/itemState';
+import { LiveRegion } from './components/liveRegion';
 import { Track } from './components/track';
 import { Drag } from './components/drag';
 
@@ -298,6 +299,7 @@ export default class Zodiac {
       UpdateEffectiveOptions(Autoplay),
       Controls,
       UpdateEffectiveOptions(Drag),
+      LiveRegion,
     ].map((Component) => new Component());
   }
 

@@ -977,6 +977,51 @@ var Zodiac = (function () {
     return ItemState;
   }(ComponentBase);
 
+  var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
+    _inherits(LiveRegion, _ComponentBase);
+    var _super = _createSuper(LiveRegion);
+    function LiveRegion() {
+      _classCallCheck(this, LiveRegion);
+      return _super.apply(this, arguments);
+    }
+    _createClass(LiveRegion, [{
+      key: "mount",
+      value:
+      /**
+       * The live region element.
+       */
+
+      /**
+       * {@inheritDoc ComponentBase.mount}
+       */
+      function mount(zodiac) {
+        _get(_getPrototypeOf(LiveRegion.prototype), "mount", this).call(this, zodiac);
+        this.createLiveRegion();
+        this.updateLiveRegion();
+      }
+    }, {
+      key: "createLiveRegion",
+      value: function createLiveRegion() {
+        this.liveRegion = document.createElement('div');
+        this.liveRegion.setAttribute('aria-live', 'polite');
+        this.liveRegion.setAttribute('aria-atomic', 'true');
+        this.liveRegion.classList.add('zodiac-live-region');
+        this.zodiac.getSliderElement().appendChild(this.liveRegion);
+      }
+    }, {
+      key: "updateLiveRegion",
+      value: function updateLiveRegion() {
+        var _this = this;
+        this.zodiac.getEventBus().on(['move.after'], function () {
+          var position = _this.zodiac.getPosition() + 1;
+          var itemTotal = _this.zodiac.getItemTotal();
+          _this.liveRegion.innerText = "Slide ".concat(position, " of ").concat(itemTotal);
+        });
+      }
+    }]);
+    return LiveRegion;
+  }(ComponentBase);
+
   /**
    * Manipulates the width of the slider track and each slider item.
    */
@@ -1764,7 +1809,7 @@ var Zodiac = (function () {
     }, {
       key: "registerComponents",
       value: function registerComponents() {
-        return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag)].map(function (Component) {
+        return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag), LiveRegion].map(function (Component) {
           return new Component();
         });
       }
