@@ -405,8 +405,10 @@ var Zodiac = (function () {
           items: 'zodiac-item',
           track: 'zodiac-track'
         },
+        enableLiveRegion: true,
         gap: 8,
         itemsPerView: 5,
+        liveRegionText: 'Slide @position of @total @title',
         pauseOnHover: true,
         transitionSpeed: 500
       });
@@ -977,6 +979,9 @@ var Zodiac = (function () {
     return ItemState;
   }(ComponentBase);
 
+  /**
+   * Adds a live region, so the slide position can be announced to screen readers.
+   */
   var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
     _inherits(LiveRegion, _ComponentBase);
     var _super = _createSuper(LiveRegion);
@@ -996,9 +1001,15 @@ var Zodiac = (function () {
        */
       function mount(zodiac) {
         _get(_getPrototypeOf(LiveRegion.prototype), "mount", this).call(this, zodiac);
-        this.createLiveRegion();
-        this.updateLiveRegion();
+        if (this.options.enableLiveRegion) {
+          this.createLiveRegion();
+          this.updateLiveRegion();
+        }
       }
+
+      /**
+       * Creates and adds the live region element to the slider.
+       */
     }, {
       key: "createLiveRegion",
       value: function createLiveRegion() {
@@ -1009,13 +1020,33 @@ var Zodiac = (function () {
         this.zodiac.getSliderElement().appendChild(this.liveRegion);
       }
     }, {
+      key: "getLiveRegionTitle",
+      value: function getLiveRegionTitle() {
+        var activeItem = this.zodiac.getSliderElement().querySelector('.zodiac-item.active');
+        var title = '';
+        if (activeItem.dataset.zodiacLiveRegionTitle) {
+          title = activeItem.dataset.zodiacLiveRegionTitle;
+        } else {
+          var element = activeItem.querySelector('[data-zodiac-live-region-title]');
+          if (element) {
+            title = element.dataset.zodiacLiveRegionTitle;
+          }
+        }
+        return title;
+      }
+
+      /**
+       * Updates the text of the live region when the slider is moved.
+       */
+    }, {
       key: "updateLiveRegion",
       value: function updateLiveRegion() {
         var _this = this;
-        this.zodiac.getEventBus().on(['move.after'], function () {
+        this.zodiac.getEventBus().on(['move.after', 'drag.after'], function () {
           var position = _this.zodiac.getPosition() + 1;
-          var itemTotal = _this.zodiac.getItemTotal();
-          _this.liveRegion.innerText = "Slide ".concat(position, " of ").concat(itemTotal);
+          var total = _this.zodiac.getItemTotal() + 1;
+          var title = _this.getLiveRegionTitle();
+          _this.liveRegion.innerText = _this.options.liveRegionText.replace('@position', position.toString()).replace('@total', total.toString()).replace('@title', title).trim();
         });
       }
     }]);

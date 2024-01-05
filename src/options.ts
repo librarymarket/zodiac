@@ -47,6 +47,11 @@ export interface OptionsInterface {
   classes?: ClassesInterface;
 
   /**
+   * Enables the live region element.
+   */
+  enableLiveRegion?: boolean;
+
+  /**
    * The gap between slides.
    */
   gap?: number;
@@ -55,6 +60,17 @@ export interface OptionsInterface {
    * The total number of items to display per view.
    */
   itemsPerView?: number;
+
+  /**
+   * A template that is used for the live region's text.
+   *
+   * The following patterns will be replaced programmatically:
+   * - `@position` - The position of the active slider item.
+   * - `@total` - The total number of slider items
+   * - `@title` - The title of the slider item. The title is derived from the
+   *   `data-zodiac-live-region-title` attribute within an item.
+   */
+  liveRegionText?: string;
 
   /**
    * The media queries configured with options.
@@ -123,8 +139,10 @@ export class Options {
       items: 'zodiac-item',
       track: 'zodiac-track',
     },
+    enableLiveRegion: true,
     gap: 8,
     itemsPerView: 5,
+    liveRegionText: 'Slide @position of @total @title',
     pauseOnHover: true,
     transitionSpeed: 500,
   };

@@ -2,6 +2,9 @@ import Zodiac from '../zodiac';
 
 import { ComponentBase } from './componentBase';
 
+/**
+ * Adds a live region, so the slide position can be announced to screen readers.
+ */
 export class LiveRegion extends ComponentBase {
 
   /**
@@ -15,10 +18,15 @@ export class LiveRegion extends ComponentBase {
   public mount(zodiac: Zodiac): void {
     super.mount(zodiac);
 
-    this.createLiveRegion();
-    this.updateLiveRegion();
+    if (this.options.enableLiveRegion) {
+      this.createLiveRegion();
+      this.updateLiveRegion();
+    }
   }
 
+  /**
+   * Creates and adds the live region element to the slider.
+   */
   protected createLiveRegion() {
     this.liveRegion = document.createElement('div');
     this.liveRegion.setAttribute('aria-live', 'polite');
@@ -28,12 +36,38 @@ export class LiveRegion extends ComponentBase {
     this.zodiac.getSliderElement().appendChild(this.liveRegion);
   }
 
-  protected updateLiveRegion() {
-    this.zodiac.getEventBus().on(['move.after'], () => {
-      const position = this.zodiac.getPosition() + 1;
-      const itemTotal = this.zodiac.getItemTotal();
+  protected getLiveRegionTitle() {
+    const activeItem = this.zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-item.active');
 
-      this.liveRegion.innerText = `Slide ${position} of ${itemTotal}`;
+    let title = '';
+
+    if (activeItem.dataset.zodiacLiveRegionTitle) {
+      title = activeItem.dataset.zodiacLiveRegionTitle;
+    } else {
+      const element = activeItem.querySelector<HTMLElement>('[data-zodiac-live-region-title]');
+
+      if (element) {
+        title = element.dataset.zodiacLiveRegionTitle;
+      }
+    }
+
+    return title;
+  }
+
+  /**
+   * Updates the text of the live region when the slider is moved.
+   */
+  protected updateLiveRegion() {
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
+      const position = this.zodiac.getPosition() + 1;
+      const total = this.zodiac.getItemTotal() + 1;
+      const title = this.getLiveRegionTitle();
+
+      this.liveRegion.innerText = this.options.liveRegionText
+        .replace('@position', position.toString())
+        .replace('@total', total.toString())
+        .replace('@title', title)
+        .trim();
     });
   }
 
