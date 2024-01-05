@@ -68,7 +68,7 @@ export interface OptionsInterface {
    * - `@position` - The position of the active slider item.
    * - `@total` - The total number of slider items
    * - `@title` - The title of the slider item. The title is derived from the
-   *   `data-zodiac-live-region-title` attribute within an item.
+   *   `data-zodiac-live-region-title` attribute within or on an item.
    */
   liveRegionText?: string;
 
