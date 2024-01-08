@@ -60,4 +60,16 @@ describe('LiveRegion', () => {
 
     expect(liveRegion.innerText).toBe('Slide 2 of 9');
   });
+
+  test('should allow live region text customization', () => {
+    const zodiac = new Zodiac(defaultSelector, {
+      liveRegionText: 'Item @position out of @total @title',
+    }).mount();
+
+    zodiac.next();
+
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+
+    expect(liveRegion.innerText).toBe('Item 2 out of 9 2. Text');
+  });
 });
