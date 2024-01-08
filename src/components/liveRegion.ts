@@ -36,7 +36,12 @@ export class LiveRegion extends ComponentBase {
     this.zodiac.getSliderElement().appendChild(this.liveRegion);
   }
 
-  protected getLiveRegionTitle() {
+  /**
+   * Retrieves the title of the ative item that will be used in the live region.
+   *
+   * @returns The title of the active slider item.
+   */
+  protected getLiveRegionTitle(): string {
     const activeItem = this.zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-item.active');
 
     let title = '';
