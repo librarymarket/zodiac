@@ -1016,6 +1016,12 @@ var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
       this.liveRegion.classList.add('zodiac-live-region');
       this.zodiac.getSliderElement().appendChild(this.liveRegion);
     }
+
+    /**
+     * Retrieves the title of the ative item that will be used in the live region.
+     *
+     * @returns The title of the active slider item.
+     */
   }, {
     key: "getLiveRegionTitle",
     value: function getLiveRegionTitle() {
