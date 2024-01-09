@@ -76,14 +76,14 @@ added anywhere within the initialized carousel for left or right navigation:
   <div class="zodiac-inner">
     <button data-zodiac-direction="left" type="button">Left</button>
     <div class="zodiac-track">
-      <div>1.</div>
-      <div>2.</div>
-      <div>3.</div>
-      <div>4.</div>
-      <div>5.</div>
-      <div>6.</div>
-      <div>7.</div>
-      <div>8.</div>
+      <div class="zodiac-item">1.</div>
+      <div class="zodiac-item">2.</div>
+      <div class="zodiac-item">3.</div>
+      <div class="zodiac-item">4.</div>
+      <div class="zodiac-item">5.</div>
+      <div class="zodiac-item">6.</div>
+      <div class="zodiac-item">7.</div>
+      <div class="zodiac-item">8.</div>
     </div>
     <button data-zodiac-direction="right" type="button">Right</button>
   </div>
