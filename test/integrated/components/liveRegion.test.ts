@@ -9,7 +9,7 @@ describe('LiveRegion', () => {
     document.body.innerHTML = htmlFixture;
   });
 
-  test('should create a live region element', () => {
+  test('should create a live region element and append it to the slider', () => {
     const zodiac = new Zodiac(defaultSelector).mount();
 
     const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
@@ -27,10 +27,9 @@ describe('LiveRegion', () => {
     expect(liveRegion.innerText).toBe('Slide 2 of 9 2. Text');
   });
 
-  test('should get the title from the .zodiac-item, if present', () => {
+  test('should get the title from the active .zodiac-item, if present', () => {
     const zodiac = new Zodiac(defaultSelector).mount();
 
-    // Move the title to the `zodiac-item` element.
     zodiac.getItems().forEach((item) => {
       const title = item.querySelector<HTMLElement>('a').dataset.zodiacLiveRegionTitle;
 
@@ -49,7 +48,6 @@ describe('LiveRegion', () => {
   test('should update the live region if there is no title', () => {
     const zodiac = new Zodiac(defaultSelector).mount();
 
-    // Move the title to the `zodiac-item` element.
     zodiac.getItems().forEach((item) => {
       item.querySelector<HTMLElement>('a').dataset.zodiacLiveRegionTitle = '';
     });
@@ -61,7 +59,7 @@ describe('LiveRegion', () => {
     expect(liveRegion.innerText).toBe('Slide 2 of 9');
   });
 
-  test('should allow live region text customization', () => {
+  test('should allow live region text to be customized', () => {
     const zodiac = new Zodiac(defaultSelector, {
       liveRegionText: 'Item @position out of @total @title',
     }).mount();
@@ -71,5 +69,15 @@ describe('LiveRegion', () => {
     const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
 
     expect(liveRegion.innerText).toBe('Item 2 out of 9 2. Text');
+  });
+
+  test('should allow live region text to be customized', () => {
+    const zodiac = new Zodiac(defaultSelector, {
+      enableLiveRegion: false,
+    }).mount();
+
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+
+    expect(liveRegion).toBe(null);
   });
 });
