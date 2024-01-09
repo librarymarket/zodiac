@@ -384,8 +384,8 @@ var Zodiac = (function () {
      * A default set of options is used if no user options are provided.
      *
      * @throws {@link TypeError}
-     * Throws an error if any `classes` options are found in the
-     * `mediaQueryOptions`.
+     * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+     * options are found in the `mediaQueryOptions`.
      *
      * @param eventBus - The event bus.
      * @param options - The user supplied options.
@@ -434,9 +434,7 @@ var Zodiac = (function () {
             mediaQueryOptionSet = _Object$entries$_i[1];
           if (mediaQueryOptionSet) {
             var mediaQueryList = matchMedia(mediaQuery);
-            if (this.hasClasses(mediaQueryOptionSet.classes)) {
-              throw new TypeError('The classes property can only be set once.');
-            }
+            this.validateMediaQueryOptions(mediaQueryOptionSet);
             this.mediaQueryLists.push({
               mediaQueryList: mediaQueryList,
               options: mediaQueryOptionSet
@@ -459,21 +457,6 @@ var Zodiac = (function () {
       key: "getEffectiveOptions",
       value: function getEffectiveOptions() {
         return this.effectiveOptions;
-      }
-
-      /**
-       * Checks if a `ClassesInterface` has any properties set.
-       *
-       * @param classes - The `ClassesInterface` to evaulate.
-       *
-       * @returns True if the interface has any properties otherwise false.
-       */
-    }, {
-      key: "hasClasses",
-      value: function hasClasses(classes) {
-        return classes && Object.values(classes).some(function (item) {
-          return item;
-        });
       }
 
       /**
@@ -503,6 +486,24 @@ var Zodiac = (function () {
         }
         this.effectiveOptions = Object.freeze(effectiveOptions);
         this.eventBus.emit(['rebuildEffectiveOptions.after']);
+      }
+
+      /**
+       * Checks the media query options for invalid properties.
+       *
+       * @throws {@link TypeError}
+       * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+       * options are found in the `mediaQueryOptions`.
+       */
+    }, {
+      key: "validateMediaQueryOptions",
+      value: function validateMediaQueryOptions(options) {
+        var invalidOptions = ['classes', 'enableLiveRegion', 'liveRegionText'];
+        invalidOptions.forEach(function (invalidOption) {
+          if (Object.hasOwnProperty.call(options, invalidOption)) {
+            throw new TypeError("The ".concat(invalidOption, " property can only be set once."));
+          }
+        });
       }
     }]);
     return Options;

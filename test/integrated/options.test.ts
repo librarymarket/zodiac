@@ -75,16 +75,18 @@ describe('Options', () => {
       expect(effectiveOptions.itemsPerView).toBe(expected);
     });
 
-    test('should throw error if classes are set in the media query options', () => {
+    test.each([
+      {optionName: 'classes', value: {track: 'test'}},
+      {optionName: 'enableLiveRegion', value: true},
+      {optionName: 'liveRegionText', value: 'test'},
+    ])('should throw error if $optionName is set in the media query options', ({ optionName, value }) => {
       const eventBus = new EventBus();
 
       expect(() => {
         return new Options(eventBus, {
           mediaQueryOptions: {
             '(max-width: 992px)': {
-              classes: {
-                track: 'test',
-              }
+              [optionName]: value,
             },
           }
         });
