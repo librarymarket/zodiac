@@ -1023,6 +1023,9 @@ var Zodiac = (function () {
       /**
        * Retrieves the title of the ative item that will be used in the live region.
        *
+       * The title is expected to be placed in the `data-zodiac-live-region-title`
+       * attribute. This can be on a `zodiac-item` element, or within.
+       *
        * @returns The title of the active slider item.
        */
     }, {
