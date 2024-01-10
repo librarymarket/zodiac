@@ -1032,15 +1032,11 @@ var Zodiac = (function () {
     }, {
       key: "getLiveRegionTitle",
       value: function getLiveRegionTitle() {
-        var activeItem = this.zodiac.getSliderElement().querySelector('.zodiac-item.active');
         var title = '';
-        if (activeItem.dataset.zodiacLiveRegionTitle) {
-          title = activeItem.dataset.zodiacLiveRegionTitle;
-        } else {
-          var element = activeItem.querySelector('[data-zodiac-live-region-title]');
-          if (element) {
-            title = element.dataset.zodiacLiveRegionTitle;
-          }
+        var sliderElement = this.zodiac.getSliderElement();
+        var titleElement = sliderElement.querySelector('.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]');
+        if (titleElement) {
+          title = titleElement.dataset.zodiacLiveRegionTitle;
         }
         return title;
       }

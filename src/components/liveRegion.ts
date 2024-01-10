@@ -45,18 +45,15 @@ export class LiveRegion extends ComponentBase {
    * @returns The title of the active slider item.
    */
   protected getLiveRegionTitle(): string {
-    const activeItem = this.zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-item.active');
-
     let title = '';
 
-    if (activeItem.dataset.zodiacLiveRegionTitle) {
-      title = activeItem.dataset.zodiacLiveRegionTitle;
-    } else {
-      const element = activeItem.querySelector<HTMLElement>('[data-zodiac-live-region-title]');
+    const sliderElement = this.zodiac.getSliderElement();
+    const titleElement = sliderElement.querySelector<HTMLElement>(
+      '.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]',
+    );
 
-      if (element) {
-        title = element.dataset.zodiacLiveRegionTitle;
-      }
+    if (titleElement) {
+      title = titleElement.dataset.zodiacLiveRegionTitle;
     }
 
     return title;
