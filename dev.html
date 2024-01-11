@@ -53,7 +53,7 @@
     function createItem(index) {
       return [
         '<div class="zodiac-item">',
-        `  <a href="https://google.com" target="_blank" class="card card-body display-4 text-center text-dark">${index}</a>`,
+        `  <a href="https://google.com" target="_blank" class="card card-body text-center text-dark" data-zodiac-live-region-title="Card ${index}">Card ${index}</a>`,
         '</div>',
       ].join('');
     }

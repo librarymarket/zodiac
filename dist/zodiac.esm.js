@@ -381,8 +381,8 @@ var Options = /*#__PURE__*/function () {
    * A default set of options is used if no user options are provided.
    *
    * @throws {@link TypeError}
-   * Throws an error if any `classes` options are found in the
-   * `mediaQueryOptions`.
+   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+   * options are found in the `mediaQueryOptions`.
    *
    * @param eventBus - The event bus.
    * @param options - The user supplied options.
@@ -402,8 +402,10 @@ var Options = /*#__PURE__*/function () {
         items: 'zodiac-item',
         track: 'zodiac-track'
       },
+      enableLiveRegion: true,
       gap: 8,
       itemsPerView: 5,
+      liveRegionText: 'Slide @position of @total @title',
       pauseOnHover: true,
       transitionSpeed: 500
     });
@@ -429,9 +431,7 @@ var Options = /*#__PURE__*/function () {
           mediaQueryOptionSet = _Object$entries$_i[1];
         if (mediaQueryOptionSet) {
           var mediaQueryList = matchMedia(mediaQuery);
-          if (this.hasClasses(mediaQueryOptionSet.classes)) {
-            throw new TypeError('The classes property can only be set once.');
-          }
+          this.validateMediaQueryOptions(mediaQueryOptionSet);
           this.mediaQueryLists.push({
             mediaQueryList: mediaQueryList,
             options: mediaQueryOptionSet
@@ -454,21 +454,6 @@ var Options = /*#__PURE__*/function () {
     key: "getEffectiveOptions",
     value: function getEffectiveOptions() {
       return this.effectiveOptions;
-    }
-
-    /**
-     * Checks if a `ClassesInterface` has any properties set.
-     *
-     * @param classes - The `ClassesInterface` to evaulate.
-     *
-     * @returns True if the interface has any properties otherwise false.
-     */
-  }, {
-    key: "hasClasses",
-    value: function hasClasses(classes) {
-      return classes && Object.values(classes).some(function (item) {
-        return item;
-      });
     }
 
     /**
@@ -498,6 +483,24 @@ var Options = /*#__PURE__*/function () {
       }
       this.effectiveOptions = Object.freeze(effectiveOptions);
       this.eventBus.emit(['rebuildEffectiveOptions.after']);
+    }
+
+    /**
+     * Checks the media query options for invalid properties.
+     *
+     * @throws {@link TypeError}
+     * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+     * options are found in the `mediaQueryOptions`.
+     */
+  }, {
+    key: "validateMediaQueryOptions",
+    value: function validateMediaQueryOptions(options) {
+      var invalidOptions = ['classes', 'enableLiveRegion', 'liveRegionText'];
+      invalidOptions.forEach(function (invalidOption) {
+        if (Object.hasOwnProperty.call(options, invalidOption)) {
+          throw new TypeError("The ".concat(invalidOption, " property can only be set once."));
+        }
+      });
     }
   }]);
   return Options;
@@ -972,6 +975,85 @@ var ItemState = /*#__PURE__*/function (_ComponentBase) {
     }
   }]);
   return ItemState;
+}(ComponentBase);
+
+/**
+ * Adds a live region, so the slide position can be announced to screen readers.
+ */
+var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
+  _inherits(LiveRegion, _ComponentBase);
+  var _super = _createSuper(LiveRegion);
+  function LiveRegion() {
+    _classCallCheck(this, LiveRegion);
+    return _super.apply(this, arguments);
+  }
+  _createClass(LiveRegion, [{
+    key: "mount",
+    value:
+    /**
+     * The live region element.
+     */
+
+    /**
+     * {@inheritDoc ComponentBase.mount}
+     */
+    function mount(zodiac) {
+      _get(_getPrototypeOf(LiveRegion.prototype), "mount", this).call(this, zodiac);
+      if (this.options.enableLiveRegion) {
+        this.createLiveRegion();
+        this.updateLiveRegion();
+      }
+    }
+
+    /**
+     * Creates and adds the live region element to the slider.
+     */
+  }, {
+    key: "createLiveRegion",
+    value: function createLiveRegion() {
+      this.liveRegion = document.createElement('div');
+      this.liveRegion.setAttribute('aria-live', 'polite');
+      this.liveRegion.setAttribute('aria-atomic', 'true');
+      this.liveRegion.classList.add('zodiac-live-region');
+      this.zodiac.getSliderElement().appendChild(this.liveRegion);
+    }
+
+    /**
+     * Retrieves the title of the ative item that will be used in the live region.
+     *
+     * The title is expected to be placed in the `data-zodiac-live-region-title`
+     * attribute. This can be on a `zodiac-item` element, or within.
+     *
+     * @returns The title of the active slider item.
+     */
+  }, {
+    key: "getLiveRegionTitle",
+    value: function getLiveRegionTitle() {
+      var title = '';
+      var sliderElement = this.zodiac.getSliderElement();
+      var titleElement = sliderElement.querySelector('.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]');
+      if (titleElement) {
+        title = titleElement.dataset.zodiacLiveRegionTitle;
+      }
+      return title;
+    }
+
+    /**
+     * Updates the text of the live region when the slider is moved.
+     */
+  }, {
+    key: "updateLiveRegion",
+    value: function updateLiveRegion() {
+      var _this = this;
+      this.zodiac.getEventBus().on(['move.after', 'drag.after'], function () {
+        var position = _this.zodiac.getPosition() + 1;
+        var total = _this.zodiac.getItemTotal() + 1;
+        var title = _this.getLiveRegionTitle();
+        _this.liveRegion.innerText = _this.options.liveRegionText.replace('@position', position.toString()).replace('@total', total.toString()).replace('@title', title).trim();
+      });
+    }
+  }]);
+  return LiveRegion;
 }(ComponentBase);
 
 /**
@@ -1761,7 +1843,7 @@ var Zodiac = /*#__PURE__*/function () {
   }, {
     key: "registerComponents",
     value: function registerComponents() {
-      return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag)].map(function (Component) {
+      return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag), LiveRegion].map(function (Component) {
         return new Component();
       });
     }

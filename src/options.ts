@@ -47,6 +47,11 @@ export interface OptionsInterface {
   classes?: ClassesInterface;
 
   /**
+   * Enables the live region element.
+   */
+  enableLiveRegion?: boolean;
+
+  /**
    * The gap between slides.
    */
   gap?: number;
@@ -55,6 +60,17 @@ export interface OptionsInterface {
    * The total number of items to display per view.
    */
   itemsPerView?: number;
+
+  /**
+   * A template that is used for the live region's text.
+   *
+   * The following patterns will be replaced programmatically:
+   * - `@position` - The position of the active slider item.
+   * - `@total` - The total number of slider items
+   * - `@title` - The title of the slider item. The title is derived from the
+   *   `data-zodiac-live-region-title` attribute within or on an item.
+   */
+  liveRegionText?: string;
 
   /**
    * The media queries configured with options.
@@ -123,8 +139,10 @@ export class Options {
       items: 'zodiac-item',
       track: 'zodiac-track',
     },
+    enableLiveRegion: true,
     gap: 8,
     itemsPerView: 5,
+    liveRegionText: 'Slide @position of @total @title',
     pauseOnHover: true,
     transitionSpeed: 500,
   };
@@ -157,8 +175,8 @@ export class Options {
    * A default set of options is used if no user options are provided.
    *
    * @throws {@link TypeError}
-   * Throws an error if any `classes` options are found in the
-   * `mediaQueryOptions`.
+   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+   * options are found in the `mediaQueryOptions`.
    *
    * @param eventBus - The event bus.
    * @param options - The user supplied options.
@@ -177,9 +195,7 @@ export class Options {
         if (mediaQueryOptionSet) {
           const mediaQueryList = matchMedia(mediaQuery);
 
-          if (this.hasClasses(mediaQueryOptionSet.classes)) {
-            throw new TypeError('The classes property can only be set once.');
-          }
+          this.validateMediaQueryOptions(mediaQueryOptionSet);
 
           this.mediaQueryLists.push({
             mediaQueryList,
@@ -206,17 +222,6 @@ export class Options {
   }
 
   /**
-   * Checks if a `ClassesInterface` has any properties set.
-   *
-   * @param classes - The `ClassesInterface` to evaulate.
-   *
-   * @returns True if the interface has any properties otherwise false.
-   */
-  protected hasClasses(classes: ClassesInterface): boolean {
-    return classes && Object.values(classes).some((item) => item);
-  }
-
-  /**
    * Rebuilds the effective options.
    *
    * If there are any matching media query options, they will override the base
@@ -236,6 +241,27 @@ export class Options {
     this.effectiveOptions = Object.freeze(effectiveOptions);
 
     this.eventBus.emit(['rebuildEffectiveOptions.after']);
+  }
+
+  /**
+   * Checks the media query options for invalid properties.
+   *
+   * @throws {@link TypeError}
+   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+   * options are found in the `mediaQueryOptions`.
+   */
+  protected validateMediaQueryOptions(options: OptionsInterface) {
+    const invalidOptions = [
+      'classes',
+      'enableLiveRegion',
+      'liveRegionText',
+    ];
+
+    invalidOptions.forEach((invalidOption) => {
+      if (Object.hasOwnProperty.call(options, invalidOption)) {
+        throw new TypeError(`The ${invalidOption} property can only be set once.`);
+      }
+    });
   }
 
 }
