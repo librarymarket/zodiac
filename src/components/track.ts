@@ -14,9 +14,27 @@ export class Track extends ComponentBase {
     super.mount(zodiac);
 
     this.setItemWidth();
+
+    if (this.options.infiniteScrolling) {
+      this.setInfiniteScrolling();
+    }
+
     this.setTrackWidth();
     this.setTrackTransitionDuration();
     this.updateTrackOnResize();
+  }
+
+  protected getClonedSlide(slide: HTMLElement): HTMLElement {
+    const cloned = slide.cloneNode(true);
+
+    if (!(cloned instanceof HTMLElement)) {
+      throw new TypeError(`Expected cloned to be HTMLElement instance, receieved ${cloned.constructor.name} instead.`);
+    }
+
+    cloned.removeAttribute('id');
+    cloned.classList.add('zodiac-cloned');
+
+    return cloned;
   }
 
   /**
@@ -40,6 +58,31 @@ export class Track extends ComponentBase {
     const { width } = inner.getBoundingClientRect();
 
     return width;
+  }
+
+  protected setInfiniteScrolling(): void {
+    const { itemsPerView } = this.options;
+    const itemTotal = this.zodiac.getItemTotal();
+    const items = this.zodiac.getItems();
+    const trackElement = this.zodiac.getTrackElement();
+
+    for (let i = itemTotal; i > itemTotal - itemsPerView; --i) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-before');
+
+        trackElement.prepend(cloned);
+      }
+    }
+
+    for (let i = 0; i < itemTotal + itemsPerView; i += 1) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-after');
+
+        trackElement.append(cloned);
+      }
+    }
   }
 
   /**
@@ -82,7 +125,9 @@ export class Track extends ComponentBase {
    * by the total number of items.
    */
   protected setTrackWidth(): void {
-    const trackWidth = this.zodiac.getItemWidth() * this.zodiac.getItems().length;
+    // Get all slider items, included those that have been cloned.
+    const items = this.zodiac.getTrackElement().querySelectorAll('.zodiac-item');
+    const trackWidth = this.zodiac.getItemWidth() * items.length;
 
     this.zodiac.getTrackElement().style.width = `${trackWidth}px`;
   }
