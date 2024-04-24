@@ -1082,13 +1082,14 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       this.setTrackWidth();
       this.setTrackTransitionDuration();
       this.updateTrackOnResize();
+      this.zodiac.getEventBus().emit(['track.after']);
     }
   }, {
     key: "getClonedSlide",
     value: function getClonedSlide(slide) {
       var cloned = slide.cloneNode(true);
       if (!(cloned instanceof HTMLElement)) {
-        throw new TypeError("Expected cloned to be HTMLElement instance, receieved ".concat(cloned.constructor.name, " instead."));
+        throw new TypeError("Expected cloned to be HTMLElement instance, received ".concat(cloned.constructor.name, " instead."));
       }
       cloned.removeAttribute('id');
       cloned.classList.add('zodiac-cloned');
@@ -1643,6 +1644,9 @@ var Zodiac = /*#__PURE__*/function () {
     this.trackElement = this.sliderElement.querySelector(".".concat(effectiveOptions.classes.track));
     this.items = this.sliderElement.querySelectorAll(".".concat(effectiveOptions.classes.items));
     this.position = 0;
+    this.eventBus.on(['track.after'], function () {
+      return _this.next(0);
+    });
 
     // Reposition the slider items on media query change.
     this.eventBus.on(['trackUpdated.after'], function () {

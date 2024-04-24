@@ -22,13 +22,14 @@ export class Track extends ComponentBase {
     this.setTrackWidth();
     this.setTrackTransitionDuration();
     this.updateTrackOnResize();
+    this.zodiac.getEventBus().emit(['track.after']);
   }
 
   protected getClonedSlide(slide: HTMLElement): HTMLElement {
     const cloned = slide.cloneNode(true);
 
     if (!(cloned instanceof HTMLElement)) {
-      throw new TypeError(`Expected cloned to be HTMLElement instance, receieved ${cloned.constructor.name} instead.`);
+      throw new TypeError(`Expected cloned to be HTMLElement instance, received ${cloned.constructor.name} instead.`);
     }
 
     cloned.removeAttribute('id');
