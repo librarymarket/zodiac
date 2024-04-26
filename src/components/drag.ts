@@ -149,11 +149,15 @@ export class Drag extends ComponentBase {
    * @returns The `screenX` value of the event.
    */
   protected getScreenX(event: DragEvent): number {
-    if (event instanceof TouchEvent) {
-      return event.touches[0].screenX ?? 0;
+    let screenX = null;
+
+    if (window.TouchEvent && event instanceof TouchEvent) {
+      screenX = event.touches[0].screenX ?? 0;
+    } else if (event instanceof MouseEvent) {
+      screenX = event.screenX;
     }
 
-    return event.screenX;
+    return screenX;
   }
 
   /**
