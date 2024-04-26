@@ -16,7 +16,7 @@ export class Track extends ComponentBase {
     this.setItemWidth();
 
     if (this.options.infiniteScrolling) {
-      this.setInfiniteScrolling();
+      this.cloneSliderItems();
     }
 
     this.setTrackWidth();
@@ -25,6 +25,37 @@ export class Track extends ComponentBase {
     this.zodiac.getEventBus().emit(['track.after']);
   }
 
+  /**
+   * Clones the slider items for the `infiniteScrolling` option.
+   */
+  protected cloneSliderItems(): void {
+    const { itemsPerView } = this.options;
+    const itemTotal = this.zodiac.getItemTotal();
+    const items = this.zodiac.getItems();
+    const trackElement = this.zodiac.getTrackElement();
+
+    for (let i = itemTotal; i > itemTotal - itemsPerView; --i) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-before');
+
+        trackElement.prepend(cloned);
+      }
+    }
+
+    for (let i = 0; i < itemTotal + itemsPerView; i += 1) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-after');
+
+        trackElement.append(cloned);
+      }
+    }
+  }
+
+  /**
+   * Clones the provided slider item.
+   */
   protected getClonedSlide(slide: HTMLElement): HTMLElement {
     const cloned = slide.cloneNode(true);
 
@@ -59,31 +90,6 @@ export class Track extends ComponentBase {
     const { width } = inner.getBoundingClientRect();
 
     return width;
-  }
-
-  protected setInfiniteScrolling(): void {
-    const { itemsPerView } = this.options;
-    const itemTotal = this.zodiac.getItemTotal();
-    const items = this.zodiac.getItems();
-    const trackElement = this.zodiac.getTrackElement();
-
-    for (let i = itemTotal; i > itemTotal - itemsPerView; --i) {
-      if (items[i]) {
-        const cloned = this.getClonedSlide(items[i]);
-        cloned.classList.add('zodiac-cloned-before');
-
-        trackElement.prepend(cloned);
-      }
-    }
-
-    for (let i = 0; i < itemTotal + itemsPerView; i += 1) {
-      if (items[i]) {
-        const cloned = this.getClonedSlide(items[i]);
-        cloned.classList.add('zodiac-cloned-after');
-
-        trackElement.append(cloned);
-      }
-    }
   }
 
   /**

@@ -1077,13 +1077,43 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       _get(_getPrototypeOf(Track.prototype), "mount", this).call(this, zodiac);
       this.setItemWidth();
       if (this.options.infiniteScrolling) {
-        this.setInfiniteScrolling();
+        this.cloneSliderItems();
       }
       this.setTrackWidth();
       this.setTrackTransitionDuration();
       this.updateTrackOnResize();
       this.zodiac.getEventBus().emit(['track.after']);
     }
+
+    /**
+     * Clones the slider items for the `infiniteScrolling` option.
+     */
+  }, {
+    key: "cloneSliderItems",
+    value: function cloneSliderItems() {
+      var itemsPerView = this.options.itemsPerView;
+      var itemTotal = this.zodiac.getItemTotal();
+      var items = this.zodiac.getItems();
+      var trackElement = this.zodiac.getTrackElement();
+      for (var i = itemTotal; i > itemTotal - itemsPerView; --i) {
+        if (items[i]) {
+          var cloned = this.getClonedSlide(items[i]);
+          cloned.classList.add('zodiac-cloned-before');
+          trackElement.prepend(cloned);
+        }
+      }
+      for (var _i = 0; _i < itemTotal + itemsPerView; _i += 1) {
+        if (items[_i]) {
+          var _cloned = this.getClonedSlide(items[_i]);
+          _cloned.classList.add('zodiac-cloned-after');
+          trackElement.append(_cloned);
+        }
+      }
+    }
+
+    /**
+     * Clones the provided slider item.
+     */
   }, {
     key: "getClonedSlide",
     value: function getClonedSlide(slide) {
@@ -1120,28 +1150,6 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       var _inner$getBoundingCli = inner.getBoundingClientRect(),
         width = _inner$getBoundingCli.width;
       return width;
-    }
-  }, {
-    key: "setInfiniteScrolling",
-    value: function setInfiniteScrolling() {
-      var itemsPerView = this.options.itemsPerView;
-      var itemTotal = this.zodiac.getItemTotal();
-      var items = this.zodiac.getItems();
-      var trackElement = this.zodiac.getTrackElement();
-      for (var i = itemTotal; i > itemTotal - itemsPerView; --i) {
-        if (items[i]) {
-          var cloned = this.getClonedSlide(items[i]);
-          cloned.classList.add('zodiac-cloned-before');
-          trackElement.prepend(cloned);
-        }
-      }
-      for (var _i = 0; _i < itemTotal + itemsPerView; _i += 1) {
-        if (items[_i]) {
-          var _cloned = this.getClonedSlide(items[_i]);
-          _cloned.classList.add('zodiac-cloned-after');
-          trackElement.append(_cloned);
-        }
-      }
     }
 
     /**
@@ -1379,11 +1387,8 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "getSnapPosition",
     value: function getSnapPosition(dragPosition) {
-      var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - this.zodiac.getClonedOffset();
-      console.log({
-        dragPosition: dragPosition,
-        snapPosition: snapPosition
-      });
+      var clonedOffset = this.zodiac.getClonedOffset();
+      var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
       var itemTotal = this.zodiac.getItemTotal();
 
       // If the calculated position is greater than the total number of slider
