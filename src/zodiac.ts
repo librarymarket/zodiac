@@ -20,6 +20,11 @@ import { Drag } from './components/drag';
 export default class Zodiac {
 
   /**
+   * The number of cloned slider items preceeding the normal slider items.
+   */
+  protected clonedOffset: number;
+
+  /**
    * The slider components.
    */
   protected components: ComponentInterface[];
@@ -92,14 +97,17 @@ export default class Zodiac {
     this.eventBus.on(['trackUpdated.after'], () => this.next(0));
   }
 
+  /**
+   * Retrives the number of cloned slider items before the normal slider items.
+   *
+   * @returns The cloned offset value.
+   */
   public getClonedOffset(): number {
-    let clonedOffset = 0;
-
-    if (this.options.getEffectiveOptions().infiniteScrolling) {
-      clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+    if (this.clonedOffset === undefined) {
+      this.loadClonedOffset();
     }
 
-    return clonedOffset;
+    return this.clonedOffset;
   }
 
   /**
@@ -299,6 +307,17 @@ export default class Zodiac {
     }
 
     this.position = Math.trunc(position);
+  }
+
+  /**
+   * Loads the cloned offset value.
+   */
+  protected loadClonedOffset(): void {
+    this.clonedOffset = 0;
+
+    if (this.options.getEffectiveOptions().infiniteScrolling) {
+      this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+    }
   }
 
   /**

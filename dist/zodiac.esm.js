@@ -1604,6 +1604,10 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
  */
 var Zodiac = /*#__PURE__*/function () {
   /**
+   * The number of cloned slider items preceeding the normal slider items.
+   */
+
+  /**
    * The slider components.
    */
 
@@ -1666,14 +1670,19 @@ var Zodiac = /*#__PURE__*/function () {
       return _this.next(0);
     });
   }
+
+  /**
+   * Retrives the number of cloned slider items before the normal slider items.
+   *
+   * @returns The cloned offset value.
+   */
   _createClass(Zodiac, [{
     key: "getClonedOffset",
     value: function getClonedOffset() {
-      var clonedOffset = 0;
-      if (this.options.getEffectiveOptions().infiniteScrolling) {
-        clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+      if (this.clonedOffset === undefined) {
+        this.loadClonedOffset();
       }
-      return clonedOffset;
+      return this.clonedOffset;
     }
 
     /**
@@ -1899,6 +1908,18 @@ var Zodiac = /*#__PURE__*/function () {
         throw new RangeError("Invalid position: ".concat(position));
       }
       this.position = Math.trunc(position);
+    }
+
+    /**
+     * Loads the cloned offset value.
+     */
+  }, {
+    key: "loadClonedOffset",
+    value: function loadClonedOffset() {
+      this.clonedOffset = 0;
+      if (this.options.getEffectiveOptions().infiniteScrolling) {
+        this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+      }
     }
 
     /**
