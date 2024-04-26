@@ -1358,11 +1358,14 @@ var Zodiac = (function () {
     }, {
       key: "getScreenX",
       value: function getScreenX(event) {
-        if (event instanceof TouchEvent) {
+        var screenX = null;
+        if (window.TouchEvent && event instanceof TouchEvent) {
           var _event$touches$0$scre;
-          return (_event$touches$0$scre = event.touches[0].screenX) !== null && _event$touches$0$scre !== void 0 ? _event$touches$0$scre : 0;
+          screenX = (_event$touches$0$scre = event.touches[0].screenX) !== null && _event$touches$0$scre !== void 0 ? _event$touches$0$scre : 0;
+        } else if (event instanceof MouseEvent) {
+          screenX = event.screenX;
         }
-        return event.screenX;
+        return screenX;
       }
 
       /**
@@ -1379,7 +1382,11 @@ var Zodiac = (function () {
     }, {
       key: "getSnapPosition",
       value: function getSnapPosition(dragPosition) {
-        var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth());
+        var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - this.zodiac.getClonedOffset();
+        console.log({
+          dragPosition: dragPosition,
+          snapPosition: snapPosition
+        });
         var itemTotal = this.zodiac.getItemTotal();
 
         // If the calculated position is greater than the total number of slider
@@ -1552,12 +1559,13 @@ var Zodiac = (function () {
       key: "start",
       value: function start(event) {
         this.zodiac.getEventBus().emit(['drag.before']);
+        var clonedOffset = this.zodiac.getClonedOffset();
 
         // Calculate the drag position by multiplying the slider's current position
         // by the width of a single slide. The value of this calculation is
         // converted to a negative number to animate the slider since it will
         // eventually be passed into `translate3d`.
-        this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
+        this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
         this.snapPosition = this.getSnapPosition(this.dragPosition);
 
         // Determine the position of the event dispatcher by subtracting the event
@@ -1656,13 +1664,22 @@ var Zodiac = (function () {
         return _this.next(0);
       });
     }
-
-    /**
-     * Retrieves the slider's effective options.
-     *
-     * @returns The slider's effective options.
-     */
     _createClass(Zodiac, [{
+      key: "getClonedOffset",
+      value: function getClonedOffset() {
+        var clonedOffset = 0;
+        if (this.options.getEffectiveOptions().infiniteScrolling) {
+          clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+        }
+        return clonedOffset;
+      }
+
+      /**
+       * Retrieves the slider's effective options.
+       *
+       * @returns The slider's effective options.
+       */
+    }, {
       key: "getEffectiveOptions",
       value: function getEffectiveOptions() {
         return this.options.getEffectiveOptions();
@@ -1779,12 +1796,8 @@ var Zodiac = (function () {
     }, {
       key: "move",
       value: function move(offset) {
-        var clonedOffset = 1;
-        if (this.options.getEffectiveOptions().infiniteScrolling) {
-          clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
-        }
+        var clonedOffset = this.getClonedOffset();
         var transform = -1 * (this.getItemWidth() * (offset + clonedOffset));
-        console.log(transform);
         this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
       }
 
@@ -1798,7 +1811,6 @@ var Zodiac = (function () {
       value: function next() {
         var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
         this.eventBus.emit(['move.before']);
-        console.log('test');
         var position = this.getPosition();
         position = position + offset;
         if (position > this.getItemTotal()) {

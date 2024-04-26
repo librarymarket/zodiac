@@ -92,6 +92,16 @@ export default class Zodiac {
     this.eventBus.on(['trackUpdated.after'], () => this.next(0));
   }
 
+  public getClonedOffset(): number {
+    let clonedOffset = 0;
+
+    if (this.options.getEffectiveOptions().infiniteScrolling) {
+      clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+    }
+
+    return clonedOffset;
+  }
+
   /**
    * Retrieves the slider's effective options.
    *
@@ -185,14 +195,9 @@ export default class Zodiac {
    * @param offset - The position to move the slider.
    */
   public move(offset: number): void {
-    let clonedOffset = 1;
-
-    if (this.options.getEffectiveOptions().infiniteScrolling) {
-      clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
-    }
+    const clonedOffset = this.getClonedOffset();
 
     const transform = -1 * (this.getItemWidth() * (offset + clonedOffset));
-    console.log(transform);
 
     this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
   }
@@ -204,7 +209,6 @@ export default class Zodiac {
    */
   public next(offset = 1): void {
     this.eventBus.emit(['move.before']);
-    console.log('test');
 
     let position = this.getPosition();
 

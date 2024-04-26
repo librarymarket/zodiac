@@ -172,7 +172,8 @@ export class Drag extends ComponentBase {
    * @returns The position as a numeric index.
    */
   protected getSnapPosition(dragPosition: number): number {
-    let snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth());
+    const clonedOffset = this.zodiac.getClonedOffset();
+    let snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
 
     const itemTotal = this.zodiac.getItemTotal();
 
@@ -333,11 +334,13 @@ export class Drag extends ComponentBase {
   protected start(event: DragEvent): void {
     this.zodiac.getEventBus().emit(['drag.before']);
 
+    const clonedOffset = this.zodiac.getClonedOffset();
+
     // Calculate the drag position by multiplying the slider's current position
     // by the width of a single slide. The value of this calculation is
     // converted to a negative number to animate the slider since it will
     // eventually be passed into `translate3d`.
-    this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
+    this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
 
     this.snapPosition = this.getSnapPosition(this.dragPosition);
 
