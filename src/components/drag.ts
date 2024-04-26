@@ -173,23 +173,9 @@ export class Drag extends ComponentBase {
    */
   protected getSnapPosition(dragPosition: number): number {
     const clonedOffset = this.zodiac.getClonedOffset();
-    let snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
+    const snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
 
-    const itemTotal = this.zodiac.getItemTotal();
-
-    // If the calculated position is greater than the total number of slider
-    // items then restart at the beginning.
-    if (snapPosition > itemTotal) {
-      snapPosition = 0;
-    }
-
-    // If the calculated position is less than zero then move to the end of
-    // the slider.
-    if (snapPosition < 0) {
-      snapPosition = itemTotal;
-    }
-
-    return snapPosition;
+    return this.sanitizeSnapPosition(snapPosition);
   }
 
   /**
@@ -320,6 +306,28 @@ export class Drag extends ComponentBase {
    */
   protected removeStopEvents(): void {
     this.stopController.abort();
+  }
+
+  /**
+   * Sanitizes the snap position into a valid value if falls out of range.
+   *
+   * @param snapPosition - The snap position to sanitize.
+   *
+   * @returns The sanitized snap position.
+   */
+  protected sanitizeSnapPosition(snapPosition: number): number {
+    const { infiniteScrolling } = this.options;
+    const itemTotal = this.zodiac.getItemTotal();
+
+    if (snapPosition > itemTotal) {
+      snapPosition = infiniteScrolling ? snapPosition - itemTotal - 1 : 0;
+    }
+
+    if (snapPosition < 0) {
+      snapPosition = infiniteScrolling ? itemTotal + snapPosition + 1 : itemTotal;
+    }
+
+    return snapPosition;
   }
 
   /**

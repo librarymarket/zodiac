@@ -1389,20 +1389,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
     value: function getSnapPosition(dragPosition) {
       var clonedOffset = this.zodiac.getClonedOffset();
       var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
-      var itemTotal = this.zodiac.getItemTotal();
-
-      // If the calculated position is greater than the total number of slider
-      // items then restart at the beginning.
-      if (snapPosition > itemTotal) {
-        snapPosition = 0;
-      }
-
-      // If the calculated position is less than zero then move to the end of
-      // the slider.
-      if (snapPosition < 0) {
-        snapPosition = itemTotal;
-      }
-      return snapPosition;
+      return this.sanitizeSnapPosition(snapPosition);
     }
 
     /**
@@ -1546,6 +1533,27 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
     key: "removeStopEvents",
     value: function removeStopEvents() {
       this.stopController.abort();
+    }
+
+    /**
+     * Sanitizes the snap position into a valid value if falls out of range.
+     *
+     * @param snapPosition - The snap position to sanitize.
+     *
+     * @returns The sanitized snap position.
+     */
+  }, {
+    key: "sanitizeSnapPosition",
+    value: function sanitizeSnapPosition(snapPosition) {
+      var infiniteScrolling = this.options.infiniteScrolling;
+      var itemTotal = this.zodiac.getItemTotal();
+      if (snapPosition > itemTotal) {
+        snapPosition = infiniteScrolling ? snapPosition - itemTotal - 1 : 0;
+      }
+      if (snapPosition < 0) {
+        snapPosition = infiniteScrolling ? itemTotal + snapPosition + 1 : itemTotal;
+      }
+      return snapPosition;
     }
 
     /**
