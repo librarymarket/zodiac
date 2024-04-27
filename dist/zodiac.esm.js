@@ -602,28 +602,6 @@ var Utilities = /*#__PURE__*/function () {
         return index + startAt;
       });
     }
-
-    /**
-     * Maps a number in an input range to a number in an output range.
-     *
-     * This method takes an input number that exists with a specific range, and
-     * outputs a number scaled to an output range.
-     *
-     * @see {@link https://math.stackexchange.com/questions/377169/going-from-a-value-inside-1-1-to-a-value-in-another-range}
-     *
-     * @param item - The original number within the input range.
-     * @param inMin - The minimum number in the input range.
-     * @param inMax - The maximum number in the input range.
-     * @param outMin - The minimum number in the output range.
-     * @param outMax - The maximum number in the output range.
-     *
-     * @returns The new number within the output range.
-     */
-  }, {
-    key: "rangeMap",
-    value: function rangeMap(item, inMin, inMax, outMin, outMax) {
-      return (item - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-    }
   }]);
   return Utilities;
 }();
@@ -1184,8 +1162,15 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "setTrackTransitionDuration",
     value: function setTrackTransitionDuration() {
+      var _this2 = this;
       var transitionSpeed = this.options.transitionSpeed;
-      this.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
+      var eventBus = this.zodiac.getEventBus();
+      eventBus.on(['move.before', 'move.after', 'drag.after'], function () {
+        _this2.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
+        setTimeout(function () {
+          _this2.zodiac.getTrackElement().style.transitionDuration = '';
+        }, transitionSpeed);
+      });
     }
 
     /**
@@ -1209,13 +1194,13 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "updateTrackOnResize",
     value: function updateTrackOnResize() {
-      var _this2 = this;
+      var _this3 = this;
       this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
-        _this2.zodiac.getEventBus().emit(['trackUpdated.before']);
-        _this2.setItemWidth();
-        _this2.setTrackWidth();
-        _this2.setTrackTransitionDuration();
-        _this2.zodiac.getEventBus().emit(['trackUpdated.after']);
+        _this3.zodiac.getEventBus().emit(['trackUpdated.before']);
+        _this3.setItemWidth();
+        _this3.setTrackWidth();
+        _this3.setTrackTransitionDuration();
+        _this3.zodiac.getEventBus().emit(['trackUpdated.after']);
       });
     }
   }]);
@@ -1456,12 +1441,9 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
         return;
       }
 
-      // Increase the acceleration speed based on how far the user has dragged
-      // the slider.
-      var accelerate = Utilities.rangeMap(Math.abs(distance), this.threshold, window.innerWidth, 1, 3);
       // Determine by drag position by adding distance multiplied by the
       // acceleration speed.
-      var dragPosition = this.dragPosition + distance * accelerate;
+      var dragPosition = this.dragPosition + distance;
       event.preventDefault();
 
       // Get the snap position from the current drag position.

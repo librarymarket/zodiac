@@ -25,7 +25,6 @@
 }
 .zodiac-track.dragging {
   cursor: grabbing;
-  transition: none;
 }
 
 .zodiac-controls {
