@@ -1,7 +1,6 @@
 import Zodiac from '../zodiac';
 
 import { ComponentBase } from './componentBase';
-import { Utilities } from '../utilities';
 
 type DragEvent = MouseEvent | TouchEvent;
 
@@ -239,12 +238,9 @@ export class Drag extends ComponentBase {
       return;
     }
 
-    // Increase the acceleration speed based on how far the user has dragged
-    // the slider.
-    const accelerate = Utilities.rangeMap(Math.abs(distance), this.threshold, window.innerWidth, 1, 3);
     // Determine by drag position by adding distance multiplied by the
     // acceleration speed.
-    const dragPosition = this.dragPosition + (distance * accelerate);
+    const dragPosition = this.dragPosition + distance;
 
     event.preventDefault();
 
