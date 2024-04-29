@@ -499,7 +499,7 @@ var Zodiac = (function () {
     }, {
       key: "validateMediaQueryOptions",
       value: function validateMediaQueryOptions(options) {
-        var invalidOptions = ['classes', 'enableLiveRegion', 'liveRegionText'];
+        var invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText'];
         invalidOptions.forEach(function (invalidOption) {
           if (Object.hasOwnProperty.call(options, invalidOption)) {
             throw new TypeError("The ".concat(invalidOption, " property can only be set once."));

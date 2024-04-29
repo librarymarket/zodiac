@@ -57,7 +57,7 @@ export interface OptionsInterface {
   gap?: number;
 
   /**
-   * @TODO
+   * Allows to slider to transition endlessly.
    */
   infiniteScrolling?: boolean;
 
@@ -260,6 +260,7 @@ export class Options {
     const invalidOptions = [
       'classes',
       'enableLiveRegion',
+      'infiniteScrolling',
       'liveRegionText',
     ];
 
