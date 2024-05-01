@@ -26,6 +26,20 @@ describe('Track', () => {
       const trackWidth = document.querySelector<HTMLElement>('.zodiac-track').getBoundingClientRect().width;
       const itemWidth = document.querySelector<HTMLElement>('.zodiac-item').getBoundingClientRect().width;
 
+      expect(trackWidth).toBe(7700);
+      expect(itemWidth).toBe(342);
+    });
+
+    test('should calculate item and track widths with infiniteScrolling disabled', () => {
+      new Zodiac(defaultSelector, {
+        infiniteScrolling: false,
+        itemsPerView: 4,
+        gap: 8,
+      }).mount();
+
+      const trackWidth = document.querySelector<HTMLElement>('.zodiac-track').getBoundingClientRect().width;
+      const itemWidth = document.querySelector<HTMLElement>('.zodiac-item').getBoundingClientRect().width;
+
       expect(trackWidth).toBe(3150);
       expect(itemWidth).toBe(342);
     });
