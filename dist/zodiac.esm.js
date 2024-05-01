@@ -1390,8 +1390,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
     key: "getSnapPosition",
     value: function getSnapPosition(dragPosition) {
       var clonedOffset = this.zodiac.getClonedOffset();
-      var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
-      return this.sanitizeSnapPosition(snapPosition);
+      return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
     }
 
     /**
@@ -1535,27 +1534,6 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
     }
 
     /**
-     * Sanitizes the snap position into a valid value if falls out of range.
-     *
-     * @param snapPosition - The snap position to sanitize.
-     *
-     * @returns The sanitized snap position.
-     */
-  }, {
-    key: "sanitizeSnapPosition",
-    value: function sanitizeSnapPosition(snapPosition) {
-      var infiniteScrolling = this.options.infiniteScrolling;
-      var itemTotal = this.zodiac.getItemTotal();
-      if (snapPosition > itemTotal) {
-        snapPosition = infiniteScrolling ? snapPosition - itemTotal - 1 : 0;
-      }
-      if (snapPosition < 0) {
-        snapPosition = infiniteScrolling ? itemTotal + snapPosition + 1 : itemTotal;
-      }
-      return snapPosition;
-    }
-
-    /**
      * Prepares the slider to be dragged when dragging has started.
      *
      * The slider is prepared by calculating the current drag position, relative
@@ -1591,7 +1569,6 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "stop",
     value: function stop() {
-      this.zodiac.setPosition(this.snapPosition);
       this.zodiac.move(this.snapPosition);
       this.removeMoveEvents();
       this.removeStopEvents();
@@ -1813,14 +1790,33 @@ var Zodiac = /*#__PURE__*/function () {
     /**
      * Moves the slider based on the provided offset.
      *
-     * @param offset - The position to move the slider.
+     * @param position - The position to move the slider.
      */
   }, {
     key: "move",
-    value: function move(offset) {
-      var clonedOffset = this.getClonedOffset();
-      var transform = -1 * (this.getItemWidth() * (offset + clonedOffset));
-      this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+    value: function move(position) {
+      var _this2 = this;
+      this.eventBus.emit(['move.before']);
+      var _this$getEffectiveOpt = this.getEffectiveOptions(),
+        transitionSpeed = _this$getEffectiveOpt.transitionSpeed;
+      if (position > this.getItemTotal() || position < 0) {
+        this.trackElement.style.transform = "translate3d(".concat(this.convertPositionToPixels(position), "px, 0px, 0px)");
+
+        // Convert the position into a value that is within range.
+        var itemTotal = this.getItemTotal() + 1;
+        position = (position % itemTotal + itemTotal) % itemTotal;
+        setTimeout(function () {
+          _this2.eventBus.emit(['disableTransition.before']);
+          var transform = _this2.convertPositionToPixels(position);
+          _this2.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+          _this2.eventBus.emit(['disableTransition.after']);
+        }, transitionSpeed);
+      } else {
+        var transform = this.convertPositionToPixels(position);
+        this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+      }
+      this.setPosition(position);
+      this.eventBus.emit(['move.after']);
     }
 
     /**
@@ -1832,15 +1828,7 @@ var Zodiac = /*#__PURE__*/function () {
     key: "next",
     value: function next() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.eventBus.emit(['move.before']);
-      var position = this.getPosition();
-      position = position + offset;
-      if (position > this.getItemTotal()) {
-        position = 0;
-      }
-      this.move(position);
-      this.setPosition(position);
-      this.eventBus.emit(['move.after']);
+      this.move(this.getPosition() + offset);
     }
 
     /**
@@ -1881,15 +1869,7 @@ var Zodiac = /*#__PURE__*/function () {
     key: "previous",
     value: function previous() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.eventBus.emit(['move.before']);
-      var position = this.getPosition();
-      position = position - offset;
-      if (position < 0) {
-        position = this.getItemTotal();
-      }
-      this.move(position);
-      this.setPosition(position);
-      this.eventBus.emit(['move.after']);
+      this.move(this.getPosition() - offset);
     }
 
     /**
@@ -1919,6 +1899,20 @@ var Zodiac = /*#__PURE__*/function () {
         throw new RangeError("Invalid position: ".concat(position));
       }
       this.position = Math.trunc(position);
+    }
+
+    /**
+     * Converts the provided positional value into a pizel value.
+     *
+     * @param position - This position to convert.
+     *
+     * @returns The converted pixel value.
+     */
+  }, {
+    key: "convertPositionToPixels",
+    value: function convertPositionToPixels(position) {
+      var clonedOffset = this.getClonedOffset();
+      return -1 * (this.getItemWidth() * (position + clonedOffset));
     }
 
     /**

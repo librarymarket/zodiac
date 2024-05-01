@@ -205,14 +205,33 @@ export default class Zodiac {
   /**
    * Moves the slider based on the provided offset.
    *
-   * @param offset - The position to move the slider.
+   * @param position - The position to move the slider.
    */
-  public move(offset: number): void {
-    const clonedOffset = this.getClonedOffset();
+  public move(position: number): void {
+    this.eventBus.emit(['move.before']);
 
-    const transform = -1 * (this.getItemWidth() * (offset + clonedOffset));
+    const { transitionSpeed } = this.getEffectiveOptions();
 
-    this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+    if (position > this.getItemTotal() || position < 0) {
+      this.trackElement.style.transform = `translate3d(${this.convertPositionToPixels(position)}px, 0px, 0px)`;
+
+      // Convert the position into a value that is within range.
+      const itemTotal = this.getItemTotal() + 1;
+      position = (position % itemTotal + itemTotal) % itemTotal;
+
+      setTimeout(() => {
+        this.eventBus.emit(['disableTransition.before']);
+        const transform = this.convertPositionToPixels(position);
+        this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+        this.eventBus.emit(['disableTransition.after']);
+      }, transitionSpeed);
+    } else {
+      const transform = this.convertPositionToPixels(position);
+      this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+    }
+
+    this.setPosition(position);
+    this.eventBus.emit(['move.after']);
   }
 
   /**
@@ -221,21 +240,7 @@ export default class Zodiac {
    * @param offset - How many slides to move forward.
    */
   public next(offset = 1): void {
-    this.eventBus.emit(['move.before']);
-
-    let position = this.getPosition();
-
-    position = position + offset;
-
-    if (position > this.getItemTotal()) {
-      position = 0;
-    }
-
-    this.move(position);
-
-    this.setPosition(position);
-
-    this.eventBus.emit(['move.after']);
+    this.move(this.getPosition() + offset);
   }
 
   /**
@@ -271,21 +276,7 @@ export default class Zodiac {
    * @param offset - How many slides to move forward.
    */
   public previous(offset = 1): void {
-    this.eventBus.emit(['move.before']);
-
-    let position = this.getPosition();
-
-    position = position - offset;
-
-    if (position < 0) {
-      position = this.getItemTotal();
-    }
-
-    this.move(position);
-
-    this.setPosition(position);
-
-    this.eventBus.emit(['move.after']);
+    this.move(this.getPosition() - offset);
   }
 
   /**
@@ -312,6 +303,19 @@ export default class Zodiac {
     }
 
     this.position = Math.trunc(position);
+  }
+
+  /**
+   * Converts the provided positional value into a pizel value.
+   *
+   * @param position - This position to convert.
+   *
+   * @returns The converted pixel value.
+   */
+  protected convertPositionToPixels(position: number): number {
+    const clonedOffset = this.getClonedOffset();
+
+    return -1 * (this.getItemWidth() * (position + clonedOffset));
   }
 
   /**

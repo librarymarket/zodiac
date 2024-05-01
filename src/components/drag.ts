@@ -172,9 +172,8 @@ export class Drag extends ComponentBase {
    */
   protected getSnapPosition(dragPosition: number): number {
     const clonedOffset = this.zodiac.getClonedOffset();
-    const snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
 
-    return this.sanitizeSnapPosition(snapPosition);
+    return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
   }
 
   /**
@@ -305,28 +304,6 @@ export class Drag extends ComponentBase {
   }
 
   /**
-   * Sanitizes the snap position into a valid value if falls out of range.
-   *
-   * @param snapPosition - The snap position to sanitize.
-   *
-   * @returns The sanitized snap position.
-   */
-  protected sanitizeSnapPosition(snapPosition: number): number {
-    const { infiniteScrolling } = this.options;
-    const itemTotal = this.zodiac.getItemTotal();
-
-    if (snapPosition > itemTotal) {
-      snapPosition = infiniteScrolling ? snapPosition - itemTotal - 1 : 0;
-    }
-
-    if (snapPosition < 0) {
-      snapPosition = infiniteScrolling ? itemTotal + snapPosition + 1 : itemTotal;
-    }
-
-    return snapPosition;
-  }
-
-  /**
    * Prepares the slider to be dragged when dragging has started.
    *
    * The slider is prepared by calculating the current drag position, relative
@@ -361,7 +338,6 @@ export class Drag extends ComponentBase {
    * Positions the slider after the dragging is complete.
    */
   protected stop(): void {
-    this.zodiac.setPosition(this.snapPosition);
     this.zodiac.move(this.snapPosition);
 
     this.removeMoveEvents();
