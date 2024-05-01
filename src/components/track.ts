@@ -22,6 +22,7 @@ export class Track extends ComponentBase {
     this.setTrackWidth();
     this.setTrackTransitionDuration();
     this.updateTrackOnResize();
+    this.disableTransition();
     this.zodiac.getEventBus().emit(['track.after']);
   }
 
@@ -51,6 +52,22 @@ export class Track extends ComponentBase {
         trackElement.append(cloned);
       }
     }
+  }
+
+  /**
+   * Disables the track transition animation.
+   */
+  protected disableTransition(): void {
+    const eventBus = this.zodiac.getEventBus();
+    const trackElement = this.zodiac.getTrackElement();
+
+    eventBus.on(['disableTransition.before'], () => {
+      trackElement.style.transition = 'none';
+    });
+
+    eventBus.on(['disableTransition.after'], () => {
+      trackElement.style.transition = null;
+    });
   }
 
   /**

@@ -1060,6 +1060,7 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       this.setTrackWidth();
       this.setTrackTransitionDuration();
       this.updateTrackOnResize();
+      this.disableTransition();
       this.zodiac.getEventBus().emit(['track.after']);
     }
 
@@ -1087,6 +1088,22 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
           trackElement.append(_cloned);
         }
       }
+    }
+
+    /**
+     * Disables the track transition animation.
+     */
+  }, {
+    key: "disableTransition",
+    value: function disableTransition() {
+      var eventBus = this.zodiac.getEventBus();
+      var trackElement = this.zodiac.getTrackElement();
+      eventBus.on(['disableTransition.before'], function () {
+        trackElement.style.transition = 'none';
+      });
+      eventBus.on(['disableTransition.after'], function () {
+        trackElement.style.transition = null;
+      });
     }
 
     /**
@@ -1651,8 +1668,12 @@ var Zodiac = /*#__PURE__*/function () {
     this.trackElement = this.sliderElement.querySelector(".".concat(effectiveOptions.classes.track));
     this.items = this.sliderElement.querySelectorAll(".".concat(effectiveOptions.classes.items));
     this.position = 0;
+
+    // Set the slider's initial position
     this.eventBus.on(['track.after'], function () {
-      return _this.next(0);
+      _this.eventBus.emit(['disableTransition.before']);
+      _this.next(0);
+      _this.eventBus.emit(['disableTransition.after']);
     });
 
     // Reposition the slider items on media query change.

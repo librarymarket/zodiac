@@ -91,7 +91,12 @@ export default class Zodiac {
 
     this.position = 0;
 
-    this.eventBus.on(['track.after'], () => this.next(0));
+    // Set the slider's initial position
+    this.eventBus.on(['track.after'], () => {
+      this.eventBus.emit(['disableTransition.before']);
+      this.next(0);
+      this.eventBus.emit(['disableTransition.after']);
+    });
 
     // Reposition the slider items on media query change.
     this.eventBus.on(['trackUpdated.after'], () => this.next(0));
