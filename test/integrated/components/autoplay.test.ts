@@ -11,11 +11,9 @@ describe('Autoplay', () => {
 
   describe('pauseOnFocus()', () => {
     test('should pause autoplay on focus', () => {
-      new Zodiac('.zodiac', {
+      const zodiac = new Zodiac('.zodiac', {
         autoplaySpeed,
       }).mount();
-
-      const beforeFocus = document.body.innerHTML;
 
       const zodiacItem = document.querySelector<HTMLElement>('.zodiac-item a');
 
@@ -24,16 +22,14 @@ describe('Autoplay', () => {
       jest.advanceTimersByTime(autoplaySpeed);
 
       // Should pause autoplay on focus.
-      expect(document.body.innerHTML).toBe(beforeFocus);
-
-      const beforeBlur = document.body.innerHTML;
+      expect(zodiac.getPosition()).toBe(0);
 
       zodiacItem.blur();
 
       jest.advanceTimersByTime(autoplaySpeed);
 
       // Should continue autoplay on blur.
-      expect(document.body.innerHTML).not.toBe(beforeBlur);
+      expect(zodiac.getPosition()).toBe(1);
     });
   });
 
@@ -51,12 +47,10 @@ describe('Autoplay', () => {
     });
 
     test('should pause autoplay on hover', () => {
-      new Zodiac('.zodiac', {
+      const zodiac = new Zodiac('.zodiac', {
         autoplaySpeed,
         pauseOnHover: true,
       }).mount();
-
-      const beforeMouseenter = document.body.innerHTML;
 
       const zodiacElement = document.querySelector<HTMLElement>('.zodiac');
 
@@ -69,9 +63,7 @@ describe('Autoplay', () => {
       jest.advanceTimersByTime(autoplaySpeed);
 
       // Should pause autoplay on mouseenter.
-      expect(document.body.innerHTML).toBe(beforeMouseenter);
-
-      const beforeMouseleave = document.body.innerHTML;
+      expect(zodiac.getPosition()).toBe(0);
 
       zodiacElement.dispatchEvent(new MouseEvent('mouseleave', {
         view: window,
@@ -82,16 +74,14 @@ describe('Autoplay', () => {
       jest.advanceTimersByTime(autoplaySpeed);
 
       // Should continue autoplay on mouseleave.
-      expect(document.body.innerHTML).not.toBe(beforeMouseleave);
+      expect(zodiac.getPosition()).toBe(1);
     });
 
-    test('should no pause autoplay on hover if pauseOnHover is false', () => {
-      new Zodiac('.zodiac', {
+    test('should not pause autoplay on hover if pauseOnHover is false', () => {
+      const zodiac = new Zodiac('.zodiac', {
         autoplaySpeed,
         pauseOnHover: false,
       }).mount();
-
-      const beforeMouseenter = document.body.innerHTML;
 
       const zodiacElement = document.querySelector<HTMLElement>('.zodiac');
 
@@ -103,22 +93,20 @@ describe('Autoplay', () => {
 
       jest.advanceTimersByTime(autoplaySpeed);
 
-      expect(document.body.innerHTML).not.toBe(beforeMouseenter);
+      expect(zodiac.getPosition()).not.toBe(0);
     });
   });
 
   describe('start()', () => {
     test('should not autoplay when autoplay is set to false', () => {
-      new Zodiac('.zodiac', {
+      const zodiac = new Zodiac('.zodiac', {
         autoplay: false,
         autoplaySpeed,
       }).mount();
 
-      const beforeAutoplay = document.body.innerHTML;
-
       jest.advanceTimersByTime(autoplaySpeed);
 
-      expect(document.body.innerHTML).toBe(beforeAutoplay);
+      expect(zodiac.getPosition()).not.toBe(0);
     });
   });
 });
