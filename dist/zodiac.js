@@ -1801,8 +1801,9 @@ var Zodiac = (function () {
         var _this2 = this;
         this.eventBus.emit(['move.before']);
         var _this$getEffectiveOpt = this.getEffectiveOptions(),
+          infiniteScrolling = _this$getEffectiveOpt.infiniteScrolling,
           transitionSpeed = _this$getEffectiveOpt.transitionSpeed;
-        if (position > this.getItemTotal() || position < 0) {
+        if (infiniteScrolling) {
           this.trackElement.style.transform = "translate3d(".concat(this.convertPositionToPixels(position), "px, 0px, 0px)");
 
           // Convert the position into a value that is within range.
@@ -1815,6 +1816,12 @@ var Zodiac = (function () {
             _this2.eventBus.emit(['disableTransition.after']);
           }, transitionSpeed);
         } else {
+          if (position > this.getItemTotal()) {
+            position = 0;
+          }
+          if (position < 0) {
+            position = this.getItemTotal();
+          }
           var transform = this.convertPositionToPixels(position);
           this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
         }

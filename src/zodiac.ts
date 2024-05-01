@@ -210,9 +210,9 @@ export default class Zodiac {
   public move(position: number): void {
     this.eventBus.emit(['move.before']);
 
-    const { transitionSpeed } = this.getEffectiveOptions();
+    const { infiniteScrolling, transitionSpeed } = this.getEffectiveOptions();
 
-    if (position > this.getItemTotal() || position < 0) {
+    if (infiniteScrolling) {
       this.trackElement.style.transform = `translate3d(${this.convertPositionToPixels(position)}px, 0px, 0px)`;
 
       // Convert the position into a value that is within range.
@@ -226,6 +226,14 @@ export default class Zodiac {
         this.eventBus.emit(['disableTransition.after']);
       }, transitionSpeed);
     } else {
+      if (position > this.getItemTotal()) {
+        position = 0;
+      }
+
+      if (position < 0) {
+        position = this.getItemTotal();
+      }
+
       const transform = this.convertPositionToPixels(position);
       this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
     }

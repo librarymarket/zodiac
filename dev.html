@@ -96,7 +96,24 @@
 
     window.addEventListener('load', () => {
       const zodiac1 = new Zodiac('#zodiac', settings).mount();
-      const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
+      const zodiac2 = new Zodiac('#zodiac--2', {
+        infiniteScrolling: false,
+        itemsPerView: 2,
+        mediaQueryOptions: {
+          "(min-width: 768px)": {
+            itemsPerView: 3,
+          },
+          "(min-width: 992px)": {
+            itemsPerView: 4,
+          },
+          "(min-width: 1200px)": {
+            itemsPerView: 5,
+          },
+          "(min-width: 1400px)": {
+            itemsPerView: 6,
+          },
+        },
+      }).mount();
 
       console.log(zodiac1);
       console.log(zodiac2);
