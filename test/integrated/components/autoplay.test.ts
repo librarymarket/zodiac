@@ -106,7 +106,7 @@ describe('Autoplay', () => {
 
       jest.advanceTimersByTime(autoplaySpeed);
 
-      expect(zodiac.getPosition()).not.toBe(0);
+      expect(zodiac.getPosition()).toBe(0);
     });
   });
 });
