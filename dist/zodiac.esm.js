@@ -789,17 +789,29 @@ var Controls = /*#__PURE__*/function (_ComponentBase) {
     key: "setUpControls",
     value: function setUpControls() {
       var _this = this;
+      var allowMove = true;
+      var eventBus = this.zodiac.getEventBus();
+      eventBus.on(['transitionDuration.before'], function () {
+        return allowMove = false;
+      });
+      eventBus.on(['transitionDuration.after'], function () {
+        return allowMove = true;
+      });
       var sliderElement = this.zodiac.getSliderElement();
       var nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
       if (nextBtn) {
         nextBtn.addEventListener('click', function () {
-          return _this.zodiac.next();
+          if (allowMove) {
+            _this.zodiac.next();
+          }
         });
       }
       var prevBtn = sliderElement.querySelector('[data-zodiac-direction="left"]');
       if (prevBtn) {
         prevBtn.addEventListener('click', function () {
-          return _this.zodiac.previous();
+          if (allowMove) {
+            _this.zodiac.previous();
+          }
         });
       }
     }
@@ -1183,9 +1195,11 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       var transitionSpeed = this.options.transitionSpeed;
       var eventBus = this.zodiac.getEventBus();
       eventBus.on(['move.before', 'move.after', 'drag.after'], function () {
+        eventBus.emit(['transitionDuration.before']);
         _this2.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
         setTimeout(function () {
           _this2.zodiac.getTrackElement().style.transitionDuration = '';
+          eventBus.emit(['transitionDuration.after']);
         }, transitionSpeed);
       });
     }

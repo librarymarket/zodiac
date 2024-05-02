@@ -143,10 +143,12 @@ export class Track extends ComponentBase {
     const eventBus = this.zodiac.getEventBus();
 
     eventBus.on(['move.before', 'move.after', 'drag.after'], () => {
+      eventBus.emit(['transitionDuration.before']);
       this.zodiac.getTrackElement().style.transitionDuration = `${transitionSpeed}ms`;
 
       setTimeout(() => {
         this.zodiac.getTrackElement().style.transitionDuration = '';
+        eventBus.emit(['transitionDuration.after']);
       }, transitionSpeed);
     });
   }
