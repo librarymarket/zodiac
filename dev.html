@@ -8,11 +8,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="dist/css/zodiac.css">
-  <style>
-     .zodiac-cloned > .card {
-       background-color: var(--bs-light);
-     }
-  </style>
 </head>
 <body>
   <div class="vh-100 w-100 d-flex align-items-center">
@@ -96,24 +91,7 @@
 
     window.addEventListener('load', () => {
       const zodiac1 = new Zodiac('#zodiac', settings).mount();
-      const zodiac2 = new Zodiac('#zodiac--2', {
-        infiniteScrolling: false,
-        itemsPerView: 2,
-        mediaQueryOptions: {
-          "(min-width: 768px)": {
-            itemsPerView: 3,
-          },
-          "(min-width: 992px)": {
-            itemsPerView: 4,
-          },
-          "(min-width: 1200px)": {
-            itemsPerView: 5,
-          },
-          "(min-width: 1400px)": {
-            itemsPerView: 6,
-          },
-        },
-      }).mount();
+      const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
 
       console.log(zodiac1);
       console.log(zodiac2);
