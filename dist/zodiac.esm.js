@@ -789,6 +789,8 @@ var Controls = /*#__PURE__*/function (_ComponentBase) {
     key: "setUpControls",
     value: function setUpControls() {
       var _this = this;
+      // Create a flag that will disable control movement, if the slider is
+      // transitioning.
       var allowMove = true;
       var eventBus = this.zodiac.getEventBus();
       eventBus.on(['transitionDuration.before'], function () {
