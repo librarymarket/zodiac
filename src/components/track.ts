@@ -27,6 +27,17 @@ export class Track extends ComponentBase {
   }
 
   /**
+   * Clones a node, returning it with the original type.
+   *
+   * @param node - The node to clone.
+   *
+   * @returns The cloned node.
+   */
+  protected cloneNode<T extends Node>(node: T): T {
+    return <T>node.cloneNode(true);
+  }
+
+  /**
    * Clones the slider items for the `infiniteScrolling` option.
    */
   protected cloneSliderItems(): void {
@@ -74,11 +85,7 @@ export class Track extends ComponentBase {
    * Clones the provided slider item.
    */
   protected getClonedSlide(slide: HTMLElement): HTMLElement {
-    const cloned = slide.cloneNode(true);
-
-    if (!(cloned instanceof HTMLElement)) {
-      throw new TypeError(`Expected cloned to be HTMLElement instance, received ${cloned.constructor.name} instead.`);
-    }
+    const cloned = this.cloneNode(slide);
 
     cloned.removeAttribute('id');
     cloned.classList.add('zodiac-cloned');

@@ -1079,6 +1079,19 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
     }
 
     /**
+     * Clones a node, returning it with the original type.
+     *
+     * @param node - The node to clone.
+     *
+     * @returns The cloned node.
+     */
+  }, {
+    key: "cloneNode",
+    value: function cloneNode(node) {
+      return node.cloneNode(true);
+    }
+
+    /**
      * Clones the slider items for the `infiniteScrolling` option.
      */
   }, {
@@ -1126,10 +1139,7 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "getClonedSlide",
     value: function getClonedSlide(slide) {
-      var cloned = slide.cloneNode(true);
-      if (!(cloned instanceof HTMLElement)) {
-        throw new TypeError("Expected cloned to be HTMLElement instance, received ".concat(cloned.constructor.name, " instead."));
-      }
+      var cloned = this.cloneNode(slide);
       cloned.removeAttribute('id');
       cloned.classList.add('zodiac-cloned');
       return cloned;
