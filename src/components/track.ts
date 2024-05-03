@@ -14,9 +14,83 @@ export class Track extends ComponentBase {
     super.mount(zodiac);
 
     this.setItemWidth();
+
+    if (this.options.infiniteScrolling) {
+      this.cloneSliderItems();
+    }
+
     this.setTrackWidth();
     this.setTrackTransitionDuration();
     this.updateTrackOnResize();
+    this.disableTransition();
+    this.zodiac.getEventBus().emit(['track.after']);
+  }
+
+  /**
+   * Clones a node, returning it with the original type.
+   *
+   * @param node - The node to clone.
+   *
+   * @returns The cloned node.
+   */
+  protected cloneNode<T extends Node>(node: T): T {
+    return <T>node.cloneNode(true);
+  }
+
+  /**
+   * Clones the slider items for the `infiniteScrolling` option.
+   */
+  protected cloneSliderItems(): void {
+    const { itemsPerView } = this.options;
+    const itemTotal = this.zodiac.getItemTotal();
+    const items = this.zodiac.getItems();
+    const trackElement = this.zodiac.getTrackElement();
+
+    for (let i = itemTotal; i > itemTotal - itemsPerView; --i) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-before');
+
+        trackElement.prepend(cloned);
+      }
+    }
+
+    for (let i = 0; i < itemTotal + itemsPerView; i += 1) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-after');
+
+        trackElement.append(cloned);
+      }
+    }
+  }
+
+  /**
+   * Disables the track transition animation.
+   */
+  protected disableTransition(): void {
+    const eventBus = this.zodiac.getEventBus();
+    const trackElement = this.zodiac.getTrackElement();
+
+    eventBus.on(['disableTransition.before'], () => {
+      trackElement.style.transition = 'none';
+    });
+
+    eventBus.on(['disableTransition.after'], () => {
+      trackElement.style.transition = null;
+    });
+  }
+
+  /**
+   * Clones the provided slider item.
+   */
+  protected getClonedSlide(slide: HTMLElement): HTMLElement {
+    const cloned = this.cloneNode(slide);
+
+    cloned.removeAttribute('id');
+    cloned.classList.add('zodiac-cloned');
+
+    return cloned;
   }
 
   /**
@@ -72,7 +146,18 @@ export class Track extends ComponentBase {
    */
   protected setTrackTransitionDuration(): void {
     const { transitionSpeed } = this.options;
-    this.zodiac.getTrackElement().style.transitionDuration = `${transitionSpeed}ms`;
+
+    const eventBus = this.zodiac.getEventBus();
+
+    eventBus.on(['move.before', 'move.after', 'drag.after'], () => {
+      eventBus.emit(['transitionDuration.before']);
+      this.zodiac.getTrackElement().style.transitionDuration = `${transitionSpeed}ms`;
+
+      setTimeout(() => {
+        this.zodiac.getTrackElement().style.transitionDuration = '';
+        eventBus.emit(['transitionDuration.after']);
+      }, transitionSpeed);
+    });
   }
 
   /**
@@ -82,7 +167,9 @@ export class Track extends ComponentBase {
    * by the total number of items.
    */
   protected setTrackWidth(): void {
-    const trackWidth = this.zodiac.getItemWidth() * this.zodiac.getItems().length;
+    // Get all slider items, included those that have been cloned.
+    const items = this.zodiac.getTrackElement().querySelectorAll('.zodiac-item');
+    const trackWidth = this.zodiac.getItemWidth() * items.length;
 
     this.zodiac.getTrackElement().style.width = `${trackWidth}px`;
   }

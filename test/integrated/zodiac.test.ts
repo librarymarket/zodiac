@@ -155,8 +155,11 @@ describe('Zodiac', () => {
 
     test('should not decrease position below 0', () => {
       const zodiac = new Zodiac(defaultSelector).mount();
+      const effectiveOptions = zodiac.getEffectiveOptions();
 
-      zodiac.previous(2);
+      zodiac.previous();
+
+      jest.advanceTimersByTime(effectiveOptions.transitionSpeed);
 
       expect(zodiac.getPosition()).not.toEqual(-1);
       expect(zodiac.getPosition()).toEqual(zodiac.getItemTotal());

@@ -1,7 +1,6 @@
 import Zodiac from '../zodiac';
 
 import { ComponentBase } from './componentBase';
-import { Utilities } from '../utilities';
 
 type DragEvent = MouseEvent | TouchEvent;
 
@@ -149,11 +148,15 @@ export class Drag extends ComponentBase {
    * @returns The `screenX` value of the event.
    */
   protected getScreenX(event: DragEvent): number {
-    if (event instanceof TouchEvent) {
-      return event.touches[0].screenX ?? 0;
+    let screenX: number = null;
+
+    if (window.TouchEvent && event instanceof TouchEvent) {
+      screenX = event.touches[0].screenX ?? 0;
+    } else if (event instanceof MouseEvent) {
+      screenX = event.screenX;
     }
 
-    return event.screenX;
+    return screenX;
   }
 
   /**
@@ -168,23 +171,9 @@ export class Drag extends ComponentBase {
    * @returns The position as a numeric index.
    */
   protected getSnapPosition(dragPosition: number): number {
-    let snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth());
+    const clonedOffset = this.zodiac.getClonedOffset();
 
-    const itemTotal = this.zodiac.getItemTotal();
-
-    // If the calculated position is greater than the total number of slider
-    // items then restart at the beginning.
-    if (snapPosition > itemTotal) {
-      snapPosition = 0;
-    }
-
-    // If the calculated position is less than zero then move to the end of
-    // the slider.
-    if (snapPosition < 0) {
-      snapPosition = itemTotal;
-    }
-
-    return snapPosition;
+    return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
   }
 
   /**
@@ -248,12 +237,9 @@ export class Drag extends ComponentBase {
       return;
     }
 
-    // Increase the acceleration speed based on how far the user has dragged
-    // the slider.
-    const accelerate = Utilities.rangeMap(Math.abs(distance), this.threshold, window.innerWidth, 1, 3);
     // Determine by drag position by adding distance multiplied by the
     // acceleration speed.
-    const dragPosition = this.dragPosition + (distance * accelerate);
+    const dragPosition = this.dragPosition + distance;
 
     event.preventDefault();
 
@@ -329,11 +315,13 @@ export class Drag extends ComponentBase {
   protected start(event: DragEvent): void {
     this.zodiac.getEventBus().emit(['drag.before']);
 
+    const clonedOffset = this.zodiac.getClonedOffset();
+
     // Calculate the drag position by multiplying the slider's current position
     // by the width of a single slide. The value of this calculation is
     // converted to a negative number to animate the slider since it will
     // eventually be passed into `translate3d`.
-    this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
+    this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
 
     this.snapPosition = this.getSnapPosition(this.dragPosition);
 
@@ -350,7 +338,6 @@ export class Drag extends ComponentBase {
    * Positions the slider after the dragging is complete.
    */
   protected stop(): void {
-    this.zodiac.setPosition(this.snapPosition);
     this.zodiac.move(this.snapPosition);
 
     this.removeMoveEvents();

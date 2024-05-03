@@ -51,7 +51,7 @@ describe('Drag', () => {
     expect(trackElement.classList.contains('dragging')).toBe(false);
 
     expect(beforeDrag).not.toBe(document.body.innerHTML);
-    expect(zodiac.getPosition()).toBe(2);
+    expect(zodiac.getPosition()).toBe(1);
   });
 
   test('should move the slider to the end when dragging backwards at the beginning', () => {
@@ -97,7 +97,7 @@ describe('Drag', () => {
   });
 
   test('should move the slider to the start when dragging forwards at the end', () => {
-    const zodiac = new Zodiac('.zodiac').mount();
+    const zodiac = new Zodiac('.zodiac', {infiniteScrolling: false}).mount();
 
     const beforeDrag = document.body.innerHTML;
     expect(zodiac.getPosition()).toBe(0);
@@ -229,7 +229,7 @@ describe('Drag', () => {
   test('should disable item dragging while track is being dragged', () => {
     new Zodiac('.zodiac').mount();
 
-    const firstItem = document.querySelector<HTMLElement>('.zodiac-item');
+    const firstItem = document.querySelector<HTMLElement>('.zodiac-item:not(.zodiac-cloned)');
 
     const dragstartEvent = new Event('dragstart', {
       bubbles: true,

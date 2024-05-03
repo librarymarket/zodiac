@@ -20,6 +20,11 @@ import { Drag } from './components/drag';
 export default class Zodiac {
 
   /**
+   * The number of cloned slider items preceeding the normal slider items.
+   */
+  protected clonedOffset: number;
+
+  /**
    * The slider components.
    */
   protected components: ComponentInterface[];
@@ -86,8 +91,28 @@ export default class Zodiac {
 
     this.position = 0;
 
+    // Set the slider's initial position
+    this.eventBus.on(['track.after'], () => {
+      this.eventBus.emit(['disableTransition.before']);
+      this.next(0);
+      this.eventBus.emit(['disableTransition.after']);
+    });
+
     // Reposition the slider items on media query change.
     this.eventBus.on(['trackUpdated.after'], () => this.next(0));
+  }
+
+  /**
+   * Retrives the number of cloned slider items before the normal slider items.
+   *
+   * @returns The cloned offset value.
+   */
+  public getClonedOffset(): number {
+    if (this.clonedOffset === undefined) {
+      this.loadClonedOffset();
+    }
+
+    return this.clonedOffset;
   }
 
   /**
@@ -180,12 +205,41 @@ export default class Zodiac {
   /**
    * Moves the slider based on the provided offset.
    *
-   * @param offset - The position to move the slider.
+   * @param position - The position to move the slider.
    */
-  public move(offset: number): void {
-    const transform = -1 * (this.getItemWidth() * offset);
+  public move(position: number): void {
+    this.eventBus.emit(['move.before']);
 
-    this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+    const { infiniteScrolling, transitionSpeed } = this.getEffectiveOptions();
+
+    if (infiniteScrolling) {
+      this.trackElement.style.transform = `translate3d(${this.convertPositionToPixels(position)}px, 0px, 0px)`;
+
+      // Convert the position into a value that is within range.
+      const itemTotal = this.getItemTotal() + 1;
+      position = (position % itemTotal + itemTotal) % itemTotal;
+
+      setTimeout(() => {
+        this.eventBus.emit(['disableTransition.before']);
+        const transform = this.convertPositionToPixels(position);
+        this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+        this.eventBus.emit(['disableTransition.after']);
+      }, transitionSpeed);
+    } else {
+      if (position > this.getItemTotal()) {
+        position = 0;
+      }
+
+      if (position < 0) {
+        position = this.getItemTotal();
+      }
+
+      const transform = this.convertPositionToPixels(position);
+      this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+    }
+
+    this.setPosition(position);
+    this.eventBus.emit(['move.after']);
   }
 
   /**
@@ -194,21 +248,7 @@ export default class Zodiac {
    * @param offset - How many slides to move forward.
    */
   public next(offset = 1): void {
-    this.eventBus.emit(['move.before']);
-
-    let position = this.getPosition();
-
-    position = position + offset;
-
-    if (position > this.getItemTotal()) {
-      position = 0;
-    }
-
-    this.move(position);
-
-    this.setPosition(position);
-
-    this.eventBus.emit(['move.after']);
+    this.move(this.getPosition() + offset);
   }
 
   /**
@@ -244,21 +284,7 @@ export default class Zodiac {
    * @param offset - How many slides to move forward.
    */
   public previous(offset = 1): void {
-    this.eventBus.emit(['move.before']);
-
-    let position = this.getPosition();
-
-    position = position - offset;
-
-    if (position < 0) {
-      position = this.getItemTotal();
-    }
-
-    this.move(position);
-
-    this.setPosition(position);
-
-    this.eventBus.emit(['move.after']);
+    this.move(this.getPosition() - offset);
   }
 
   /**
@@ -285,6 +311,30 @@ export default class Zodiac {
     }
 
     this.position = Math.trunc(position);
+  }
+
+  /**
+   * Converts the provided positional value into a pizel value.
+   *
+   * @param position - This position to convert.
+   *
+   * @returns The converted pixel value.
+   */
+  protected convertPositionToPixels(position: number): number {
+    const clonedOffset = this.getClonedOffset();
+
+    return -1 * (this.getItemWidth() * (position + clonedOffset));
+  }
+
+  /**
+   * Loads the cloned offset value.
+   */
+  protected loadClonedOffset(): void {
+    this.clonedOffset = 0;
+
+    if (this.options.getEffectiveOptions().infiniteScrolling) {
+      this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+    }
   }
 
   /**

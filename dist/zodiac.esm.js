@@ -404,6 +404,7 @@ var Options = /*#__PURE__*/function () {
       },
       enableLiveRegion: true,
       gap: 8,
+      infiniteScrolling: true,
       itemsPerView: 5,
       liveRegionText: 'Slide @position of @total @title',
       pauseOnHover: true,
@@ -495,7 +496,7 @@ var Options = /*#__PURE__*/function () {
   }, {
     key: "validateMediaQueryOptions",
     value: function validateMediaQueryOptions(options) {
-      var invalidOptions = ['classes', 'enableLiveRegion', 'liveRegionText'];
+      var invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText'];
       invalidOptions.forEach(function (invalidOption) {
         if (Object.hasOwnProperty.call(options, invalidOption)) {
           throw new TypeError("The ".concat(invalidOption, " property can only be set once."));
@@ -600,28 +601,6 @@ var Utilities = /*#__PURE__*/function () {
       return _toConsumableArray(Array(size).keys()).map(function (index) {
         return index + startAt;
       });
-    }
-
-    /**
-     * Maps a number in an input range to a number in an output range.
-     *
-     * This method takes an input number that exists with a specific range, and
-     * outputs a number scaled to an output range.
-     *
-     * @see {@link https://math.stackexchange.com/questions/377169/going-from-a-value-inside-1-1-to-a-value-in-another-range}
-     *
-     * @param item - The original number within the input range.
-     * @param inMin - The minimum number in the input range.
-     * @param inMax - The maximum number in the input range.
-     * @param outMin - The minimum number in the output range.
-     * @param outMax - The maximum number in the output range.
-     *
-     * @returns The new number within the output range.
-     */
-  }, {
-    key: "rangeMap",
-    value: function rangeMap(item, inMin, inMax, outMin, outMax) {
-      return (item - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
   }]);
   return Utilities;
@@ -810,17 +789,31 @@ var Controls = /*#__PURE__*/function (_ComponentBase) {
     key: "setUpControls",
     value: function setUpControls() {
       var _this = this;
+      // Create a flag that will disable control movement, if the slider is
+      // transitioning.
+      var allowMove = true;
+      var eventBus = this.zodiac.getEventBus();
+      eventBus.on(['transitionDuration.before'], function () {
+        return allowMove = false;
+      });
+      eventBus.on(['transitionDuration.after'], function () {
+        return allowMove = true;
+      });
       var sliderElement = this.zodiac.getSliderElement();
       var nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
       if (nextBtn) {
         nextBtn.addEventListener('click', function () {
-          return _this.zodiac.next();
+          if (allowMove) {
+            _this.zodiac.next();
+          }
         });
       }
       var prevBtn = sliderElement.querySelector('[data-zodiac-direction="left"]');
       if (prevBtn) {
         prevBtn.addEventListener('click', function () {
-          return _this.zodiac.previous();
+          if (allowMove) {
+            _this.zodiac.previous();
+          }
         });
       }
     }
@@ -1075,9 +1068,81 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
     function mount(zodiac) {
       _get(_getPrototypeOf(Track.prototype), "mount", this).call(this, zodiac);
       this.setItemWidth();
+      if (this.options.infiniteScrolling) {
+        this.cloneSliderItems();
+      }
       this.setTrackWidth();
       this.setTrackTransitionDuration();
       this.updateTrackOnResize();
+      this.disableTransition();
+      this.zodiac.getEventBus().emit(['track.after']);
+    }
+
+    /**
+     * Clones a node, returning it with the original type.
+     *
+     * @param node - The node to clone.
+     *
+     * @returns The cloned node.
+     */
+  }, {
+    key: "cloneNode",
+    value: function cloneNode(node) {
+      return node.cloneNode(true);
+    }
+
+    /**
+     * Clones the slider items for the `infiniteScrolling` option.
+     */
+  }, {
+    key: "cloneSliderItems",
+    value: function cloneSliderItems() {
+      var itemsPerView = this.options.itemsPerView;
+      var itemTotal = this.zodiac.getItemTotal();
+      var items = this.zodiac.getItems();
+      var trackElement = this.zodiac.getTrackElement();
+      for (var i = itemTotal; i > itemTotal - itemsPerView; --i) {
+        if (items[i]) {
+          var cloned = this.getClonedSlide(items[i]);
+          cloned.classList.add('zodiac-cloned-before');
+          trackElement.prepend(cloned);
+        }
+      }
+      for (var _i = 0; _i < itemTotal + itemsPerView; _i += 1) {
+        if (items[_i]) {
+          var _cloned = this.getClonedSlide(items[_i]);
+          _cloned.classList.add('zodiac-cloned-after');
+          trackElement.append(_cloned);
+        }
+      }
+    }
+
+    /**
+     * Disables the track transition animation.
+     */
+  }, {
+    key: "disableTransition",
+    value: function disableTransition() {
+      var eventBus = this.zodiac.getEventBus();
+      var trackElement = this.zodiac.getTrackElement();
+      eventBus.on(['disableTransition.before'], function () {
+        trackElement.style.transition = 'none';
+      });
+      eventBus.on(['disableTransition.after'], function () {
+        trackElement.style.transition = null;
+      });
+    }
+
+    /**
+     * Clones the provided slider item.
+     */
+  }, {
+    key: "getClonedSlide",
+    value: function getClonedSlide(slide) {
+      var cloned = this.cloneNode(slide);
+      cloned.removeAttribute('id');
+      cloned.classList.add('zodiac-cloned');
+      return cloned;
     }
 
     /**
@@ -1138,8 +1203,17 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "setTrackTransitionDuration",
     value: function setTrackTransitionDuration() {
+      var _this2 = this;
       var transitionSpeed = this.options.transitionSpeed;
-      this.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
+      var eventBus = this.zodiac.getEventBus();
+      eventBus.on(['move.before', 'move.after', 'drag.after'], function () {
+        eventBus.emit(['transitionDuration.before']);
+        _this2.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
+        setTimeout(function () {
+          _this2.zodiac.getTrackElement().style.transitionDuration = '';
+          eventBus.emit(['transitionDuration.after']);
+        }, transitionSpeed);
+      });
     }
 
     /**
@@ -1151,7 +1225,9 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "setTrackWidth",
     value: function setTrackWidth() {
-      var trackWidth = this.zodiac.getItemWidth() * this.zodiac.getItems().length;
+      // Get all slider items, included those that have been cloned.
+      var items = this.zodiac.getTrackElement().querySelectorAll('.zodiac-item');
+      var trackWidth = this.zodiac.getItemWidth() * items.length;
       this.zodiac.getTrackElement().style.width = "".concat(trackWidth, "px");
     }
 
@@ -1161,13 +1237,13 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "updateTrackOnResize",
     value: function updateTrackOnResize() {
-      var _this2 = this;
+      var _this3 = this;
       this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
-        _this2.zodiac.getEventBus().emit(['trackUpdated.before']);
-        _this2.setItemWidth();
-        _this2.setTrackWidth();
-        _this2.setTrackTransitionDuration();
-        _this2.zodiac.getEventBus().emit(['trackUpdated.after']);
+        _this3.zodiac.getEventBus().emit(['trackUpdated.before']);
+        _this3.setItemWidth();
+        _this3.setTrackWidth();
+        _this3.setTrackTransitionDuration();
+        _this3.zodiac.getEventBus().emit(['trackUpdated.after']);
       });
     }
   }]);
@@ -1315,11 +1391,14 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "getScreenX",
     value: function getScreenX(event) {
-      if (event instanceof TouchEvent) {
+      var screenX = null;
+      if (window.TouchEvent && event instanceof TouchEvent) {
         var _event$touches$0$scre;
-        return (_event$touches$0$scre = event.touches[0].screenX) !== null && _event$touches$0$scre !== void 0 ? _event$touches$0$scre : 0;
+        screenX = (_event$touches$0$scre = event.touches[0].screenX) !== null && _event$touches$0$scre !== void 0 ? _event$touches$0$scre : 0;
+      } else if (event instanceof MouseEvent) {
+        screenX = event.screenX;
       }
-      return event.screenX;
+      return screenX;
     }
 
     /**
@@ -1336,21 +1415,8 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "getSnapPosition",
     value: function getSnapPosition(dragPosition) {
-      var snapPosition = -Math.round(dragPosition / this.zodiac.getItemWidth());
-      var itemTotal = this.zodiac.getItemTotal();
-
-      // If the calculated position is greater than the total number of slider
-      // items then restart at the beginning.
-      if (snapPosition > itemTotal) {
-        snapPosition = 0;
-      }
-
-      // If the calculated position is less than zero then move to the end of
-      // the slider.
-      if (snapPosition < 0) {
-        snapPosition = itemTotal;
-      }
-      return snapPosition;
+      var clonedOffset = this.zodiac.getClonedOffset();
+      return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
     }
 
     /**
@@ -1417,12 +1483,9 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
         return;
       }
 
-      // Increase the acceleration speed based on how far the user has dragged
-      // the slider.
-      var accelerate = Utilities.rangeMap(Math.abs(distance), this.threshold, window.innerWidth, 1, 3);
       // Determine by drag position by adding distance multiplied by the
       // acceleration speed.
-      var dragPosition = this.dragPosition + distance * accelerate;
+      var dragPosition = this.dragPosition + distance;
       event.preventDefault();
 
       // Get the snap position from the current drag position.
@@ -1509,12 +1572,13 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
     key: "start",
     value: function start(event) {
       this.zodiac.getEventBus().emit(['drag.before']);
+      var clonedOffset = this.zodiac.getClonedOffset();
 
       // Calculate the drag position by multiplying the slider's current position
       // by the width of a single slide. The value of this calculation is
       // converted to a negative number to animate the slider since it will
       // eventually be passed into `translate3d`.
-      this.dragPosition = -Math.abs(this.zodiac.getPosition() * this.zodiac.getItemWidth());
+      this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
       this.snapPosition = this.getSnapPosition(this.dragPosition);
 
       // Determine the position of the event dispatcher by subtracting the event
@@ -1531,7 +1595,6 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "stop",
     value: function stop() {
-      this.zodiac.setPosition(this.snapPosition);
       this.zodiac.move(this.snapPosition);
       this.removeMoveEvents();
       this.removeStopEvents();
@@ -1550,6 +1613,10 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
  * component, invoking their `mount()` method & supplying itself as an argument.
  */
 var Zodiac = /*#__PURE__*/function () {
+  /**
+   * The number of cloned slider items preceeding the normal slider items.
+   */
+
   /**
    * The slider components.
    */
@@ -1605,6 +1672,13 @@ var Zodiac = /*#__PURE__*/function () {
     this.items = this.sliderElement.querySelectorAll(".".concat(effectiveOptions.classes.items));
     this.position = 0;
 
+    // Set the slider's initial position
+    this.eventBus.on(['track.after'], function () {
+      _this.eventBus.emit(['disableTransition.before']);
+      _this.next(0);
+      _this.eventBus.emit(['disableTransition.after']);
+    });
+
     // Reposition the slider items on media query change.
     this.eventBus.on(['trackUpdated.after'], function () {
       return _this.next(0);
@@ -1612,11 +1686,25 @@ var Zodiac = /*#__PURE__*/function () {
   }
 
   /**
-   * Retrieves the slider's effective options.
+   * Retrives the number of cloned slider items before the normal slider items.
    *
-   * @returns The slider's effective options.
+   * @returns The cloned offset value.
    */
   _createClass(Zodiac, [{
+    key: "getClonedOffset",
+    value: function getClonedOffset() {
+      if (this.clonedOffset === undefined) {
+        this.loadClonedOffset();
+      }
+      return this.clonedOffset;
+    }
+
+    /**
+     * Retrieves the slider's effective options.
+     *
+     * @returns The slider's effective options.
+     */
+  }, {
     key: "getEffectiveOptions",
     value: function getEffectiveOptions() {
       return this.options.getEffectiveOptions();
@@ -1728,13 +1816,40 @@ var Zodiac = /*#__PURE__*/function () {
     /**
      * Moves the slider based on the provided offset.
      *
-     * @param offset - The position to move the slider.
+     * @param position - The position to move the slider.
      */
   }, {
     key: "move",
-    value: function move(offset) {
-      var transform = -1 * (this.getItemWidth() * offset);
-      this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+    value: function move(position) {
+      var _this2 = this;
+      this.eventBus.emit(['move.before']);
+      var _this$getEffectiveOpt = this.getEffectiveOptions(),
+        infiniteScrolling = _this$getEffectiveOpt.infiniteScrolling,
+        transitionSpeed = _this$getEffectiveOpt.transitionSpeed;
+      if (infiniteScrolling) {
+        this.trackElement.style.transform = "translate3d(".concat(this.convertPositionToPixels(position), "px, 0px, 0px)");
+
+        // Convert the position into a value that is within range.
+        var itemTotal = this.getItemTotal() + 1;
+        position = (position % itemTotal + itemTotal) % itemTotal;
+        setTimeout(function () {
+          _this2.eventBus.emit(['disableTransition.before']);
+          var transform = _this2.convertPositionToPixels(position);
+          _this2.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+          _this2.eventBus.emit(['disableTransition.after']);
+        }, transitionSpeed);
+      } else {
+        if (position > this.getItemTotal()) {
+          position = 0;
+        }
+        if (position < 0) {
+          position = this.getItemTotal();
+        }
+        var transform = this.convertPositionToPixels(position);
+        this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
+      }
+      this.setPosition(position);
+      this.eventBus.emit(['move.after']);
     }
 
     /**
@@ -1746,15 +1861,7 @@ var Zodiac = /*#__PURE__*/function () {
     key: "next",
     value: function next() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.eventBus.emit(['move.before']);
-      var position = this.getPosition();
-      position = position + offset;
-      if (position > this.getItemTotal()) {
-        position = 0;
-      }
-      this.move(position);
-      this.setPosition(position);
-      this.eventBus.emit(['move.after']);
+      this.move(this.getPosition() + offset);
     }
 
     /**
@@ -1795,15 +1902,7 @@ var Zodiac = /*#__PURE__*/function () {
     key: "previous",
     value: function previous() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.eventBus.emit(['move.before']);
-      var position = this.getPosition();
-      position = position - offset;
-      if (position < 0) {
-        position = this.getItemTotal();
-      }
-      this.move(position);
-      this.setPosition(position);
-      this.eventBus.emit(['move.after']);
+      this.move(this.getPosition() - offset);
     }
 
     /**
@@ -1833,6 +1932,32 @@ var Zodiac = /*#__PURE__*/function () {
         throw new RangeError("Invalid position: ".concat(position));
       }
       this.position = Math.trunc(position);
+    }
+
+    /**
+     * Converts the provided positional value into a pizel value.
+     *
+     * @param position - This position to convert.
+     *
+     * @returns The converted pixel value.
+     */
+  }, {
+    key: "convertPositionToPixels",
+    value: function convertPositionToPixels(position) {
+      var clonedOffset = this.getClonedOffset();
+      return -1 * (this.getItemWidth() * (position + clonedOffset));
+    }
+
+    /**
+     * Loads the cloned offset value.
+     */
+  }, {
+    key: "loadClonedOffset",
+    value: function loadClonedOffset() {
+      this.clonedOffset = 0;
+      if (this.options.getEffectiveOptions().infiniteScrolling) {
+        this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
+      }
     }
 
     /**

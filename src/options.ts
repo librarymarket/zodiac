@@ -57,6 +57,11 @@ export interface OptionsInterface {
   gap?: number;
 
   /**
+   * Allows to slider to transition endlessly.
+   */
+  infiniteScrolling?: boolean;
+
+  /**
    * The total number of items to display per view.
    */
   itemsPerView?: number;
@@ -141,6 +146,7 @@ export class Options {
     },
     enableLiveRegion: true,
     gap: 8,
+    infiniteScrolling: true,
     itemsPerView: 5,
     liveRegionText: 'Slide @position of @total @title',
     pauseOnHover: true,
@@ -254,6 +260,7 @@ export class Options {
     const invalidOptions = [
       'classes',
       'enableLiveRegion',
+      'infiniteScrolling',
       'liveRegionText',
     ];
 
