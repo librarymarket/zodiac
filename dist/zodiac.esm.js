@@ -1142,6 +1142,12 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
       var cloned = this.cloneNode(slide);
       cloned.removeAttribute('id');
       cloned.classList.add('zodiac-cloned');
+      cloned.setAttribute('aria-hidden', 'true');
+      cloned.querySelectorAll('a').forEach(function (link) {
+        // Ensure none of the links nested within the cloned items can
+        // recieve focus.
+        link.setAttribute('tabindex', '-1');
+      });
       return cloned;
     }
 

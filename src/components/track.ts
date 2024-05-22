@@ -89,6 +89,13 @@ export class Track extends ComponentBase {
 
     cloned.removeAttribute('id');
     cloned.classList.add('zodiac-cloned');
+    cloned.setAttribute('aria-hidden', 'true');
+
+    cloned.querySelectorAll('a').forEach((link) => {
+      // Ensure none of the links nested within the cloned items can
+      // recieve focus.
+      link.setAttribute('tabindex', '-1');
+    });
 
     return cloned;
   }
