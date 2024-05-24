@@ -1146,10 +1146,11 @@ var Zodiac = (function () {
         cloned.removeAttribute('id');
         cloned.classList.add('zodiac-cloned');
         cloned.setAttribute('aria-hidden', 'true');
-        cloned.querySelectorAll('a').forEach(function (link) {
+        var selector = Utilities.focusableSelectors.join(', ');
+        cloned.querySelectorAll(selector).forEach(function (element) {
           // Ensure none of the links nested within the cloned items can
           // recieve focus.
-          link.setAttribute('tabindex', '-1');
+          element.setAttribute('tabindex', '-1');
         });
         return cloned;
       }

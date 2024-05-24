@@ -1,6 +1,7 @@
 import Zodiac from '../zodiac';
 
 import { ComponentBase } from './componentBase';
+import { Utilities } from '../utilities';
 
 /**
  * Manipulates the width of the slider track and each slider item.
@@ -91,10 +92,12 @@ export class Track extends ComponentBase {
     cloned.classList.add('zodiac-cloned');
     cloned.setAttribute('aria-hidden', 'true');
 
-    cloned.querySelectorAll('a').forEach((link) => {
+    const selector = Utilities.focusableSelectors.join(', ');
+
+    cloned.querySelectorAll(selector).forEach((element) => {
       // Ensure none of the links nested within the cloned items can
       // recieve focus.
-      link.setAttribute('tabindex', '-1');
+      element.setAttribute('tabindex', '-1');
     });
 
     return cloned;
