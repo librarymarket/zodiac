@@ -1,7 +1,8 @@
 import MatchMediaMock from '../../matchMediaMock';
-import { htmlFixture } from '../../fixtures/html';
+import { htmlFixture, htmlFixtureFocusableSelectors } from '../../fixtures/html';
 
 import Zodiac from '../../../src/zodiac';
+import { Utilities } from '../../../src/utilities';
 
 const defaultSelector = '.zodiac';
 
@@ -9,6 +10,26 @@ const matchMedia = new MatchMediaMock();
 let sliderWidth = 1400;
 
 describe('Track', () => {
+  describe('getClonedSlide()', () => {
+    beforeEach(() => {
+      document.body.innerHTML = htmlFixtureFocusableSelectors;
+    });
+
+    test.each(Utilities.focusableSelectors)('should not allow cloned content to recieve focus', (selector) => {
+      const zodiac = new Zodiac(defaultSelector).mount();
+
+      const clones = zodiac.getTrackElement().querySelectorAll(`.zodiac-cloned`);
+
+      clones.forEach((clone) => {
+        const focusableItems = clone.querySelectorAll(selector);
+
+        focusableItems.forEach((focusableItem) => {
+          expect(focusableItem.getAttribute('tabindex')).toBe('-1');
+        });
+      });
+    });
+  });
+
   describe('initializeTrack()', () => {
     beforeEach(() => {
       document.body.innerHTML = htmlFixture;
