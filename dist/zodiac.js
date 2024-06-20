@@ -1,258 +1,204 @@
 var Zodiac = (function () {
   'use strict';
 
-  function _iterableToArrayLimit(arr, i) {
-    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-    if (null != _i) {
-      var _s,
-        _e,
-        _x,
-        _r,
-        _arr = [],
-        _n = !0,
-        _d = !1;
-      try {
-        if (_x = (_i = _i.call(arr)).next, 0 === i) {
-          if (Object(_i) !== _i) return;
-          _n = !1;
-        } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
-      } catch (err) {
-        _d = !0, _e = err;
-      } finally {
-        try {
-          if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return;
-        } finally {
-          if (_d) throw _e;
-        }
-      }
-      return _arr;
+  function _arrayLikeToArray(r, a) {
+    (null == a || a > r.length) && (a = r.length);
+    for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+    return n;
+  }
+  function _arrayWithHoles(r) {
+    if (Array.isArray(r)) return r;
+  }
+  function _arrayWithoutHoles(r) {
+    if (Array.isArray(r)) return _arrayLikeToArray(r);
+  }
+  function _assertThisInitialized(e) {
+    if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    return e;
+  }
+  function _callSuper(t, o, e) {
+    return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
+  }
+  function _classCallCheck(a, n) {
+    if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+  }
+  function _defineProperties(e, r) {
+    for (var t = 0; t < r.length; t++) {
+      var o = r[t];
+      o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
     }
   }
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
+  function _createClass(e, r, t) {
+    return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+      writable: !1
+    }), e;
   }
-  function _defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
-    }
-  }
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    Object.defineProperty(Constructor, "prototype", {
-      writable: false
-    });
-    return Constructor;
-  }
-  function _defineProperty(obj, key, value) {
-    key = _toPropertyKey(key);
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-    return obj;
-  }
-  function _inherits(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function");
-    }
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-      constructor: {
-        value: subClass,
-        writable: true,
-        configurable: true
-      }
-    });
-    Object.defineProperty(subClass, "prototype", {
-      writable: false
-    });
-    if (superClass) _setPrototypeOf(subClass, superClass);
-  }
-  function _getPrototypeOf(o) {
-    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
-      return o.__proto__ || Object.getPrototypeOf(o);
-    };
-    return _getPrototypeOf(o);
-  }
-  function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-      o.__proto__ = p;
-      return o;
-    };
-    return _setPrototypeOf(o, p);
-  }
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-    try {
-      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-  function _assertThisInitialized(self) {
-    if (self === void 0) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-    return self;
-  }
-  function _possibleConstructorReturn(self, call) {
-    if (call && (typeof call === "object" || typeof call === "function")) {
-      return call;
-    } else if (call !== void 0) {
-      throw new TypeError("Derived constructors may only return object or undefined");
-    }
-    return _assertThisInitialized(self);
-  }
-  function _createSuper(Derived) {
-    var hasNativeReflectConstruct = _isNativeReflectConstruct();
-    return function _createSuperInternal() {
-      var Super = _getPrototypeOf(Derived),
-        result;
-      if (hasNativeReflectConstruct) {
-        var NewTarget = _getPrototypeOf(this).constructor;
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-      return _possibleConstructorReturn(this, result);
-    };
-  }
-  function _superPropBase(object, property) {
-    while (!Object.prototype.hasOwnProperty.call(object, property)) {
-      object = _getPrototypeOf(object);
-      if (object === null) break;
-    }
-    return object;
-  }
-  function _get() {
-    if (typeof Reflect !== "undefined" && Reflect.get) {
-      _get = Reflect.get.bind();
-    } else {
-      _get = function _get(target, property, receiver) {
-        var base = _superPropBase(target, property);
-        if (!base) return;
-        var desc = Object.getOwnPropertyDescriptor(base, property);
-        if (desc.get) {
-          return desc.get.call(arguments.length < 3 ? target : receiver);
-        }
-        return desc.value;
-      };
-    }
-    return _get.apply(this, arguments);
-  }
-  function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-  }
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-  }
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-  }
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-  }
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-    return arr2;
-  }
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  function _createForOfIteratorHelper(o, allowArrayLike) {
-    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-    if (!it) {
-      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-        if (it) o = it;
-        var i = 0;
-        var F = function () {};
+  function _createForOfIteratorHelper(r, e) {
+    var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (!t) {
+      if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) {
+        t && (r = t);
+        var n = 0,
+          F = function () {};
         return {
           s: F,
           n: function () {
-            if (i >= o.length) return {
-              done: true
-            };
-            return {
-              done: false,
-              value: o[i++]
+            return n >= r.length ? {
+              done: !0
+            } : {
+              done: !1,
+              value: r[n++]
             };
           },
-          e: function (e) {
-            throw e;
+          e: function (r) {
+            throw r;
           },
           f: F
         };
       }
       throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
     }
-    var normalCompletion = true,
-      didErr = false,
-      err;
+    var o,
+      a = !0,
+      u = !1;
     return {
       s: function () {
-        it = it.call(o);
+        t = t.call(r);
       },
       n: function () {
-        var step = it.next();
-        normalCompletion = step.done;
-        return step;
+        var r = t.next();
+        return a = r.done, r;
       },
-      e: function (e) {
-        didErr = true;
-        err = e;
+      e: function (r) {
+        u = !0, o = r;
       },
       f: function () {
         try {
-          if (!normalCompletion && it.return != null) it.return();
+          a || null == t.return || t.return();
         } finally {
-          if (didErr) throw err;
+          if (u) throw o;
         }
       }
     };
   }
-  function _toPrimitive(input, hint) {
-    if (typeof input !== "object" || input === null) return input;
-    var prim = input[Symbol.toPrimitive];
-    if (prim !== undefined) {
-      var res = prim.call(input, hint || "default");
-      if (typeof res !== "object") return res;
+  function _defineProperty(e, r, t) {
+    return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+      value: t,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }) : e[r] = t, e;
+  }
+  function _get() {
+    return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) {
+      var p = _superPropBase(e, t);
+      if (p) {
+        var n = Object.getOwnPropertyDescriptor(p, t);
+        return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value;
+      }
+    }, _get.apply(null, arguments);
+  }
+  function _getPrototypeOf(t) {
+    return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
+      return t.__proto__ || Object.getPrototypeOf(t);
+    }, _getPrototypeOf(t);
+  }
+  function _inherits(t, e) {
+    if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
+    t.prototype = Object.create(e && e.prototype, {
+      constructor: {
+        value: t,
+        writable: !0,
+        configurable: !0
+      }
+    }), Object.defineProperty(t, "prototype", {
+      writable: !1
+    }), e && _setPrototypeOf(t, e);
+  }
+  function _isNativeReflectConstruct() {
+    try {
+      var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (t) {}
+    return (_isNativeReflectConstruct = function () {
+      return !!t;
+    })();
+  }
+  function _iterableToArray(r) {
+    if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
+  }
+  function _iterableToArrayLimit(r, l) {
+    var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (null != t) {
+      var e,
+        n,
+        i,
+        u,
+        a = [],
+        f = !0,
+        o = !1;
+      try {
+        if (i = (t = t.call(r)).next, 0 === l) {
+          if (Object(t) !== t) return;
+          f = !1;
+        } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+      } catch (r) {
+        o = !0, n = r;
+      } finally {
+        try {
+          if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+        } finally {
+          if (o) throw n;
+        }
+      }
+      return a;
+    }
+  }
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+  function _possibleConstructorReturn(t, e) {
+    if (e && ("object" == typeof e || "function" == typeof e)) return e;
+    if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
+    return _assertThisInitialized(t);
+  }
+  function _setPrototypeOf(t, e) {
+    return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
+      return t.__proto__ = e, t;
+    }, _setPrototypeOf(t, e);
+  }
+  function _slicedToArray(r, e) {
+    return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
+  }
+  function _superPropBase(t, o) {
+    for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t)););
+    return t;
+  }
+  function _toConsumableArray(r) {
+    return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
+  }
+  function _toPrimitive(t, r) {
+    if ("object" != typeof t || !t) return t;
+    var e = t[Symbol.toPrimitive];
+    if (void 0 !== e) {
+      var i = e.call(t, r || "default");
+      if ("object" != typeof i) return i;
       throw new TypeError("@@toPrimitive must return a primitive value.");
     }
-    return (hint === "string" ? String : Number)(input);
+    return ("string" === r ? String : Number)(t);
   }
-  function _toPropertyKey(arg) {
-    var key = _toPrimitive(arg, "string");
-    return typeof key === "symbol" ? key : String(key);
+  function _toPropertyKey(t) {
+    var i = _toPrimitive(t, "string");
+    return "symbol" == typeof i ? i : i + "";
+  }
+  function _unsupportedIterableToArray(r, a) {
+    if (r) {
+      if ("string" == typeof r) return _arrayLikeToArray(r, a);
+      var t = {}.toString.call(r).slice(8, -1);
+      return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+    }
   }
 
   /**
@@ -278,7 +224,7 @@ var Zodiac = (function () {
      * @param names - The event names to emit.
      * @param args - Arguments for the callback function.
      */
-    _createClass(EventBus, [{
+    return _createClass(EventBus, [{
       key: "emit",
       value: function emit(names) {
         var _this = this;
@@ -353,7 +299,6 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return EventBus;
   }();
 
   /**
@@ -454,7 +399,7 @@ var Zodiac = (function () {
      *
      * @returns The effective options.
      */
-    _createClass(Options, [{
+    return _createClass(Options, [{
       key: "getEffectiveOptions",
       value: function getEffectiveOptions() {
         return this.effectiveOptions;
@@ -507,7 +452,6 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return Options;
   }();
 
   /**
@@ -526,7 +470,7 @@ var Zodiac = (function () {
     function ComponentBase() {
       _classCallCheck(this, ComponentBase);
     }
-    _createClass(ComponentBase, [{
+    return _createClass(ComponentBase, [{
       key: "mount",
       value:
       /**
@@ -545,13 +489,13 @@ var Zodiac = (function () {
         this.options = this.zodiac.getEffectiveOptions();
       }
     }]);
-    return ComponentBase;
   }();
 
   // The constructor for the `UpdateEffectiveOptions` mixin. The `any` type is
   // required for the mixin's constructor.
   // @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   /**
    * A mixin that rebuilds the options when they are changed.
    *
@@ -559,13 +503,12 @@ var Zodiac = (function () {
    */
   function UpdateEffectiveOptions(Base) {
     return /*#__PURE__*/function (_Base) {
-      _inherits(UpdatingEffectiveOptions, _Base);
-      var _super = _createSuper(UpdatingEffectiveOptions);
       function UpdatingEffectiveOptions() {
         _classCallCheck(this, UpdatingEffectiveOptions);
-        return _super.apply(this, arguments);
+        return _callSuper(this, UpdatingEffectiveOptions, arguments);
       }
-      _createClass(UpdatingEffectiveOptions, [{
+      _inherits(UpdatingEffectiveOptions, _Base);
+      return _createClass(UpdatingEffectiveOptions, [{
         key: "mount",
         value: function mount(zodiac) {
           var _this = this;
@@ -577,7 +520,6 @@ var Zodiac = (function () {
           });
         }
       }]);
-      return UpdatingEffectiveOptions;
     }(Base);
   }
 
@@ -588,7 +530,7 @@ var Zodiac = (function () {
     function Utilities() {
       _classCallCheck(this, Utilities);
     }
-    _createClass(Utilities, null, [{
+    return _createClass(Utilities, null, [{
       key: "range",
       value:
       /**
@@ -606,7 +548,6 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return Utilities;
   }();
   /**
    * CSS selectors for focusable elements.
@@ -626,13 +567,12 @@ var Zodiac = (function () {
    *   For a description of what qualifies as a "focusable" element.
    */
   var Autoplay = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(Autoplay, _ComponentBase);
-    var _super = _createSuper(Autoplay);
     function Autoplay() {
       _classCallCheck(this, Autoplay);
-      return _super.apply(this, arguments);
+      return _callSuper(this, Autoplay, arguments);
     }
-    _createClass(Autoplay, [{
+    _inherits(Autoplay, _ComponentBase);
+    return _createClass(Autoplay, [{
       key: "mount",
       value:
       /**
@@ -761,20 +701,18 @@ var Zodiac = (function () {
         clearInterval(this.interval);
       }
     }]);
-    return Autoplay;
   }(ComponentBase);
 
   /**
    * Adds UI control capabilities to the slider.
    */
   var Controls = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(Controls, _ComponentBase);
-    var _super = _createSuper(Controls);
     function Controls() {
       _classCallCheck(this, Controls);
-      return _super.apply(this, arguments);
+      return _callSuper(this, Controls, arguments);
     }
-    _createClass(Controls, [{
+    _inherits(Controls, _ComponentBase);
+    return _createClass(Controls, [{
       key: "mount",
       value:
       /**
@@ -821,29 +759,27 @@ var Zodiac = (function () {
         }
       }
     }]);
-    return Controls;
   }(ComponentBase);
 
   /**
    * Keeps the state of each item updated.
    */
   var ItemState = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(ItemState, _ComponentBase);
-    var _super = _createSuper(ItemState);
     function ItemState() {
       var _this;
       _classCallCheck(this, ItemState);
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      _this = _super.call.apply(_super, [this].concat(args));
+      _this = _callSuper(this, ItemState, [].concat(args));
       /**
        * The class that indicates an item is active.
        */
-      _defineProperty(_assertThisInitialized(_this), "activeClass", 'active');
+      _defineProperty(_this, "activeClass", 'active');
       return _this;
     }
-    _createClass(ItemState, [{
+    _inherits(ItemState, _ComponentBase);
+    return _createClass(ItemState, [{
       key: "mount",
       value:
       /**
@@ -970,20 +906,18 @@ var Zodiac = (function () {
         }
       }
     }]);
-    return ItemState;
   }(ComponentBase);
 
   /**
    * Adds a live region, so the slide position can be announced to screen readers.
    */
   var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(LiveRegion, _ComponentBase);
-    var _super = _createSuper(LiveRegion);
     function LiveRegion() {
       _classCallCheck(this, LiveRegion);
-      return _super.apply(this, arguments);
+      return _callSuper(this, LiveRegion, arguments);
     }
-    _createClass(LiveRegion, [{
+    _inherits(LiveRegion, _ComponentBase);
+    return _createClass(LiveRegion, [{
       key: "mount",
       value:
       /**
@@ -1049,20 +983,18 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return LiveRegion;
   }(ComponentBase);
 
   /**
    * Manipulates the width of the slider track and each slider item.
    */
   var Track = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(Track, _ComponentBase);
-    var _super = _createSuper(Track);
     function Track() {
       _classCallCheck(this, Track);
-      return _super.apply(this, arguments);
+      return _callSuper(this, Track, arguments);
     }
-    _createClass(Track, [{
+    _inherits(Track, _ComponentBase);
+    return _createClass(Track, [{
       key: "mount",
       value:
       /**
@@ -1257,7 +1189,6 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return Track;
   }(ComponentBase);
 
   /**
@@ -1268,62 +1199,61 @@ var Zodiac = (function () {
    * Adds dragging capabilities to the slider (for both mouse & touch inputs).
    */
   var Drag = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(Drag, _ComponentBase);
-    var _super = _createSuper(Drag);
     function Drag() {
       var _this;
       _classCallCheck(this, Drag);
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      _this = _super.call.apply(_super, [this].concat(args));
+      _this = _callSuper(this, Drag, [].concat(args));
       /**
        * The class used to indicate that the slider is being dragged.
        */
-      _defineProperty(_assertThisInitialized(_this), "draggingClass", 'dragging');
+      _defineProperty(_this, "draggingClass", 'dragging');
       /**
        * The value used to track and apply the `translate` CSS while dragging.
        */
-      _defineProperty(_assertThisInitialized(_this), "dragPosition", 0);
+      _defineProperty(_this, "dragPosition", 0);
       /**
        * The `AbortController` for the `this.move()` method.
        */
-      _defineProperty(_assertThisInitialized(_this), "moveController", null);
+      _defineProperty(_this, "moveController", null);
       /**
        * Events that move the slider when dragging.
        */
-      _defineProperty(_assertThisInitialized(_this), "moveEventKeys", ['mousemove', 'touchmove']);
+      _defineProperty(_this, "moveEventKeys", ['mousemove', 'touchmove']);
       /**
        * A flag used to determine whether the clicking of links is disallowed.
        */
-      _defineProperty(_assertThisInitialized(_this), "preventClick", false);
+      _defineProperty(_this, "preventClick", false);
       /**
        * The position that will be given to `Zodiac` after the dragging has stopped.
        */
-      _defineProperty(_assertThisInitialized(_this), "snapPosition", 0);
+      _defineProperty(_this, "snapPosition", 0);
       /**
        * Events that signal when dragging should begin.
        */
-      _defineProperty(_assertThisInitialized(_this), "startEventKeys", ['mousedown', 'touchstart']);
+      _defineProperty(_this, "startEventKeys", ['mousedown', 'touchstart']);
       /**
        * The position of the event dispatcher at the start of the dragging process.
        */
-      _defineProperty(_assertThisInitialized(_this), "startingEventPosition", 0);
+      _defineProperty(_this, "startingEventPosition", 0);
       /**
        * The `AbortController` for the `this.stop()` method.
        */
-      _defineProperty(_assertThisInitialized(_this), "stopController", null);
+      _defineProperty(_this, "stopController", null);
       /**
        * Events that signal when dragging should end.
        */
-      _defineProperty(_assertThisInitialized(_this), "stopEventKeys", ['mouseup', 'mouseleave', 'touchend', 'touchcancel']);
+      _defineProperty(_this, "stopEventKeys", ['mouseup', 'mouseleave', 'touchend', 'touchcancel']);
       /**
        * How far the slider must be dragged before moving begins.
        */
-      _defineProperty(_assertThisInitialized(_this), "threshold", 20);
+      _defineProperty(_this, "threshold", 20);
       return _this;
     }
-    _createClass(Drag, [{
+    _inherits(Drag, _ComponentBase);
+    return _createClass(Drag, [{
       key: "mount",
       value:
       /**
@@ -1611,7 +1541,6 @@ var Zodiac = (function () {
         this.zodiac.getEventBus().emit(['drag.after']);
       }
     }]);
-    return Drag;
   }(ComponentBase);
 
   /**
@@ -1700,7 +1629,7 @@ var Zodiac = (function () {
      *
      * @returns The cloned offset value.
      */
-    _createClass(Zodiac, [{
+    return _createClass(Zodiac, [{
       key: "getClonedOffset",
       value: function getClonedOffset() {
         if (this.clonedOffset === undefined) {
@@ -1983,7 +1912,6 @@ var Zodiac = (function () {
         });
       }
     }]);
-    return Zodiac;
   }();
 
   return Zodiac;
