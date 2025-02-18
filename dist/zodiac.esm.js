@@ -173,6 +173,12 @@ function _superPropBase(t, o) {
   for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t)););
   return t;
 }
+function _superPropGet(t, o, e, r) {
+  var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e);
+  return 2 & r && "function" == typeof p ? function (t) {
+    return p.apply(e, t);
+  } : p;
+}
 function _toConsumableArray(r) {
   return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
 }
@@ -509,7 +515,7 @@ function UpdateEffectiveOptions(Base) {
       key: "mount",
       value: function mount(zodiac) {
         var _this = this;
-        _get(_getPrototypeOf(UpdatingEffectiveOptions.prototype), "mount", this).call(this, zodiac);
+        _superPropGet(UpdatingEffectiveOptions, "mount", this, 3)([zodiac]);
         this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], function () {
           _this.zodiac.getEventBus().emit(['updateEffectiveOptions.before']);
           _this.options = _this.zodiac.getEffectiveOptions();
@@ -585,7 +591,7 @@ var Autoplay = /*#__PURE__*/function (_ComponentBase) {
      */
     function mount(zodiac) {
       var _this = this;
-      _get(_getPrototypeOf(Autoplay.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(Autoplay, "mount", this, 3)([zodiac]);
       this.abortController = new AbortController();
       this.start();
       this.pauseOnDrag();
@@ -716,7 +722,7 @@ var Controls = /*#__PURE__*/function (_ComponentBase) {
      * {@inheritDoc ComponentBase.mount}
      */
     function mount(zodiac) {
-      _get(_getPrototypeOf(Controls.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(Controls, "mount", this, 3)([zodiac]);
       this.setUpControls();
     }
 
@@ -783,7 +789,7 @@ var ItemState = /*#__PURE__*/function (_ComponentBase) {
      * {@inheritDoc ComponentBase.mount}
      */
     function mount(zodiac) {
-      _get(_getPrototypeOf(ItemState.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(ItemState, "mount", this, 3)([zodiac]);
       this.setActiveClass();
       this.setAccessibilityAttributes();
       this.setInitialItemState();
@@ -925,7 +931,7 @@ var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
      * {@inheritDoc ComponentBase.mount}
      */
     function mount(zodiac) {
-      _get(_getPrototypeOf(LiveRegion.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(LiveRegion, "mount", this, 3)([zodiac]);
       if (this.options.enableLiveRegion) {
         this.createLiveRegion();
         this.updateLiveRegion();
@@ -998,7 +1004,7 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
      * {@inheritDoc ComponentBase.mount}
      */
     function mount(zodiac) {
-      _get(_getPrototypeOf(Track.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(Track, "mount", this, 3)([zodiac]);
       this.setItemWidth();
       if (this.options.infiniteScrolling) {
         this.cloneSliderItems();
@@ -1257,7 +1263,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
      * {@inheritDoc ComponentBase.mount}
      */
     function mount(zodiac) {
-      _get(_getPrototypeOf(Drag.prototype), "mount", this).call(this, zodiac);
+      _superPropGet(Drag, "mount", this, 3)([zodiac]);
       this.addStartEvents();
       this.onDragEvents();
       this.preventDefaultOnDragStart();
