@@ -1,4 +1,4 @@
-import { EventBus } from '../../src/events/eventBus';
+import { EventBus } from '../../src/eventBus';
 
 let eventBus: EventBus = null;
 

@@ -1,4 +1,4 @@
-import { EventBus } from './events/eventBus';
+import { EventBus } from './eventBus';
 import { Options, OptionsInterface } from './options';
 
 import { ComponentInterface, UpdateEffectiveOptions } from './components/componentBase';

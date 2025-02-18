@@ -3,7 +3,7 @@ import { htmlFixture } from '../fixtures/html';
 
 import Zodiac from '../../src/zodiac';
 import { Options } from '../../src/options';
-import { EventBus } from '../../src/events/eventBus';
+import { EventBus } from '../../src/eventBus';
 
 const defaultSelector = '.zodiac';
 

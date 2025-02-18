@@ -1,4 +1,4 @@
-import { EventBus } from './events/eventBus';
+import { EventBus } from './eventBus';
 
 /**
  * A collection of classes used by the slider to identify specific elements.
