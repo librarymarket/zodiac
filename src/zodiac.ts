@@ -20,7 +20,7 @@ import { Drag } from './components/drag';
 export default class Zodiac {
 
   /**
-   * The number of cloned slider items preceeding the normal slider items.
+   * The number of cloned slider items preceding the normal slider items.
    */
   protected clonedOffset: number;
 
@@ -103,7 +103,7 @@ export default class Zodiac {
   }
 
   /**
-   * Retrives the number of cloned slider items before the normal slider items.
+   * Retrieves the number of cloned slider items before the normal slider items.
    *
    * @returns The cloned offset value.
    */
@@ -314,7 +314,7 @@ export default class Zodiac {
   }
 
   /**
-   * Converts the provided positional value into a pizel value.
+   * Converts the provided positional value into a pixel value.
    *
    * @param position - This position to convert.
    *

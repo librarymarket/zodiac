@@ -96,7 +96,7 @@ export class Track extends ComponentBase {
 
     cloned.querySelectorAll(selector).forEach((element) => {
       // Ensure none of the links nested within the cloned items can
-      // recieve focus.
+      // receive focus.
       element.setAttribute('tabindex', '-1');
     });
 

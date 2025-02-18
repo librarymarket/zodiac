@@ -48,14 +48,14 @@ export abstract class ComponentBase implements ComponentInterface {
 // required for the mixin's constructor.
 // @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type UpdateEffectiveOptionsContructor = new (...args: any[]) => ComponentBase;
+type UpdateEffectiveOptionsConstructor = new (...args: any[]) => ComponentBase;
 
 /**
  * A mixin that rebuilds the options when they are changed.
  *
  * @returns A mixin that rebuilds the effective options.
  */
-export function UpdateEffectiveOptions<TBase extends UpdateEffectiveOptionsContructor>(Base: TBase) {
+export function UpdateEffectiveOptions<TBase extends UpdateEffectiveOptionsConstructor>(Base: TBase) {
   return class UpdatingEffectiveOptions extends Base {
 
     public mount(zodiac: Zodiac): void {

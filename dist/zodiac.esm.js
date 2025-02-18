@@ -952,7 +952,7 @@ var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
     }
 
     /**
-     * Retrieves the title of the ative item that will be used in the live region.
+     * Retrieves the title of the active item that will be used in the live region.
      *
      * The title is expected to be placed in the `data-zodiac-live-region-title`
      * attribute. This can be on a `zodiac-item` element, or within.
@@ -1556,7 +1556,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
  */
 var Zodiac = /*#__PURE__*/function () {
   /**
-   * The number of cloned slider items preceeding the normal slider items.
+   * The number of cloned slider items preceding the normal slider items.
    */
 
   /**
@@ -1628,7 +1628,7 @@ var Zodiac = /*#__PURE__*/function () {
   }
 
   /**
-   * Retrives the number of cloned slider items before the normal slider items.
+   * Retrieves the number of cloned slider items before the normal slider items.
    *
    * @returns The cloned offset value.
    */
@@ -1877,7 +1877,7 @@ var Zodiac = /*#__PURE__*/function () {
     }
 
     /**
-     * Converts the provided positional value into a pizel value.
+     * Converts the provided positional value into a pixel value.
      *
      * @param position - This position to convert.
      *
