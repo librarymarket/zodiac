@@ -321,7 +321,7 @@ export class Drag extends ComponentBase {
     // by the width of a single slide. The value of this calculation is
     // converted to a negative number to animate the slider since it will
     // eventually be passed into `translate3d`.
-    this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
+    this.dragPosition = -((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
 
     this.snapPosition = this.getSnapPosition(this.dragPosition);
 

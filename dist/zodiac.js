@@ -1087,7 +1087,7 @@ var Zodiac = (function () {
         var selector = Utilities.focusableSelectors.join(', ');
         cloned.querySelectorAll(selector).forEach(function (element) {
           // Ensure none of the links nested within the cloned items can
-          // recieve focus.
+          // receive focus.
           element.setAttribute('tabindex', '-1');
         });
         return cloned;
@@ -1524,7 +1524,7 @@ var Zodiac = (function () {
         // by the width of a single slide. The value of this calculation is
         // converted to a negative number to animate the slider since it will
         // eventually be passed into `translate3d`.
-        this.dragPosition = -Math.abs((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
+        this.dragPosition = -((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
         this.snapPosition = this.getSnapPosition(this.dragPosition);
 
         // Determine the position of the event dispatcher by subtracting the event
