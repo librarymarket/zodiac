@@ -18,10 +18,10 @@
   "author": "jeremyljackson",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.28.6",
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.5",
-    "@babel/preset-typescript": "^7.28.5",
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@rollup/plugin-babel": "^6.1.0",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-node-resolve": "^15.3.1",
@@ -35,10 +35,10 @@
     "jest-environment-jsdom": "^30.4.1",
     "nodemon": "^3.1.14",
     "rollup": "^3.30.0",
-    "sass": "^1.99.0",
+    "sass": "^1.101.0",
     "stylelint": "^15.11.0",
     "stylelint-config-twbs-bootstrap": "^11.0.1",
-    "ts-jest": "^29.4.9",
+    "ts-jest": "^29.4.11",
     "typescript": "^5.9.3"
   }
 }
