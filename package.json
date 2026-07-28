@@ -3,6 +3,9 @@
   "version": "1.0.2",
   "description": "A carousel written in TypeScript.",
   "type": "module",
+  "engines": {
+    "node": "^22 || ^24"
+  },
   "scripts": {
     "build": "npm run build:css && npm run build:js",
     "build:css": "sass --style expanded --no-error-css src/assets/scss/zodiac.scss dist/css/zodiac.css",
