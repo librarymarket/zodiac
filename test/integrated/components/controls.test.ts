@@ -31,7 +31,7 @@ describe('Controls', () => {
     test('should not throw error if there are no controls', () => {
       document.body.innerHTML = htmlFixtureNoControls;
 
-      expect(() => new Zodiac('.zodiac').mount()).not.toThrowError(TypeError);
+      expect(() => new Zodiac('.zodiac').mount()).not.toThrow(TypeError);
     });
   });
 });

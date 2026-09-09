@@ -1,209 +1,3 @@
-function _arrayLikeToArray(r, a) {
-  (null == a || a > r.length) && (a = r.length);
-  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
-  return n;
-}
-function _arrayWithHoles(r) {
-  if (Array.isArray(r)) return r;
-}
-function _arrayWithoutHoles(r) {
-  if (Array.isArray(r)) return _arrayLikeToArray(r);
-}
-function _assertThisInitialized(e) {
-  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  return e;
-}
-function _callSuper(t, o, e) {
-  return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
-}
-function _classCallCheck(a, n) {
-  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties(e, r) {
-  for (var t = 0; t < r.length; t++) {
-    var o = r[t];
-    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
-  }
-}
-function _createClass(e, r, t) {
-  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
-    writable: !1
-  }), e;
-}
-function _createForOfIteratorHelper(r, e) {
-  var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-  if (!t) {
-    if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) {
-      t && (r = t);
-      var n = 0,
-        F = function () {};
-      return {
-        s: F,
-        n: function () {
-          return n >= r.length ? {
-            done: !0
-          } : {
-            done: !1,
-            value: r[n++]
-          };
-        },
-        e: function (r) {
-          throw r;
-        },
-        f: F
-      };
-    }
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  var o,
-    a = !0,
-    u = !1;
-  return {
-    s: function () {
-      t = t.call(r);
-    },
-    n: function () {
-      var r = t.next();
-      return a = r.done, r;
-    },
-    e: function (r) {
-      u = !0, o = r;
-    },
-    f: function () {
-      try {
-        a || null == t.return || t.return();
-      } finally {
-        if (u) throw o;
-      }
-    }
-  };
-}
-function _defineProperty(e, r, t) {
-  return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: !0,
-    configurable: !0,
-    writable: !0
-  }) : e[r] = t, e;
-}
-function _get() {
-  return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) {
-    var p = _superPropBase(e, t);
-    if (p) {
-      var n = Object.getOwnPropertyDescriptor(p, t);
-      return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value;
-    }
-  }, _get.apply(null, arguments);
-}
-function _getPrototypeOf(t) {
-  return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
-    return t.__proto__ || Object.getPrototypeOf(t);
-  }, _getPrototypeOf(t);
-}
-function _inherits(t, e) {
-  if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
-  t.prototype = Object.create(e && e.prototype, {
-    constructor: {
-      value: t,
-      writable: !0,
-      configurable: !0
-    }
-  }), Object.defineProperty(t, "prototype", {
-    writable: !1
-  }), e && _setPrototypeOf(t, e);
-}
-function _isNativeReflectConstruct() {
-  try {
-    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-  } catch (t) {}
-  return (_isNativeReflectConstruct = function () {
-    return !!t;
-  })();
-}
-function _iterableToArray(r) {
-  if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
-}
-function _iterableToArrayLimit(r, l) {
-  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-  if (null != t) {
-    var e,
-      n,
-      i,
-      u,
-      a = [],
-      f = !0,
-      o = !1;
-    try {
-      if (i = (t = t.call(r)).next, 0 === l) {
-        if (Object(t) !== t) return;
-        f = !1;
-      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
-    } catch (r) {
-      o = !0, n = r;
-    } finally {
-      try {
-        if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
-      } finally {
-        if (o) throw n;
-      }
-    }
-    return a;
-  }
-}
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _possibleConstructorReturn(t, e) {
-  if (e && ("object" == typeof e || "function" == typeof e)) return e;
-  if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
-  return _assertThisInitialized(t);
-}
-function _setPrototypeOf(t, e) {
-  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
-    return t.__proto__ = e, t;
-  }, _setPrototypeOf(t, e);
-}
-function _slicedToArray(r, e) {
-  return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
-}
-function _superPropBase(t, o) {
-  for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t)););
-  return t;
-}
-function _superPropGet(t, o, e, r) {
-  var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e);
-  return 2 & r && "function" == typeof p ? function (t) {
-    return p.apply(e, t);
-  } : p;
-}
-function _toConsumableArray(r) {
-  return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
-}
-function _toPrimitive(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-function _toPropertyKey(t) {
-  var i = _toPrimitive(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _unsupportedIterableToArray(r, a) {
-  if (r) {
-    if ("string" == typeof r) return _arrayLikeToArray(r, a);
-    var t = {}.toString.call(r).slice(8, -1);
-    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
-  }
-}
-
 /**
  * Defines a zodiac slider event.
  */
@@ -211,13 +5,12 @@ function _unsupportedIterableToArray(r, a) {
 /**
  * Provides an event bus for tracking slider related events.
  */
-var EventBus = /*#__PURE__*/function () {
+class EventBus {
   /**
    * A list of subscribed events.
    */
 
-  function EventBus() {
-    _classCallCheck(this, EventBus);
+  constructor() {
     this.events = [];
   }
 
@@ -227,82 +20,49 @@ var EventBus = /*#__PURE__*/function () {
    * @param names - The event names to emit.
    * @param args - Arguments for the callback function.
    */
-  return _createClass(EventBus, [{
-    key: "emit",
-    value: function emit(names) {
-      var _this = this;
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-      names.forEach(function (name) {
-        _this.filterByName(name).forEach(function (event) {
-          event.callback.apply(event, args);
-        });
+  emit(names, ...args) {
+    names.forEach(name => {
+      this.filterByName(name).forEach(event => {
+        event.callback(...args);
       });
-    }
+    });
+  }
 
-    /**
-     * Unsubscribes event(s) by name(s).
-     *
-     * @param names - A list of event names to unsubscribe.
-     */
-  }, {
-    key: "off",
-    value: function off(names) {
-      var _this2 = this;
-      var _iterator = _createForOfIteratorHelper(names),
-        _step;
-      try {
-        var _loop = function _loop() {
-          var name = _step.value;
-          _this2.events = _this2.events.filter(function (event) {
-            return event.name !== name;
-          });
-        };
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          _loop();
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
+  /**
+   * Unsubscribes event(s) by name(s).
+   *
+   * @param names - A list of event names to unsubscribe.
+   */
+  off(names) {
+    for (const name of names) {
+      this.events = this.events.filter(event => event.name !== name);
     }
+  }
 
-    /**
-     * Subscribes an event with a callback function.
-     *
-     * @param names - A list of event names to subscribe to.
-     * @param callback - A callback function to run on the events.
-     */
-  }, {
-    key: "on",
-    value: function on(names, callback) {
-      var _this3 = this;
-      names.forEach(function (name) {
-        return _this3.events.push({
-          name: name,
-          callback: callback
-        });
-      });
-    }
+  /**
+   * Subscribes an event with a callback function.
+   *
+   * @param names - A list of event names to subscribe to.
+   * @param callback - A callback function to run on the events.
+   */
+  on(names, callback) {
+    names.forEach(name => this.events.push({
+      name,
+      callback
+    }));
+  }
 
-    /**
-     * Filter events by name.
-     *
-     * @param name - The name to filter by.
-     *
-     * @returns The result event set.
-     */
-  }, {
-    key: "filterByName",
-    value: function filterByName(name) {
-      return this.events.filter(function (event) {
-        return event.name === name;
-      });
-    }
-  }]);
-}();
+  /**
+   * Filter events by name.
+   *
+   * @param name - The name to filter by.
+   *
+   * @returns The result event set.
+   */
+  filterByName(name) {
+    return this.events.filter(event => event.name === name);
+  }
+}
 
 /**
  * A collection of classes used by the slider to identify specific elements.
@@ -325,7 +85,47 @@ var EventBus = /*#__PURE__*/function () {
 /**
  * An object used to configure the slider.
  */
-var Options = /*#__PURE__*/function () {
+class Options {
+  /**
+   * The base options unrestricted by any media query.
+   */
+  baseOptions = {
+    autoplay: true,
+    autoplaySpeed: 5000,
+    classes: {
+      inner: 'zodiac-inner',
+      items: 'zodiac-item',
+      track: 'zodiac-track'
+    },
+    enableLiveRegion: true,
+    gap: 8,
+    infiniteScrolling: true,
+    itemsPerView: 5,
+    liveRegionText: 'Slide @position of @total @title',
+    pauseOnHover: true,
+    transitionSpeed: 500
+  };
+
+  /**
+   * The active options based on the computed media queries.
+   */
+
+  /**
+   * The event bus.
+   *
+   * The event bus is used to notify when a media query has changed.
+   */
+
+  /**
+   * The media queries configured with options.
+   */
+  mediaQueryLists = [];
+
+  /**
+   * A collection of options applied at the specific media query.
+   */
+  mediaQueryOptions = {};
+
   /**
    * Constructs a slider option set.
    *
@@ -338,37 +138,7 @@ var Options = /*#__PURE__*/function () {
    * @param eventBus - The event bus.
    * @param options - The user supplied options.
    */
-  function Options(eventBus) {
-    var _this = this;
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    _classCallCheck(this, Options);
-    /**
-     * The base options unrestricted by any media query.
-     */
-    _defineProperty(this, "baseOptions", {
-      autoplay: true,
-      autoplaySpeed: 5000,
-      classes: {
-        inner: 'zodiac-inner',
-        items: 'zodiac-item',
-        track: 'zodiac-track'
-      },
-      enableLiveRegion: true,
-      gap: 8,
-      infiniteScrolling: true,
-      itemsPerView: 5,
-      liveRegionText: 'Slide @position of @total @title',
-      pauseOnHover: true,
-      transitionSpeed: 500
-    });
-    /**
-     * The media queries configured with options.
-     */
-    _defineProperty(this, "mediaQueryLists", []);
-    /**
-     * A collection of options applied at the specific media query.
-     */
-    _defineProperty(this, "mediaQueryOptions", {});
+  constructor(eventBus, options = {}) {
     this.eventBus = eventBus;
 
     // Override the default base options with those provided by the user.
@@ -376,20 +146,17 @@ var Options = /*#__PURE__*/function () {
 
     // Check if any media query options were provided.
     if (options.mediaQueryOptions) {
-      var mediaQueryOptions = options.mediaQueryOptions;
-      for (var _i = 0, _Object$entries = Object.entries(mediaQueryOptions); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-          mediaQuery = _Object$entries$_i[0],
-          mediaQueryOptionSet = _Object$entries$_i[1];
+      const mediaQueryOptions = options.mediaQueryOptions;
+      for (const [mediaQuery, mediaQueryOptionSet] of Object.entries(mediaQueryOptions)) {
         if (mediaQueryOptionSet) {
-          var mediaQueryList = matchMedia(mediaQuery);
+          const mediaQueryList = matchMedia(mediaQuery);
           this.validateMediaQueryOptions(mediaQueryOptionSet);
           this.mediaQueryLists.push({
-            mediaQueryList: mediaQueryList,
+            mediaQueryList,
             options: mediaQueryOptionSet
           });
-          mediaQueryList.addEventListener('change', function () {
-            _this.rebuildEffectiveOptions();
+          mediaQueryList.addEventListener('change', () => {
+            this.rebuildEffectiveOptions();
           });
         }
       }
@@ -402,60 +169,44 @@ var Options = /*#__PURE__*/function () {
    *
    * @returns The effective options.
    */
-  return _createClass(Options, [{
-    key: "getEffectiveOptions",
-    value: function getEffectiveOptions() {
-      return this.effectiveOptions;
-    }
+  getEffectiveOptions() {
+    return this.effectiveOptions;
+  }
 
-    /**
-     * Rebuilds the effective options.
-     *
-     * If there are any matching media query options, they will override the base
-     * options.
-     */
-  }, {
-    key: "rebuildEffectiveOptions",
-    value: function rebuildEffectiveOptions() {
-      this.eventBus.emit(['rebuildEffectiveOptions.before']);
-      var effectiveOptions = Object.assign({}, this.baseOptions);
-      var _iterator = _createForOfIteratorHelper(this.mediaQueryLists),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var list = _step.value;
-          if (list.mediaQueryList.matches) {
-            Object.assign(effectiveOptions, list.options);
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
+  /**
+   * Rebuilds the effective options.
+   *
+   * If there are any matching media query options, they will override the base
+   * options.
+   */
+  rebuildEffectiveOptions() {
+    this.eventBus.emit(['rebuildEffectiveOptions.before']);
+    const effectiveOptions = Object.assign({}, this.baseOptions);
+    for (const list of this.mediaQueryLists) {
+      if (list.mediaQueryList.matches) {
+        Object.assign(effectiveOptions, list.options);
       }
-      this.effectiveOptions = Object.freeze(effectiveOptions);
-      this.eventBus.emit(['rebuildEffectiveOptions.after']);
     }
+    this.effectiveOptions = Object.freeze(effectiveOptions);
+    this.eventBus.emit(['rebuildEffectiveOptions.after']);
+  }
 
-    /**
-     * Checks the media query options for invalid properties.
-     *
-     * @throws {@link TypeError}
-     * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
-     * options are found in the `mediaQueryOptions`.
-     */
-  }, {
-    key: "validateMediaQueryOptions",
-    value: function validateMediaQueryOptions(options) {
-      var invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText'];
-      invalidOptions.forEach(function (invalidOption) {
-        if (Object.hasOwnProperty.call(options, invalidOption)) {
-          throw new TypeError("The ".concat(invalidOption, " property can only be set once."));
-        }
-      });
-    }
-  }]);
-}();
+  /**
+   * Checks the media query options for invalid properties.
+   *
+   * @throws {@link TypeError}
+   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
+   * options are found in the `mediaQueryOptions`.
+   */
+  validateMediaQueryOptions(options) {
+    const invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText'];
+    invalidOptions.forEach(invalidOption => {
+      if (Object.hasOwnProperty.call(options, invalidOption)) {
+        throw new TypeError(`The ${invalidOption} property can only be set once.`);
+      }
+    });
+  }
+}
 
 /**
  * Defines the structure of a component.
@@ -469,30 +220,23 @@ var Options = /*#__PURE__*/function () {
  * A base implementation of ComponentInterface.
  * @api
  */
-var ComponentBase = /*#__PURE__*/function () {
-  function ComponentBase() {
-    _classCallCheck(this, ComponentBase);
+class ComponentBase {
+  /**
+   * The slider's options.
+   */
+
+  /**
+   * The slider instance.
+   */
+
+  /**
+   * {@inheritDoc ComponentInterface.mount}
+   */
+  mount(zodiac) {
+    this.zodiac = zodiac;
+    this.options = this.zodiac.getEffectiveOptions();
   }
-  return _createClass(ComponentBase, [{
-    key: "mount",
-    value:
-    /**
-     * The slider's options.
-     */
-
-    /**
-     * The slider instance.
-     */
-
-    /**
-     * {@inheritDoc ComponentInterface.mount}
-     */
-    function mount(zodiac) {
-      this.zodiac = zodiac;
-      this.options = this.zodiac.getEffectiveOptions();
-    }
-  }]);
-}();
+}
 
 // The constructor for the `UpdateEffectiveOptions` mixin. The `any` type is
 // required for the mixin's constructor.
@@ -505,57 +249,39 @@ var ComponentBase = /*#__PURE__*/function () {
  * @returns A mixin that rebuilds the effective options.
  */
 function UpdateEffectiveOptions(Base) {
-  return /*#__PURE__*/function (_Base) {
-    function UpdatingEffectiveOptions() {
-      _classCallCheck(this, UpdatingEffectiveOptions);
-      return _callSuper(this, UpdatingEffectiveOptions, arguments);
+  return class UpdatingEffectiveOptions extends Base {
+    mount(zodiac) {
+      super.mount(zodiac);
+      this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], () => {
+        this.zodiac.getEventBus().emit(['updateEffectiveOptions.before']);
+        this.options = this.zodiac.getEffectiveOptions();
+        this.zodiac.getEventBus().emit(['updateEffectiveOptions.after']);
+      });
     }
-    _inherits(UpdatingEffectiveOptions, _Base);
-    return _createClass(UpdatingEffectiveOptions, [{
-      key: "mount",
-      value: function mount(zodiac) {
-        var _this = this;
-        _superPropGet(UpdatingEffectiveOptions, "mount", this, 3)([zodiac]);
-        this.zodiac.getEventBus().on(['rebuildEffectiveOptions.after'], function () {
-          _this.zodiac.getEventBus().emit(['updateEffectiveOptions.before']);
-          _this.options = _this.zodiac.getEffectiveOptions();
-          _this.zodiac.getEventBus().emit(['updateEffectiveOptions.after']);
-        });
-      }
-    }]);
-  }(Base);
+  };
 }
 
 /**
  * A collection of static helper methods.
  */
-var Utilities = /*#__PURE__*/function () {
-  function Utilities() {
-    _classCallCheck(this, Utilities);
+class Utilities {
+  /**
+   * CSS selectors for focusable elements.
+   */
+  static focusableSelectors = ['* a', '* area', '* input', '* select', '* textarea', '* button', '* iframe', '* object', '* embed', '* *[tabindex]', '* *[contenteditable]'];
+
+  /**
+   * Generates an array of numbers starting at a given position.
+   *
+   * @param size - The size of the array to generate.
+   * @param startAt - The position to start at.
+   *
+   * @returns The generated array.
+   */
+  static range(size, startAt = 0) {
+    return [...Array(size).keys()].map(index => index + startAt);
   }
-  return _createClass(Utilities, null, [{
-    key: "range",
-    value:
-    /**
-     * Generates an array of numbers starting at a given position.
-     *
-     * @param size - The size of the array to generate.
-     * @param startAt - The position to start at.
-     *
-     * @returns The generated array.
-     */
-    function range(size) {
-      var startAt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      return _toConsumableArray(Array(size).keys()).map(function (index) {
-        return index + startAt;
-      });
-    }
-  }]);
-}();
-/**
- * CSS selectors for focusable elements.
- */
-_defineProperty(Utilities, "focusableSelectors", ['* a', '* area', '* input', '* select', '* textarea', '* button', '* iframe', '* object', '* embed', '* *[tabindex]', '* *[contenteditable]']);
+}
 
 /**
  * Adds autoplay capabilities to the slider.
@@ -569,630 +295,516 @@ _defineProperty(Utilities, "focusableSelectors", ['* a', '* area', '* input', '*
  * @see Utilities.focusableSelectors
  *   For a description of what qualifies as a "focusable" element.
  */
-var Autoplay = /*#__PURE__*/function (_ComponentBase) {
-  function Autoplay() {
-    _classCallCheck(this, Autoplay);
-    return _callSuper(this, Autoplay, arguments);
-  }
-  _inherits(Autoplay, _ComponentBase);
-  return _createClass(Autoplay, [{
-    key: "mount",
-    value:
-    /**
-     * The autoplay interval ID.
-     */
+class Autoplay extends ComponentBase {
+  /**
+   * The autoplay interval ID.
+   */
 
-    /**
-     * An `AbortController` for resetting the mouse events in `this.pauseOnHover()`.
-     */
+  /**
+   * An `AbortController` for resetting the mouse events in `this.pauseOnHover()`.
+   */
 
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      var _this = this;
-      _superPropGet(Autoplay, "mount", this, 3)([zodiac]);
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    this.abortController = new AbortController();
+    this.start();
+    this.pauseOnDrag();
+    this.pauseOnFocus();
+    this.pauseOnHover();
+
+    // Reconfigure autoplay and pause on hover configuration when the options
+    // are rebuilt.
+    this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
+      this.abortController.abort();
       this.abortController = new AbortController();
+      this.stop();
       this.start();
-      this.pauseOnDrag();
-      this.pauseOnFocus();
       this.pauseOnHover();
+    });
+  }
 
-      // Reconfigure autoplay and pause on hover configuration when the options
-      // are rebuilt.
-      this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
-        _this.abortController.abort();
-        _this.abortController = new AbortController();
-        _this.stop();
-        _this.start();
-        _this.pauseOnHover();
-      });
+  /**
+   * Pauses the slider's auto-rotation when the slider is being dragged.
+   */
+  pauseOnDrag() {
+    this.zodiac.getEventBus().on(['drag.before'], () => {
+      this.stop();
+    });
+    this.zodiac.getEventBus().on(['drag.after'], () => {
+      this.start();
+    });
+  }
+
+  /**
+   * Pauses the slider's auto-rotation when any focusable element is focused.
+   */
+  pauseOnFocus() {
+    const focusableSelectors = Utilities.focusableSelectors.join(', ');
+    const focusable = this.zodiac.getSliderElement().querySelectorAll(focusableSelectors);
+    focusable.forEach(element => {
+      element.addEventListener('focusin', () => this.stop());
+      element.addEventListener('focusout', () => this.start());
+    });
+  }
+
+  /**
+   * Pauses the slider's auto-rotation on hover (if applicable).
+   *
+   * If `pauseOnHover` is true, the slider's auto-rotation will be stopped when
+   * the user's cursor enters the slider element, then resumed when it leaves.
+   */
+  pauseOnHover() {
+    if (!this.options.pauseOnHover) {
+      // This is a no-op method if pause on hover is not enabled.
+      return;
     }
+    const sliderElement = this.zodiac.getSliderElement();
+    sliderElement.addEventListener('mouseenter', () => {
+      this.stop();
+    }, {
+      signal: this.abortController.signal
+    });
+    sliderElement.addEventListener('mouseleave', () => {
+      this.start();
+    }, {
+      signal: this.abortController.signal
+    });
+  }
 
-    /**
-     * Pauses the slider's auto-rotation when the slider is being dragged.
-     */
-  }, {
-    key: "pauseOnDrag",
-    value: function pauseOnDrag() {
-      var _this2 = this;
-      this.zodiac.getEventBus().on(['drag.before'], function () {
-        _this2.stop();
-      });
-      this.zodiac.getEventBus().on(['drag.after'], function () {
-        _this2.start();
-      });
+  /**
+   * Auto-rotates the slider using the configured interval.
+   */
+  start() {
+    const {
+      autoplay,
+      autoplaySpeed
+    } = this.options;
+
+    // Check if autoplay is enabled with a positive interval duration.
+    if (autoplay && autoplaySpeed > 0) {
+      // Prevent multiple autoplay intervals from occurring simultaneously.
+      this.stop();
+
+      // Create an interval to continuously switch to the next item on a delay.
+      this.interval = setInterval(() => {
+        this.zodiac.getEventBus().emit(['autoplay.before']);
+        this.zodiac.next();
+        this.zodiac.getEventBus().emit(['autoplay.after']);
+      }, autoplaySpeed);
     }
+  }
 
-    /**
-     * Pauses the slider's auto-rotation when any focusable element is focused.
-     */
-  }, {
-    key: "pauseOnFocus",
-    value: function pauseOnFocus() {
-      var _this3 = this;
-      var focusableSelectors = Utilities.focusableSelectors.join(', ');
-      var focusable = this.zodiac.getSliderElement().querySelectorAll(focusableSelectors);
-      focusable.forEach(function (element) {
-        element.addEventListener('focusin', function () {
-          return _this3.stop();
-        });
-        element.addEventListener('focusout', function () {
-          return _this3.start();
-        });
-      });
-    }
-
-    /**
-     * Pauses the slider's auto-rotation on hover (if applicable).
-     *
-     * If `pauseOnHover` is true, the slider's auto-rotation will be stopped when
-     * the user's cursor enters the slider element, then resumed when it leaves.
-     */
-  }, {
-    key: "pauseOnHover",
-    value: function pauseOnHover() {
-      var _this4 = this;
-      if (!this.options.pauseOnHover) {
-        // This is a no-op method if pause on hover is not enabled.
-        return;
-      }
-      var sliderElement = this.zodiac.getSliderElement();
-      sliderElement.addEventListener('mouseenter', function () {
-        _this4.stop();
-      }, {
-        signal: this.abortController.signal
-      });
-      sliderElement.addEventListener('mouseleave', function () {
-        _this4.start();
-      }, {
-        signal: this.abortController.signal
-      });
-    }
-
-    /**
-     * Auto-rotates the slider using the configured interval.
-     */
-  }, {
-    key: "start",
-    value: function start() {
-      var _this5 = this;
-      var _this$options = this.options,
-        autoplay = _this$options.autoplay,
-        autoplaySpeed = _this$options.autoplaySpeed;
-
-      // Check if autoplay is enabled with a positive interval duration.
-      if (autoplay && autoplaySpeed > 0) {
-        // Prevent multiple autoplay intervals from occurring simultaneously.
-        this.stop();
-
-        // Create an interval to continuously switch to the next item on a delay.
-        this.interval = setInterval(function () {
-          _this5.zodiac.getEventBus().emit(['autoplay.before']);
-          _this5.zodiac.next();
-          _this5.zodiac.getEventBus().emit(['autoplay.after']);
-        }, autoplaySpeed);
-      }
-    }
-
-    /**
-     * Stops the slider's auto-rotation (if applicable).
-     */
-  }, {
-    key: "stop",
-    value: function stop() {
-      clearInterval(this.interval);
-    }
-  }]);
-}(ComponentBase);
+  /**
+   * Stops the slider's auto-rotation (if applicable).
+   */
+  stop() {
+    clearInterval(this.interval);
+  }
+}
 
 /**
  * Adds UI control capabilities to the slider.
  */
-var Controls = /*#__PURE__*/function (_ComponentBase) {
-  function Controls() {
-    _classCallCheck(this, Controls);
-    return _callSuper(this, Controls, arguments);
+class Controls extends ComponentBase {
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    this.setUpControls();
   }
-  _inherits(Controls, _ComponentBase);
-  return _createClass(Controls, [{
-    key: "mount",
-    value:
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      _superPropGet(Controls, "mount", this, 3)([zodiac]);
-      this.setUpControls();
-    }
 
-    /**
-     * Attaches navigation buttons to the next & previous slider controls.
-     */
-  }, {
-    key: "setUpControls",
-    value: function setUpControls() {
-      var _this = this;
-      // Create a flag that will disable control movement, if the slider is
-      // transitioning.
-      var allowMove = true;
-      var eventBus = this.zodiac.getEventBus();
-      eventBus.on(['transitionDuration.before'], function () {
-        return allowMove = false;
+  /**
+   * Attaches navigation buttons to the next & previous slider controls.
+   */
+  setUpControls() {
+    // Create a flag that will disable control movement, if the slider is
+    // transitioning.
+    let allowMove = true;
+    const eventBus = this.zodiac.getEventBus();
+    eventBus.on(['transitionDuration.before'], () => allowMove = false);
+    eventBus.on(['transitionDuration.after'], () => allowMove = true);
+    const sliderElement = this.zodiac.getSliderElement();
+    const nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (allowMove) {
+          this.zodiac.next();
+        }
       });
-      eventBus.on(['transitionDuration.after'], function () {
-        return allowMove = true;
-      });
-      var sliderElement = this.zodiac.getSliderElement();
-      var nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
-      if (nextBtn) {
-        nextBtn.addEventListener('click', function () {
-          if (allowMove) {
-            _this.zodiac.next();
-          }
-        });
-      }
-      var prevBtn = sliderElement.querySelector('[data-zodiac-direction="left"]');
-      if (prevBtn) {
-        prevBtn.addEventListener('click', function () {
-          if (allowMove) {
-            _this.zodiac.previous();
-          }
-        });
-      }
     }
-  }]);
-}(ComponentBase);
+    const prevBtn = sliderElement.querySelector('[data-zodiac-direction="left"]');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (allowMove) {
+          this.zodiac.previous();
+        }
+      });
+    }
+  }
+}
 
 /**
  * Keeps the state of each item updated.
  */
-var ItemState = /*#__PURE__*/function (_ComponentBase) {
-  function ItemState() {
-    var _this;
-    _classCallCheck(this, ItemState);
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    _this = _callSuper(this, ItemState, [].concat(args));
-    /**
-     * The class that indicates an item is active.
-     */
-    _defineProperty(_this, "activeClass", 'active');
-    return _this;
+class ItemState extends ComponentBase {
+  /**
+   * The class that indicates an item is active.
+   */
+  activeClass = 'active';
+
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    this.setActiveClass();
+    this.setAccessibilityAttributes();
+    this.setInitialItemState();
+    this.adjustItemStateOnMove();
   }
-  _inherits(ItemState, _ComponentBase);
-  return _createClass(ItemState, [{
-    key: "mount",
-    value:
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      _superPropGet(ItemState, "mount", this, 3)([zodiac]);
+
+  /**
+   * Adds the active class to an item.
+   *
+   * @param item - The element to apply the active class to.
+   */
+  addActiveClassToItem(item) {
+    item.classList.add(this.activeClass);
+  }
+
+  /**
+   * Adjusts each item's state by listening to slider events.
+   */
+  adjustItemStateOnMove() {
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
       this.setActiveClass();
       this.setAccessibilityAttributes();
-      this.setInitialItemState();
-      this.adjustItemStateOnMove();
-    }
+    });
+  }
 
-    /**
-     * Adds the active class to an item.
-     *
-     * @param item - The element to apply the active class to.
-     */
-  }, {
-    key: "addActiveClassToItem",
-    value: function addActiveClassToItem(item) {
-      item.classList.add(this.activeClass);
-    }
+  /**
+   * Removes the active class from each item in the slider.
+   */
+  removeActiveClass() {
+    this.zodiac.getItems().forEach(item => item.classList.remove(this.activeClass));
+  }
 
-    /**
-     * Adjusts each item's state by listening to slider events.
-     */
-  }, {
-    key: "adjustItemStateOnMove",
-    value: function adjustItemStateOnMove() {
-      var _this2 = this;
-      this.zodiac.getEventBus().on(['move.after', 'drag.after'], function () {
-        _this2.setActiveClass();
-        _this2.setAccessibilityAttributes();
+  /**
+   * Applies the appropriate attributes for accessibility to each item.
+   *
+   * Items that aren't currently visible will be set as hidden (using
+   * `aria-hidden`) and have a negative tab index applied to them.
+   */
+  setAccessibilityAttributes() {
+    const {
+      itemsPerView
+    } = this.options;
+    const position = this.zodiac.getPosition();
+
+    // Compute a range of visible slide positions based on the the number of
+    // items per view and the current position.
+    const visibleRange = Utilities.range(itemsPerView, position);
+    this.zodiac.getItems().forEach((item, index) => {
+      const visible = visibleRange.includes(index);
+
+      // This value must be converted to a string since `setAttribute()`
+      // expects `value` to be a string.
+      const ariaHidden = (!visible).toString();
+      item.setAttribute('aria-hidden', ariaHidden);
+      this.setTabindex(item, visible);
+
+      // Collect a list of focusable items within each slider item.
+      const focusableItems = item.querySelectorAll(Utilities.focusableSelectors.join(', '));
+
+      // Set the tab index for each focusable element within each slider item.
+      focusableItems.forEach(element => {
+        this.setTabindex(element, visible);
       });
+    });
+  }
+
+  /**
+   * Sets the active class on the active item and removes it from the rest.
+   *
+   * There can only be one active item at a time. The active item is tracked by
+   * `Zodiac.getPosition()`.
+   */
+  setActiveClass() {
+    const currentPosition = this.zodiac.getPosition();
+    const activeItem = this.zodiac.getItems().item(currentPosition);
+    this.removeActiveClass();
+    this.addActiveClassToItem(activeItem);
+  }
+
+  /**
+   * Applies an indexing attribute to each item.
+   */
+  setInitialItemState() {
+    this.zodiac.getItems().forEach((item, index) => {
+      item.setAttribute('data-zodiac-item-index', (index + 1).toString());
+    });
+  }
+
+  /**
+   * Sets the tabindex of an element based on whether it is visible.
+   *
+   * @param element - The element to modify.
+   * @param visible - Whether or not the element is active.
+   */
+  setTabindex(element, visible) {
+    if (!visible) {
+      element.setAttribute('tabindex', '-1');
+    } else {
+      element.removeAttribute('tabindex');
     }
-
-    /**
-     * Removes the active class from each item in the slider.
-     */
-  }, {
-    key: "removeActiveClass",
-    value: function removeActiveClass() {
-      var _this3 = this;
-      this.zodiac.getItems().forEach(function (item) {
-        return item.classList.remove(_this3.activeClass);
-      });
-    }
-
-    /**
-     * Applies the appropriate attributes for accessibility to each item.
-     *
-     * Items that aren't currently visible will be set as hidden (using
-     * `aria-hidden`) and have a negative tab index applied to them.
-     */
-  }, {
-    key: "setAccessibilityAttributes",
-    value: function setAccessibilityAttributes() {
-      var _this4 = this;
-      var itemsPerView = this.options.itemsPerView;
-      var position = this.zodiac.getPosition();
-
-      // Compute a range of visible slide positions based on the the number of
-      // items per view and the current position.
-      var visibleRange = Utilities.range(itemsPerView, position);
-      this.zodiac.getItems().forEach(function (item, index) {
-        var visible = visibleRange.includes(index);
-
-        // This value must be converted to a string since `setAttribute()`
-        // expects `value` to be a string.
-        var ariaHidden = (!visible).toString();
-        item.setAttribute('aria-hidden', ariaHidden);
-        _this4.setTabindex(item, visible);
-
-        // Collect a list of focusable items within each slider item.
-        var focusableItems = item.querySelectorAll(Utilities.focusableSelectors.join(', '));
-
-        // Set the tab index for each focusable element within each slider item.
-        focusableItems.forEach(function (element) {
-          _this4.setTabindex(element, visible);
-        });
-      });
-    }
-
-    /**
-     * Sets the active class on the active item and removes it from the rest.
-     *
-     * There can only be one active item at a time. The active item is tracked by
-     * `Zodiac.getPosition()`.
-     */
-  }, {
-    key: "setActiveClass",
-    value: function setActiveClass() {
-      var currentPosition = this.zodiac.getPosition();
-      var activeItem = this.zodiac.getItems().item(currentPosition);
-      this.removeActiveClass();
-      this.addActiveClassToItem(activeItem);
-    }
-
-    /**
-     * Applies an indexing attribute to each item.
-     */
-  }, {
-    key: "setInitialItemState",
-    value: function setInitialItemState() {
-      this.zodiac.getItems().forEach(function (item, index) {
-        item.setAttribute('data-zodiac-item-index', (index + 1).toString());
-      });
-    }
-
-    /**
-     * Sets the tabindex of an element based on whether it is visible.
-     *
-     * @param element - The element to modify.
-     * @param visible - Whether or not the element is active.
-     */
-  }, {
-    key: "setTabindex",
-    value: function setTabindex(element, visible) {
-      if (!visible) {
-        element.setAttribute('tabindex', '-1');
-      } else {
-        element.removeAttribute('tabindex');
-      }
-    }
-  }]);
-}(ComponentBase);
+  }
+}
 
 /**
  * Adds a live region, so the slide position can be announced to screen readers.
  */
-var LiveRegion = /*#__PURE__*/function (_ComponentBase) {
-  function LiveRegion() {
-    _classCallCheck(this, LiveRegion);
-    return _callSuper(this, LiveRegion, arguments);
+class LiveRegion extends ComponentBase {
+  /**
+   * The live region element.
+   */
+
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    if (this.options.enableLiveRegion) {
+      this.createLiveRegion();
+      this.updateLiveRegion();
+    }
   }
-  _inherits(LiveRegion, _ComponentBase);
-  return _createClass(LiveRegion, [{
-    key: "mount",
-    value:
-    /**
-     * The live region element.
-     */
 
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      _superPropGet(LiveRegion, "mount", this, 3)([zodiac]);
-      if (this.options.enableLiveRegion) {
-        this.createLiveRegion();
-        this.updateLiveRegion();
-      }
-    }
+  /**
+   * Creates and adds the live region element to the slider.
+   */
+  createLiveRegion() {
+    this.liveRegion = document.createElement('div');
+    this.liveRegion.setAttribute('aria-live', 'polite');
+    this.liveRegion.setAttribute('aria-atomic', 'true');
+    this.liveRegion.classList.add('zodiac-live-region');
+    this.zodiac.getSliderElement().appendChild(this.liveRegion);
+  }
 
-    /**
-     * Creates and adds the live region element to the slider.
-     */
-  }, {
-    key: "createLiveRegion",
-    value: function createLiveRegion() {
-      this.liveRegion = document.createElement('div');
-      this.liveRegion.setAttribute('aria-live', 'polite');
-      this.liveRegion.setAttribute('aria-atomic', 'true');
-      this.liveRegion.classList.add('zodiac-live-region');
-      this.zodiac.getSliderElement().appendChild(this.liveRegion);
+  /**
+   * Retrieves the title of the active item that will be used in the live region.
+   *
+   * The title is expected to be placed in the `data-zodiac-live-region-title`
+   * attribute. This can be on a `zodiac-item` element, or within.
+   *
+   * @returns The title of the active slider item.
+   */
+  getLiveRegionTitle() {
+    let title = '';
+    const sliderElement = this.zodiac.getSliderElement();
+    const titleElement = sliderElement.querySelector('.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]');
+    if (titleElement) {
+      title = titleElement.dataset.zodiacLiveRegionTitle;
     }
+    return title;
+  }
 
-    /**
-     * Retrieves the title of the active item that will be used in the live region.
-     *
-     * The title is expected to be placed in the `data-zodiac-live-region-title`
-     * attribute. This can be on a `zodiac-item` element, or within.
-     *
-     * @returns The title of the active slider item.
-     */
-  }, {
-    key: "getLiveRegionTitle",
-    value: function getLiveRegionTitle() {
-      var title = '';
-      var sliderElement = this.zodiac.getSliderElement();
-      var titleElement = sliderElement.querySelector('.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]');
-      if (titleElement) {
-        title = titleElement.dataset.zodiacLiveRegionTitle;
-      }
-      return title;
-    }
-
-    /**
-     * Updates the text of the live region when the slider is moved.
-     */
-  }, {
-    key: "updateLiveRegion",
-    value: function updateLiveRegion() {
-      var _this = this;
-      this.zodiac.getEventBus().on(['move.after', 'drag.after'], function () {
-        var position = _this.zodiac.getPosition() + 1;
-        var total = _this.zodiac.getItemTotal() + 1;
-        var title = _this.getLiveRegionTitle();
-        _this.liveRegion.innerText = _this.options.liveRegionText.replace('@position', position.toString()).replace('@total', total.toString()).replace('@title', title).trim();
-      });
-    }
-  }]);
-}(ComponentBase);
+  /**
+   * Updates the text of the live region when the slider is moved.
+   */
+  updateLiveRegion() {
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
+      const position = this.zodiac.getPosition() + 1;
+      const total = this.zodiac.getItemTotal() + 1;
+      const title = this.getLiveRegionTitle();
+      this.liveRegion.innerText = this.options.liveRegionText.replace('@position', position.toString()).replace('@total', total.toString()).replace('@title', title).trim();
+    });
+  }
+}
 
 /**
  * Manipulates the width of the slider track and each slider item.
  */
-var Track = /*#__PURE__*/function (_ComponentBase) {
-  function Track() {
-    _classCallCheck(this, Track);
-    return _callSuper(this, Track, arguments);
+class Track extends ComponentBase {
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    this.setItemWidth();
+    if (this.options.infiniteScrolling) {
+      this.cloneSliderItems();
+    }
+    this.setTrackWidth();
+    this.setTrackTransitionDuration();
+    this.updateTrackOnResize();
+    this.disableTransition();
+    this.zodiac.getEventBus().emit(['track.after']);
   }
-  _inherits(Track, _ComponentBase);
-  return _createClass(Track, [{
-    key: "mount",
-    value:
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      _superPropGet(Track, "mount", this, 3)([zodiac]);
-      this.setItemWidth();
-      if (this.options.infiniteScrolling) {
-        this.cloneSliderItems();
+
+  /**
+   * Clones a node, returning it with the original type.
+   *
+   * @param node - The node to clone.
+   *
+   * @returns The cloned node.
+   */
+  cloneNode(node) {
+    return node.cloneNode(true);
+  }
+
+  /**
+   * Clones the slider items for the `infiniteScrolling` option.
+   */
+  cloneSliderItems() {
+    const {
+      itemsPerView
+    } = this.options;
+    const itemTotal = this.zodiac.getItemTotal();
+    const items = this.zodiac.getItems();
+    const trackElement = this.zodiac.getTrackElement();
+    for (let i = itemTotal; i > itemTotal - itemsPerView; --i) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-before');
+        trackElement.prepend(cloned);
       }
+    }
+    for (let i = 0; i < itemTotal + itemsPerView; i += 1) {
+      if (items[i]) {
+        const cloned = this.getClonedSlide(items[i]);
+        cloned.classList.add('zodiac-cloned-after');
+        trackElement.append(cloned);
+      }
+    }
+  }
+
+  /**
+   * Disables the track transition animation.
+   */
+  disableTransition() {
+    const eventBus = this.zodiac.getEventBus();
+    const trackElement = this.zodiac.getTrackElement();
+    eventBus.on(['disableTransition.before'], () => {
+      trackElement.style.transition = 'none';
+    });
+    eventBus.on(['disableTransition.after'], () => {
+      trackElement.style.transition = null;
+    });
+  }
+
+  /**
+   * Clones the provided slider item.
+   */
+  getClonedSlide(slide) {
+    const cloned = this.cloneNode(slide);
+    cloned.removeAttribute('id');
+    cloned.classList.add('zodiac-cloned');
+    cloned.setAttribute('aria-hidden', 'true');
+    const selector = Utilities.focusableSelectors.join(', ');
+    cloned.querySelectorAll(selector).forEach(element => {
+      // Ensure none of the links nested within the cloned items can
+      // receive focus.
+      element.setAttribute('tabindex', '-1');
+    });
+    return cloned;
+  }
+
+  /**
+   * Gets the margin size for slider items by dividing the gap option in half.
+   *
+   * @returns The gap option value divided in half.
+   */
+  getSliderItemMargin() {
+    return this.options.gap / 2;
+  }
+
+  /**
+   * Retrieves the width of the slider's inner element.
+   *
+   * @returns The width of the slider.
+   */
+  getSliderWidth() {
+    const selector = this.options.classes.inner;
+    const inner = this.zodiac.getSliderElement().querySelector(`.${selector}`);
+    const {
+      width
+    } = inner.getBoundingClientRect();
+    return width;
+  }
+
+  /**
+   * Sets the width and margin of each slider item.
+   *
+   * Each slider item's width is calculated by dividing the slider's width by
+   * configured total items per view minus the configured gap setting.
+   */
+  setItemWidth() {
+    const {
+      itemsPerView
+    } = this.options;
+
+    // Calculate the width of each slider item by dividing the total size of
+    // the inner slider by the total items per view.
+    this.zodiac.setItemWidth(this.getSliderWidth() / itemsPerView);
+    const sliderItemMargin = this.getSliderItemMargin();
+    this.zodiac.getItems().forEach(item => {
+      // Apply the width to the slide item.
+      item.style.width = `${this.zodiac.getItemWidth() - sliderItemMargin * 2}px`;
+
+      // Add spacing between each slider item with left and right margin.
+      item.style.marginLeft = `${sliderItemMargin}px`;
+      item.style.marginRight = `${sliderItemMargin}px`;
+    });
+  }
+
+  /**
+   * Applies the transition speed setting to the track.
+   */
+  setTrackTransitionDuration() {
+    const {
+      transitionSpeed
+    } = this.options;
+    const eventBus = this.zodiac.getEventBus();
+    eventBus.on(['move.before', 'move.after', 'drag.after'], () => {
+      eventBus.emit(['transitionDuration.before']);
+      this.zodiac.getTrackElement().style.transitionDuration = `${transitionSpeed}ms`;
+      setTimeout(() => {
+        this.zodiac.getTrackElement().style.transitionDuration = '';
+        eventBus.emit(['transitionDuration.after']);
+      }, transitionSpeed);
+    });
+  }
+
+  /**
+   * Set the width of the track element.
+   *
+   * The width of track element is equal to the width of the slider multiplied
+   * by the total number of items.
+   */
+  setTrackWidth() {
+    // Get all slider items, included those that have been cloned.
+    const items = this.zodiac.getTrackElement().querySelectorAll('.zodiac-item');
+    const trackWidth = this.zodiac.getItemWidth() * items.length;
+    this.zodiac.getTrackElement().style.width = `${trackWidth}px`;
+  }
+
+  /**
+   * Update the track and item width when the window is resized.
+   */
+  updateTrackOnResize() {
+    this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
+      this.zodiac.getEventBus().emit(['trackUpdated.before']);
+      this.setItemWidth();
       this.setTrackWidth();
       this.setTrackTransitionDuration();
-      this.updateTrackOnResize();
-      this.disableTransition();
-      this.zodiac.getEventBus().emit(['track.after']);
-    }
-
-    /**
-     * Clones a node, returning it with the original type.
-     *
-     * @param node - The node to clone.
-     *
-     * @returns The cloned node.
-     */
-  }, {
-    key: "cloneNode",
-    value: function cloneNode(node) {
-      return node.cloneNode(true);
-    }
-
-    /**
-     * Clones the slider items for the `infiniteScrolling` option.
-     */
-  }, {
-    key: "cloneSliderItems",
-    value: function cloneSliderItems() {
-      var itemsPerView = this.options.itemsPerView;
-      var itemTotal = this.zodiac.getItemTotal();
-      var items = this.zodiac.getItems();
-      var trackElement = this.zodiac.getTrackElement();
-      for (var i = itemTotal; i > itemTotal - itemsPerView; --i) {
-        if (items[i]) {
-          var cloned = this.getClonedSlide(items[i]);
-          cloned.classList.add('zodiac-cloned-before');
-          trackElement.prepend(cloned);
-        }
-      }
-      for (var _i = 0; _i < itemTotal + itemsPerView; _i += 1) {
-        if (items[_i]) {
-          var _cloned = this.getClonedSlide(items[_i]);
-          _cloned.classList.add('zodiac-cloned-after');
-          trackElement.append(_cloned);
-        }
-      }
-    }
-
-    /**
-     * Disables the track transition animation.
-     */
-  }, {
-    key: "disableTransition",
-    value: function disableTransition() {
-      var eventBus = this.zodiac.getEventBus();
-      var trackElement = this.zodiac.getTrackElement();
-      eventBus.on(['disableTransition.before'], function () {
-        trackElement.style.transition = 'none';
-      });
-      eventBus.on(['disableTransition.after'], function () {
-        trackElement.style.transition = null;
-      });
-    }
-
-    /**
-     * Clones the provided slider item.
-     */
-  }, {
-    key: "getClonedSlide",
-    value: function getClonedSlide(slide) {
-      var cloned = this.cloneNode(slide);
-      cloned.removeAttribute('id');
-      cloned.classList.add('zodiac-cloned');
-      cloned.setAttribute('aria-hidden', 'true');
-      var selector = Utilities.focusableSelectors.join(', ');
-      cloned.querySelectorAll(selector).forEach(function (element) {
-        // Ensure none of the links nested within the cloned items can
-        // receive focus.
-        element.setAttribute('tabindex', '-1');
-      });
-      return cloned;
-    }
-
-    /**
-     * Gets the margin size for slider items by dividing the gap option in half.
-     *
-     * @returns The gap option value divided in half.
-     */
-  }, {
-    key: "getSliderItemMargin",
-    value: function getSliderItemMargin() {
-      return this.options.gap / 2;
-    }
-
-    /**
-     * Retrieves the width of the slider's inner element.
-     *
-     * @returns The width of the slider.
-     */
-  }, {
-    key: "getSliderWidth",
-    value: function getSliderWidth() {
-      var selector = this.options.classes.inner;
-      var inner = this.zodiac.getSliderElement().querySelector(".".concat(selector));
-      var _inner$getBoundingCli = inner.getBoundingClientRect(),
-        width = _inner$getBoundingCli.width;
-      return width;
-    }
-
-    /**
-     * Sets the width and margin of each slider item.
-     *
-     * Each slider item's width is calculated by dividing the slider's width by
-     * configured total items per view minus the configured gap setting.
-     */
-  }, {
-    key: "setItemWidth",
-    value: function setItemWidth() {
-      var _this = this;
-      var itemsPerView = this.options.itemsPerView;
-
-      // Calculate the width of each slider item by dividing the total size of
-      // the inner slider by the total items per view.
-      this.zodiac.setItemWidth(this.getSliderWidth() / itemsPerView);
-      var sliderItemMargin = this.getSliderItemMargin();
-      this.zodiac.getItems().forEach(function (item) {
-        // Apply the width to the slide item.
-        item.style.width = "".concat(_this.zodiac.getItemWidth() - sliderItemMargin * 2, "px");
-
-        // Add spacing between each slider item with left and right margin.
-        item.style.marginLeft = "".concat(sliderItemMargin, "px");
-        item.style.marginRight = "".concat(sliderItemMargin, "px");
-      });
-    }
-
-    /**
-     * Applies the transition speed setting to the track.
-     */
-  }, {
-    key: "setTrackTransitionDuration",
-    value: function setTrackTransitionDuration() {
-      var _this2 = this;
-      var transitionSpeed = this.options.transitionSpeed;
-      var eventBus = this.zodiac.getEventBus();
-      eventBus.on(['move.before', 'move.after', 'drag.after'], function () {
-        eventBus.emit(['transitionDuration.before']);
-        _this2.zodiac.getTrackElement().style.transitionDuration = "".concat(transitionSpeed, "ms");
-        setTimeout(function () {
-          _this2.zodiac.getTrackElement().style.transitionDuration = '';
-          eventBus.emit(['transitionDuration.after']);
-        }, transitionSpeed);
-      });
-    }
-
-    /**
-     * Set the width of the track element.
-     *
-     * The width of track element is equal to the width of the slider multiplied
-     * by the total number of items.
-     */
-  }, {
-    key: "setTrackWidth",
-    value: function setTrackWidth() {
-      // Get all slider items, included those that have been cloned.
-      var items = this.zodiac.getTrackElement().querySelectorAll('.zodiac-item');
-      var trackWidth = this.zodiac.getItemWidth() * items.length;
-      this.zodiac.getTrackElement().style.width = "".concat(trackWidth, "px");
-    }
-
-    /**
-     * Update the track and item width when the window is resized.
-     */
-  }, {
-    key: "updateTrackOnResize",
-    value: function updateTrackOnResize() {
-      var _this3 = this;
-      this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], function () {
-        _this3.zodiac.getEventBus().emit(['trackUpdated.before']);
-        _this3.setItemWidth();
-        _this3.setTrackWidth();
-        _this3.setTrackTransitionDuration();
-        _this3.zodiac.getEventBus().emit(['trackUpdated.after']);
-      });
-    }
-  }]);
-}(ComponentBase);
+      this.zodiac.getEventBus().emit(['trackUpdated.after']);
+    });
+  }
+}
 
 /**
  * A map of events that will represent dragging.
@@ -1201,350 +813,305 @@ var Track = /*#__PURE__*/function (_ComponentBase) {
 /**
  * Adds dragging capabilities to the slider (for both mouse & touch inputs).
  */
-var Drag = /*#__PURE__*/function (_ComponentBase) {
-  function Drag() {
-    var _this;
-    _classCallCheck(this, Drag);
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    _this = _callSuper(this, Drag, [].concat(args));
-    /**
-     * The class used to indicate that the slider is being dragged.
-     */
-    _defineProperty(_this, "draggingClass", 'dragging');
-    /**
-     * The value used to track and apply the `translate` CSS while dragging.
-     */
-    _defineProperty(_this, "dragPosition", 0);
-    /**
-     * The `AbortController` for the `this.move()` method.
-     */
-    _defineProperty(_this, "moveController", null);
-    /**
-     * Events that move the slider when dragging.
-     */
-    _defineProperty(_this, "moveEventKeys", ['mousemove', 'touchmove']);
-    /**
-     * A flag used to determine whether the clicking of links is disallowed.
-     */
-    _defineProperty(_this, "preventClick", false);
-    /**
-     * The position that will be given to `Zodiac` after the dragging has stopped.
-     */
-    _defineProperty(_this, "snapPosition", 0);
-    /**
-     * Events that signal when dragging should begin.
-     */
-    _defineProperty(_this, "startEventKeys", ['mousedown', 'touchstart']);
-    /**
-     * The position of the event dispatcher at the start of the dragging process.
-     */
-    _defineProperty(_this, "startingEventPosition", 0);
-    /**
-     * The `AbortController` for the `this.stop()` method.
-     */
-    _defineProperty(_this, "stopController", null);
-    /**
-     * Events that signal when dragging should end.
-     */
-    _defineProperty(_this, "stopEventKeys", ['mouseup', 'mouseleave', 'touchend', 'touchcancel']);
-    /**
-     * How far the slider must be dragged before moving begins.
-     */
-    _defineProperty(_this, "threshold", 20);
-    return _this;
+class Drag extends ComponentBase {
+  /**
+   * The class used to indicate that the slider is being dragged.
+   */
+  draggingClass = 'dragging';
+
+  /**
+   * The value used to track and apply the `translate` CSS while dragging.
+   */
+  dragPosition = 0;
+
+  /**
+   * The `AbortController` for the `this.move()` method.
+   */
+  moveController = null;
+
+  /**
+   * Events that move the slider when dragging.
+   */
+  moveEventKeys = ['mousemove', 'touchmove'];
+
+  /**
+   * A flag used to determine whether the clicking of links is disallowed.
+   */
+  preventClick = false;
+
+  /**
+   * The position that will be given to `Zodiac` after the dragging has stopped.
+   */
+  snapPosition = 0;
+
+  /**
+   * Events that signal when dragging should begin.
+   */
+  startEventKeys = ['mousedown', 'touchstart'];
+
+  /**
+   * The position of the event dispatcher at the start of the dragging process.
+   */
+  startingEventPosition = 0;
+
+  /**
+   * The `AbortController` for the `this.stop()` method.
+   */
+  stopController = null;
+
+  /**
+   * Events that signal when dragging should end.
+   */
+  stopEventKeys = ['mouseup', 'mouseleave', 'touchend', 'touchcancel'];
+
+  /**
+   * How far the slider must be dragged before moving begins.
+   */
+  threshold = 20;
+
+  /**
+   * {@inheritDoc ComponentBase.mount}
+   */
+  mount(zodiac) {
+    super.mount(zodiac);
+    this.addStartEvents();
+    this.onDragEvents();
+    this.preventDefaultOnDragStart();
+    this.preventDefaultClickOnDragStart();
   }
-  _inherits(Drag, _ComponentBase);
-  return _createClass(Drag, [{
-    key: "mount",
-    value:
-    /**
-     * {@inheritDoc ComponentBase.mount}
-     */
-    function mount(zodiac) {
-      _superPropGet(Drag, "mount", this, 3)([zodiac]);
-      this.addStartEvents();
-      this.onDragEvents();
-      this.preventDefaultOnDragStart();
-      this.preventDefaultClickOnDragStart();
-    }
 
-    /**
-     * Applies the move events to the slider.
-     */
-  }, {
-    key: "addMoveEvents",
-    value: function addMoveEvents() {
-      var _this2 = this;
-      // Create an `AbortController` to remove these events after dragging is
-      // complete. This controller is recreated every time this method is called
-      // because it will be disabled after it's `abort` signal is sent.
-      this.moveController = new AbortController();
-      this.moveEventKeys.forEach(function (eventType) {
-        _this2.zodiac.getTrackElement().addEventListener(eventType, function (event) {
-          return _this2.move(event);
-        }, {
-          signal: _this2.moveController.signal
-        });
+  /**
+   * Applies the move events to the slider.
+   */
+  addMoveEvents() {
+    // Create an `AbortController` to remove these events after dragging is
+    // complete. This controller is recreated every time this method is called
+    // because it will be disabled after it's `abort` signal is sent.
+    this.moveController = new AbortController();
+    this.moveEventKeys.forEach(eventType => {
+      this.zodiac.getTrackElement().addEventListener(eventType, event => this.move(event), {
+        signal: this.moveController.signal
       });
-    }
+    });
+  }
 
-    /**
-     * Applies the start events to the slider.
-     */
-  }, {
-    key: "addStartEvents",
-    value: function addStartEvents() {
-      var _this3 = this;
-      this.startEventKeys.forEach(function (eventType) {
-        _this3.zodiac.getTrackElement().addEventListener(eventType, function (event) {
-          return _this3.start(event);
-        });
+  /**
+   * Applies the start events to the slider.
+   */
+  addStartEvents() {
+    this.startEventKeys.forEach(eventType => {
+      this.zodiac.getTrackElement().addEventListener(eventType, event => this.start(event));
+    });
+  }
+
+  /**
+   * Applies the stop events to the slider.
+   */
+  addStopEvents() {
+    // Create an `AbortController` to remove these events after dragging is
+    // complete. This controller is recreated every time this method is called
+    // because it will be disabled after it's `abort` signal is sent.
+    this.stopController = new AbortController();
+    this.stopEventKeys.forEach(eventType => {
+      this.zodiac.getTrackElement().addEventListener(eventType, () => this.stop(), {
+        signal: this.stopController.signal
       });
-    }
+    });
+  }
 
-    /**
-     * Applies the stop events to the slider.
-     */
-  }, {
-    key: "addStopEvents",
-    value: function addStopEvents() {
-      var _this4 = this;
-      // Create an `AbortController` to remove these events after dragging is
-      // complete. This controller is recreated every time this method is called
-      // because it will be disabled after it's `abort` signal is sent.
-      this.stopController = new AbortController();
-      this.stopEventKeys.forEach(function (eventType) {
-        _this4.zodiac.getTrackElement().addEventListener(eventType, function () {
-          return _this4.stop();
-        }, {
-          signal: _this4.stopController.signal
-        });
+  /**
+   * Retrieves the `screenX` value from an event depending on the event type.
+   *
+   * @param event - The event in which to derive the `screenX` value.
+   *
+   * @returns The `screenX` value of the event.
+   */
+  getScreenX(event) {
+    let screenX = null;
+    if (window.TouchEvent && event instanceof TouchEvent) {
+      screenX = event.touches[0].screenX ?? 0;
+    } else if (event instanceof MouseEvent) {
+      screenX = event.screenX;
+    }
+    return screenX;
+  }
+
+  /**
+   * Snaps a drag position into a valid `Zodiac` position.
+   *
+   * The `Drag` component tracks the drag position with a pixel value to
+   * animate dragging. This method snaps a drag position into valid `Zodiac`
+   * position to set the active slide.
+   *
+   * @param dragPosition - The position in pixels.
+   *
+   * @returns The position as a numeric index.
+   */
+  getSnapPosition(dragPosition) {
+    const clonedOffset = this.zodiac.getClonedOffset();
+    return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
+  }
+
+  /**
+   * Mark all links within the slider track as draggable or un-draggable.
+   *
+   * Depending on the value of `draggable`, links within the slider track will
+   * be enabled or disabled by swapping between storing the link in an `href`
+   * or `data-href` attribute and toggling the `draggable` attribute.
+   *
+   * @param draggable - Whether to mark the items as draggable or un-draggable.
+   */
+  modifyLinks(draggable) {
+    // Retrieve all links within the track element.
+    const links = this.zodiac.getTrackElement().querySelectorAll('a');
+
+    // Prevent unnecessary modification by checking if the draggable value
+    // matches the prevent click state.
+    if (this.preventClick === draggable) {
+      links.forEach(link => {
+        // Determine the source and destination of the attribute modification
+        // based on the whether draggability is being enabled or disabled.
+        const source = draggable ? 'data-href' : 'href';
+        const destination = draggable ? 'href' : 'data-href';
+
+        // Add or remove the draggable attribute on the link element.
+        link.draggable = draggable;
+        link.setAttribute(destination, link.getAttribute(source));
+        link.removeAttribute(source);
       });
+
+      // Indicate click has or hasn't been prevented.
+      this.preventClick = !this.preventClick;
+    }
+  }
+
+  /**
+   * Calculates & updates the position of the slider track on drag.
+   *
+   * During the move stage of the dragging, this method has the following side
+   * effects:
+   * - Calculates the dragging distance based on where the user clicked or
+   *   touched.
+   * - Determines how fast the slider should be dragged based on how close to
+   *   the edge the mouse cursor is moved.
+   * - Computes which slide to snap to after dragging is complete.
+   * - Animates the slider track while dragging.
+   *
+   * @param event - The DOM event emitted during the drag movement.
+   */
+  move(event) {
+    this.zodiac.getEventBus().emit(['drag.move.before']);
+
+    // Determine the distance between the position of current event dispatcher
+    // the starting event dispatcher position.
+    const currentEventPosition = this.getScreenX(event) - this.zodiac.getSliderElement().offsetLeft;
+    const distance = currentEventPosition - this.startingEventPosition;
+
+    // Exit this method if the distance is less than the drag threshold.
+    if (Math.abs(distance) < this.threshold) {
+      return;
     }
 
-    /**
-     * Retrieves the `screenX` value from an event depending on the event type.
-     *
-     * @param event - The event in which to derive the `screenX` value.
-     *
-     * @returns The `screenX` value of the event.
-     */
-  }, {
-    key: "getScreenX",
-    value: function getScreenX(event) {
-      var screenX = null;
-      if (window.TouchEvent && event instanceof TouchEvent) {
-        var _event$touches$0$scre;
-        screenX = (_event$touches$0$scre = event.touches[0].screenX) !== null && _event$touches$0$scre !== void 0 ? _event$touches$0$scre : 0;
-      } else if (event instanceof MouseEvent) {
-        screenX = event.screenX;
-      }
-      return screenX;
-    }
+    // Determine by drag position by adding distance multiplied by the
+    // acceleration speed.
+    const dragPosition = this.dragPosition + distance;
+    event.preventDefault();
 
-    /**
-     * Snaps a drag position into a valid `Zodiac` position.
-     *
-     * The `Drag` component tracks the drag position with a pixel value to
-     * animate dragging. This method snaps a drag position into valid `Zodiac`
-     * position to set the active slide.
-     *
-     * @param dragPosition - The position in pixels.
-     *
-     * @returns The position as a numeric index.
-     */
-  }, {
-    key: "getSnapPosition",
-    value: function getSnapPosition(dragPosition) {
-      var clonedOffset = this.zodiac.getClonedOffset();
-      return -Math.round(dragPosition / this.zodiac.getItemWidth()) - clonedOffset;
-    }
+    // Get the snap position from the current drag position.
+    this.snapPosition = this.getSnapPosition(dragPosition);
+    // Animate the dragging.
+    this.zodiac.getTrackElement().style.transform = `translate3d(${dragPosition}px, 0, 0)`;
+    this.zodiac.getEventBus().emit(['drag.move.after']);
+  }
 
-    /**
-     * Mark all links within the slider track as draggable or un-draggable.
-     *
-     * Depending on the value of `draggable`, links within the slider track will
-     * be enabled or disabled by swapping between storing the link in an `href`
-     * or `data-href` attribute and toggling the `draggable` attribute.
-     *
-     * @param draggable - Whether to mark the items as draggable or un-draggable.
-     */
-  }, {
-    key: "modifyLinks",
-    value: function modifyLinks(draggable) {
-      // Retrieve all links within the track element.
-      var links = this.zodiac.getTrackElement().querySelectorAll('a');
+  /**
+   * Adds the `dragging` class to the slider track while it is being dragged.
+   */
+  onDragEvents() {
+    this.zodiac.getEventBus().on(['drag.before'], () => {
+      this.zodiac.getTrackElement().classList.add(this.draggingClass);
+    });
+    this.zodiac.getEventBus().on(['drag.after'], () => {
+      this.zodiac.getTrackElement().classList.remove(this.draggingClass);
+    });
+  }
 
-      // Prevent unnecessary modification by checking if the draggable value
-      // matches the prevent click state.
-      if (this.preventClick === draggable) {
-        links.forEach(function (link) {
-          // Determine the source and destination of the attribute modification
-          // based on the whether draggability is being enabled or disabled.
-          var source = draggable ? 'data-href' : 'href';
-          var destination = draggable ? 'href' : 'data-href';
+  /**
+   * Prevent link clicking when the slider is being dragged.
+   */
+  preventDefaultClickOnDragStart() {
+    this.zodiac.getEventBus().on(['drag.move.before'], () => {
+      this.modifyLinks(false);
+    });
+    this.zodiac.getEventBus().on(['drag.after'], () => {
+      // Wait for the slider to finishing animating before enabling the links.
+      setTimeout(() => {
+        this.modifyLinks(true);
+      }, this.options.transitionSpeed);
+    });
+  }
 
-          // Add or remove the draggable attribute on the link element.
-          link.draggable = draggable;
-          link.setAttribute(destination, link.getAttribute(source));
-          link.removeAttribute(source);
-        });
+  /**
+   * Prevents unnecessary dragging for slider items.
+   */
+  preventDefaultOnDragStart() {
+    this.zodiac.getItems().forEach(item => {
+      item.addEventListener('dragstart', event => event.preventDefault());
+    });
+  }
 
-        // Indicate click has or hasn't been prevented.
-        this.preventClick = !this.preventClick;
-      }
-    }
+  /**
+   * Removes the move events from the slider to prevent unnecessary calculations.
+   */
+  removeMoveEvents() {
+    this.moveController.abort();
+  }
 
-    /**
-     * Calculates & updates the position of the slider track on drag.
-     *
-     * During the move stage of the dragging, this method has the following side
-     * effects:
-     * - Calculates the dragging distance based on where the user clicked or
-     *   touched.
-     * - Determines how fast the slider should be dragged based on how close to
-     *   the edge the mouse cursor is moved.
-     * - Computes which slide to snap to after dragging is complete.
-     * - Animates the slider track while dragging.
-     *
-     * @param event - The DOM event emitted during the drag movement.
-     */
-  }, {
-    key: "move",
-    value: function move(event) {
-      this.zodiac.getEventBus().emit(['drag.move.before']);
+  /**
+   * Removes the stop events from the slider to prevent unnecessary calculations.
+   */
+  removeStopEvents() {
+    this.stopController.abort();
+  }
 
-      // Determine the distance between the position of current event dispatcher
-      // the starting event dispatcher position.
-      var currentEventPosition = this.getScreenX(event) - this.zodiac.getSliderElement().offsetLeft;
-      var distance = currentEventPosition - this.startingEventPosition;
+  /**
+   * Prepares the slider to be dragged when dragging has started.
+   *
+   * The slider is prepared by calculating the current drag position, relative
+   * to the `Zodiac`'s current position, and the position of the event
+   * dispatcher.
+   *
+   * @param event - The DOM event which fired this method.
+   */
+  start(event) {
+    this.zodiac.getEventBus().emit(['drag.before']);
+    const clonedOffset = this.zodiac.getClonedOffset();
 
-      // Exit this method if the distance is less than the drag threshold.
-      if (Math.abs(distance) < this.threshold) {
-        return;
-      }
+    // Calculate the drag position by multiplying the slider's current position
+    // by the width of a single slide. The value of this calculation is
+    // converted to a negative number to animate the slider since it will
+    // eventually be passed into `translate3d`.
+    this.dragPosition = -((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
+    this.snapPosition = this.getSnapPosition(this.dragPosition);
 
-      // Determine by drag position by adding distance multiplied by the
-      // acceleration speed.
-      var dragPosition = this.dragPosition + distance;
-      event.preventDefault();
+    // Determine the position of the event dispatcher by subtracting the event
+    // dispatcher's position on the screen by the slider's offset of it's
+    // parent element.
+    this.startingEventPosition = this.getScreenX(event) - this.zodiac.getSliderElement().offsetLeft;
+    this.addMoveEvents();
+    this.addStopEvents();
+  }
 
-      // Get the snap position from the current drag position.
-      this.snapPosition = this.getSnapPosition(dragPosition);
-      // Animate the dragging.
-      this.zodiac.getTrackElement().style.transform = "translate3d(".concat(dragPosition, "px, 0, 0)");
-      this.zodiac.getEventBus().emit(['drag.move.after']);
-    }
-
-    /**
-     * Adds the `dragging` class to the slider track while it is being dragged.
-     */
-  }, {
-    key: "onDragEvents",
-    value: function onDragEvents() {
-      var _this5 = this;
-      this.zodiac.getEventBus().on(['drag.before'], function () {
-        _this5.zodiac.getTrackElement().classList.add(_this5.draggingClass);
-      });
-      this.zodiac.getEventBus().on(['drag.after'], function () {
-        _this5.zodiac.getTrackElement().classList.remove(_this5.draggingClass);
-      });
-    }
-
-    /**
-     * Prevent link clicking when the slider is being dragged.
-     */
-  }, {
-    key: "preventDefaultClickOnDragStart",
-    value: function preventDefaultClickOnDragStart() {
-      var _this6 = this;
-      this.zodiac.getEventBus().on(['drag.move.before'], function () {
-        _this6.modifyLinks(false);
-      });
-      this.zodiac.getEventBus().on(['drag.after'], function () {
-        // Wait for the slider to finishing animating before enabling the links.
-        setTimeout(function () {
-          _this6.modifyLinks(true);
-        }, _this6.options.transitionSpeed);
-      });
-    }
-
-    /**
-     * Prevents unnecessary dragging for slider items.
-     */
-  }, {
-    key: "preventDefaultOnDragStart",
-    value: function preventDefaultOnDragStart() {
-      this.zodiac.getItems().forEach(function (item) {
-        item.addEventListener('dragstart', function (event) {
-          return event.preventDefault();
-        });
-      });
-    }
-
-    /**
-     * Removes the move events from the slider to prevent unnecessary calculations.
-     */
-  }, {
-    key: "removeMoveEvents",
-    value: function removeMoveEvents() {
-      this.moveController.abort();
-    }
-
-    /**
-     * Removes the stop events from the slider to prevent unnecessary calculations.
-     */
-  }, {
-    key: "removeStopEvents",
-    value: function removeStopEvents() {
-      this.stopController.abort();
-    }
-
-    /**
-     * Prepares the slider to be dragged when dragging has started.
-     *
-     * The slider is prepared by calculating the current drag position, relative
-     * to the `Zodiac`'s current position, and the position of the event
-     * dispatcher.
-     *
-     * @param event - The DOM event which fired this method.
-     */
-  }, {
-    key: "start",
-    value: function start(event) {
-      this.zodiac.getEventBus().emit(['drag.before']);
-      var clonedOffset = this.zodiac.getClonedOffset();
-
-      // Calculate the drag position by multiplying the slider's current position
-      // by the width of a single slide. The value of this calculation is
-      // converted to a negative number to animate the slider since it will
-      // eventually be passed into `translate3d`.
-      this.dragPosition = -((this.zodiac.getPosition() + clonedOffset) * this.zodiac.getItemWidth());
-      this.snapPosition = this.getSnapPosition(this.dragPosition);
-
-      // Determine the position of the event dispatcher by subtracting the event
-      // dispatcher's position on the screen by the slider's offset of it's
-      // parent element.
-      this.startingEventPosition = this.getScreenX(event) - this.zodiac.getSliderElement().offsetLeft;
-      this.addMoveEvents();
-      this.addStopEvents();
-    }
-
-    /**
-     * Positions the slider after the dragging is complete.
-     */
-  }, {
-    key: "stop",
-    value: function stop() {
-      this.zodiac.move(this.snapPosition);
-      this.removeMoveEvents();
-      this.removeStopEvents();
-      this.zodiac.getEventBus().emit(['drag.after']);
-    }
-  }]);
-}(ComponentBase);
+  /**
+   * Positions the slider after the dragging is complete.
+   */
+  stop() {
+    this.zodiac.move(this.snapPosition);
+    this.removeMoveEvents();
+    this.removeStopEvents();
+    this.zodiac.getEventBus().emit(['drag.after']);
+  }
+}
 
 /**
  * The entry point for the Zodiac Slider.
@@ -1554,7 +1121,7 @@ var Drag = /*#__PURE__*/function (_ComponentBase) {
  * Components are mounted in `Zodiac.mount()`. This function iterates over each
  * component, invoking their `mount()` method & supplying itself as an argument.
  */
-var Zodiac = /*#__PURE__*/function () {
+class Zodiac {
   /**
    * The number of cloned slider items preceding the normal slider items.
    */
@@ -1601,30 +1168,26 @@ var Zodiac = /*#__PURE__*/function () {
    * @param selector - The base selector to use.
    * @param options - The options to initialize the slider with.
    */
-  function Zodiac(selector, options) {
-    var _this = this;
-    _classCallCheck(this, Zodiac);
+  constructor(selector, options) {
     this.eventBus = new EventBus();
     this.selector = selector;
     this.options = new Options(this.eventBus, options);
-    var effectiveOptions = this.options.getEffectiveOptions();
+    const effectiveOptions = this.options.getEffectiveOptions();
     this.components = this.registerComponents();
     this.sliderElement = document.querySelector(this.selector);
-    this.trackElement = this.sliderElement.querySelector(".".concat(effectiveOptions.classes.track));
-    this.items = this.sliderElement.querySelectorAll(".".concat(effectiveOptions.classes.items));
+    this.trackElement = this.sliderElement.querySelector(`.${effectiveOptions.classes.track}`);
+    this.items = this.sliderElement.querySelectorAll(`.${effectiveOptions.classes.items}`);
     this.position = 0;
 
     // Set the slider's initial position
-    this.eventBus.on(['track.after'], function () {
-      _this.eventBus.emit(['disableTransition.before']);
-      _this.next(0);
-      _this.eventBus.emit(['disableTransition.after']);
+    this.eventBus.on(['track.after'], () => {
+      this.eventBus.emit(['disableTransition.before']);
+      this.next(0);
+      this.eventBus.emit(['disableTransition.after']);
     });
 
     // Reposition the slider items on media query change.
-    this.eventBus.on(['trackUpdated.after'], function () {
-      return _this.next(0);
-    });
+    this.eventBus.on(['trackUpdated.after'], () => this.next(0));
   }
 
   /**
@@ -1632,290 +1195,235 @@ var Zodiac = /*#__PURE__*/function () {
    *
    * @returns The cloned offset value.
    */
-  return _createClass(Zodiac, [{
-    key: "getClonedOffset",
-    value: function getClonedOffset() {
-      if (this.clonedOffset === undefined) {
-        this.loadClonedOffset();
+  getClonedOffset() {
+    if (this.clonedOffset === undefined) {
+      this.loadClonedOffset();
+    }
+    return this.clonedOffset;
+  }
+
+  /**
+   * Retrieves the slider's effective options.
+   *
+   * @returns The slider's effective options.
+   */
+  getEffectiveOptions() {
+    return this.options.getEffectiveOptions();
+  }
+
+  /**
+   * Retrieves the event bus.
+   *
+   * @returns The event bus.
+   */
+  getEventBus() {
+    return this.eventBus;
+  }
+
+  /**
+   * Retrieves the total number of items.
+   *
+   * @returns The total number of items offset by 1.
+   */
+  getItemTotal() {
+    return this.items.length - 1;
+  }
+
+  /**
+   * Retrieves the width of a slider item.
+   *
+   * @returns The width of individual slider items.
+   */
+  getItemWidth() {
+    return this.itemWidth;
+  }
+
+  /**
+   * Retrieves the slider's items.
+   *
+   * @returns The slider's items.
+   */
+  getItems() {
+    return this.items;
+  }
+
+  /**
+   * Retrieves the slider's position.
+   *
+   * @returns The position of the slider.
+   */
+  getPosition() {
+    return this.position;
+  }
+
+  /**
+   * Retrieves the slider element.
+   *
+   * @returns The slider element.
+   */
+  getSliderElement() {
+    return this.sliderElement;
+  }
+
+  /**
+   * Retrieves the track element.
+   *
+   * @returns The track element.
+   */
+  getTrackElement() {
+    return this.trackElement;
+  }
+
+  /**
+   * Mounts the sliders components.
+   *
+   * @param thirdPartyComponents - A list of user defined components.
+   *
+   * @returns The current `Zodiac` instance.
+   */
+  mount(thirdPartyComponents = []) {
+    for (const component of this.components.concat(thirdPartyComponents)) {
+      component.mount(this);
+    }
+    return this;
+  }
+
+  /**
+   * Moves the slider based on the provided offset.
+   *
+   * @param position - The position to move the slider.
+   */
+  move(position) {
+    this.eventBus.emit(['move.before']);
+    const {
+      infiniteScrolling,
+      transitionSpeed
+    } = this.getEffectiveOptions();
+    if (infiniteScrolling) {
+      this.trackElement.style.transform = `translate3d(${this.convertPositionToPixels(position)}px, 0px, 0px)`;
+
+      // Convert the position into a value that is within range.
+      const itemTotal = this.getItemTotal() + 1;
+      position = (position % itemTotal + itemTotal) % itemTotal;
+      setTimeout(() => {
+        this.eventBus.emit(['disableTransition.before']);
+        const transform = this.convertPositionToPixels(position);
+        this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
+        this.eventBus.emit(['disableTransition.after']);
+      }, transitionSpeed);
+    } else {
+      if (position > this.getItemTotal()) {
+        position = 0;
       }
-      return this.clonedOffset;
-    }
-
-    /**
-     * Retrieves the slider's effective options.
-     *
-     * @returns The slider's effective options.
-     */
-  }, {
-    key: "getEffectiveOptions",
-    value: function getEffectiveOptions() {
-      return this.options.getEffectiveOptions();
-    }
-
-    /**
-     * Retrieves the event bus.
-     *
-     * @returns The event bus.
-     */
-  }, {
-    key: "getEventBus",
-    value: function getEventBus() {
-      return this.eventBus;
-    }
-
-    /**
-     * Retrieves the total number of items.
-     *
-     * @returns The total number of items offset by 1.
-     */
-  }, {
-    key: "getItemTotal",
-    value: function getItemTotal() {
-      return this.items.length - 1;
-    }
-
-    /**
-     * Retrieves the width of a slider item.
-     *
-     * @returns The width of individual slider items.
-     */
-  }, {
-    key: "getItemWidth",
-    value: function getItemWidth() {
-      return this.itemWidth;
-    }
-
-    /**
-     * Retrieves the slider's items.
-     *
-     * @returns The slider's items.
-     */
-  }, {
-    key: "getItems",
-    value: function getItems() {
-      return this.items;
-    }
-
-    /**
-     * Retrieves the slider's position.
-     *
-     * @returns The position of the slider.
-     */
-  }, {
-    key: "getPosition",
-    value: function getPosition() {
-      return this.position;
-    }
-
-    /**
-     * Retrieves the slider element.
-     *
-     * @returns The slider element.
-     */
-  }, {
-    key: "getSliderElement",
-    value: function getSliderElement() {
-      return this.sliderElement;
-    }
-
-    /**
-     * Retrieves the track element.
-     *
-     * @returns The track element.
-     */
-  }, {
-    key: "getTrackElement",
-    value: function getTrackElement() {
-      return this.trackElement;
-    }
-
-    /**
-     * Mounts the sliders components.
-     *
-     * @param thirdPartyComponents - A list of user defined components.
-     *
-     * @returns The current `Zodiac` instance.
-     */
-  }, {
-    key: "mount",
-    value: function mount() {
-      var thirdPartyComponents = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-      var _iterator = _createForOfIteratorHelper(this.components.concat(thirdPartyComponents)),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var component = _step.value;
-          component.mount(this);
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
+      if (position < 0) {
+        position = this.getItemTotal();
       }
-      return this;
+      const transform = this.convertPositionToPixels(position);
+      this.trackElement.style.transform = `translate3d(${transform}px, 0px, 0px)`;
     }
+    this.setPosition(position);
+    this.eventBus.emit(['move.after']);
+  }
 
-    /**
-     * Moves the slider based on the provided offset.
-     *
-     * @param position - The position to move the slider.
-     */
-  }, {
-    key: "move",
-    value: function move(position) {
-      var _this2 = this;
-      this.eventBus.emit(['move.before']);
-      var _this$getEffectiveOpt = this.getEffectiveOptions(),
-        infiniteScrolling = _this$getEffectiveOpt.infiniteScrolling,
-        transitionSpeed = _this$getEffectiveOpt.transitionSpeed;
-      if (infiniteScrolling) {
-        this.trackElement.style.transform = "translate3d(".concat(this.convertPositionToPixels(position), "px, 0px, 0px)");
+  /**
+   * Move to the next slide.
+   *
+   * @param offset - How many slides to move forward.
+   */
+  next(offset = 1) {
+    this.move(this.getPosition() + offset);
+  }
 
-        // Convert the position into a value that is within range.
-        var itemTotal = this.getItemTotal() + 1;
-        position = (position % itemTotal + itemTotal) % itemTotal;
-        setTimeout(function () {
-          _this2.eventBus.emit(['disableTransition.before']);
-          var transform = _this2.convertPositionToPixels(position);
-          _this2.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
-          _this2.eventBus.emit(['disableTransition.after']);
-        }, transitionSpeed);
-      } else {
-        if (position > this.getItemTotal()) {
-          position = 0;
-        }
-        if (position < 0) {
-          position = this.getItemTotal();
-        }
-        var transform = this.convertPositionToPixels(position);
-        this.trackElement.style.transform = "translate3d(".concat(transform, "px, 0px, 0px)");
-      }
-      this.setPosition(position);
-      this.eventBus.emit(['move.after']);
+  /**
+   * Removes a custom event listener.
+   *
+   * @param names - A list of event names to unsubscribe.
+   *
+   * @returns The current `Zodiac` instance.
+   */
+  off(names) {
+    this.eventBus.off(names);
+    return this;
+  }
+
+  /**
+   * Adds a custom event listener with a callback function.
+   *
+   * @param names - A list of event names to subscribe to.
+   * @param callback - A callback function to run on the events.
+   *
+   * @returns The current `Zodiac` instance.
+   */
+  on(names, callback) {
+    this.eventBus.on(names, callback);
+    return this;
+  }
+
+  /**
+   * Move to the previous slide.
+   *
+   * @param offset - How many slides to move forward.
+   */
+  previous(offset = 1) {
+    this.move(this.getPosition() - offset);
+  }
+
+  /**
+   * Sets the width of individual slider items.
+   *
+   * @param itemWidth - The new item width.
+   */
+  setItemWidth(itemWidth) {
+    this.itemWidth = itemWidth;
+  }
+
+  /**
+   * Sets the sliders position.
+   *
+   * @throws {@link RangeError}
+   * Will throw an error if the position is `Nan`, less than zero, or greater
+   * than the total number of items.
+   *
+   * @param position - The position to set.
+   */
+  setPosition(position) {
+    if (Number.isNaN(position) || position < 0 || position > this.getItemTotal()) {
+      throw new RangeError(`Invalid position: ${position}`);
     }
+    this.position = Math.trunc(position);
+  }
 
-    /**
-     * Move to the next slide.
-     *
-     * @param offset - How many slides to move forward.
-     */
-  }, {
-    key: "next",
-    value: function next() {
-      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.move(this.getPosition() + offset);
-    }
+  /**
+   * Converts the provided positional value into a pixel value.
+   *
+   * @param position - This position to convert.
+   *
+   * @returns The converted pixel value.
+   */
+  convertPositionToPixels(position) {
+    const clonedOffset = this.getClonedOffset();
+    return -1 * (this.getItemWidth() * (position + clonedOffset));
+  }
 
-    /**
-     * Removes a custom event listener.
-     *
-     * @param names - A list of event names to unsubscribe.
-     *
-     * @returns The current `Zodiac` instance.
-     */
-  }, {
-    key: "off",
-    value: function off(names) {
-      this.eventBus.off(names);
-      return this;
+  /**
+   * Loads the cloned offset value.
+   */
+  loadClonedOffset() {
+    this.clonedOffset = 0;
+    if (this.options.getEffectiveOptions().infiniteScrolling) {
+      this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
     }
+  }
 
-    /**
-     * Adds a custom event listener with a callback function.
-     *
-     * @param names - A list of event names to subscribe to.
-     * @param callback - A callback function to run on the events.
-     *
-     * @returns The current `Zodiac` instance.
-     */
-  }, {
-    key: "on",
-    value: function on(names, callback) {
-      this.eventBus.on(names, callback);
-      return this;
-    }
-
-    /**
-     * Move to the previous slide.
-     *
-     * @param offset - How many slides to move forward.
-     */
-  }, {
-    key: "previous",
-    value: function previous() {
-      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.move(this.getPosition() - offset);
-    }
-
-    /**
-     * Sets the width of individual slider items.
-     *
-     * @param itemWidth - The new item width.
-     */
-  }, {
-    key: "setItemWidth",
-    value: function setItemWidth(itemWidth) {
-      this.itemWidth = itemWidth;
-    }
-
-    /**
-     * Sets the sliders position.
-     *
-     * @throws {@link RangeError}
-     * Will throw an error if the position is `Nan`, less than zero, or greater
-     * than the total number of items.
-     *
-     * @param position - The position to set.
-     */
-  }, {
-    key: "setPosition",
-    value: function setPosition(position) {
-      if (Number.isNaN(position) || position < 0 || position > this.getItemTotal()) {
-        throw new RangeError("Invalid position: ".concat(position));
-      }
-      this.position = Math.trunc(position);
-    }
-
-    /**
-     * Converts the provided positional value into a pixel value.
-     *
-     * @param position - This position to convert.
-     *
-     * @returns The converted pixel value.
-     */
-  }, {
-    key: "convertPositionToPixels",
-    value: function convertPositionToPixels(position) {
-      var clonedOffset = this.getClonedOffset();
-      return -1 * (this.getItemWidth() * (position + clonedOffset));
-    }
-
-    /**
-     * Loads the cloned offset value.
-     */
-  }, {
-    key: "loadClonedOffset",
-    value: function loadClonedOffset() {
-      this.clonedOffset = 0;
-      if (this.options.getEffectiveOptions().infiniteScrolling) {
-        this.clonedOffset = this.getTrackElement().querySelectorAll('.zodiac-cloned-before').length;
-      }
-    }
-
-    /**
-     * Registers the required components provided by Zodiac.
-     *
-     * @returns A list of instantiated components.
-     */
-  }, {
-    key: "registerComponents",
-    value: function registerComponents() {
-      return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag), LiveRegion].map(function (Component) {
-        return new Component();
-      });
-    }
-  }]);
-}();
+  /**
+   * Registers the required components provided by Zodiac.
+   *
+   * @returns A list of instantiated components.
+   */
+  registerComponents() {
+    return [ItemState, UpdateEffectiveOptions(Track), UpdateEffectiveOptions(Autoplay), Controls, UpdateEffectiveOptions(Drag), LiveRegion].map(Component => new Component());
+  }
+}
 
 export { Zodiac as default };
 //# sourceMappingURL=zodiac.esm.js.map
