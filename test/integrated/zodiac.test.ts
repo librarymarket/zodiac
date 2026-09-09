@@ -184,7 +184,7 @@ describe('Zodiac', () => {
         zodiac.setPosition(position);
       };
 
-      expect(setPosition).toThrowError(RangeError);
+      expect(setPosition).toThrow(RangeError);
     });
   });
 });

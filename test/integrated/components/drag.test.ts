@@ -241,6 +241,6 @@ describe('Drag', () => {
 
     firstItem.dispatchEvent(dragstartEvent);
 
-    expect(dragstartEvent.preventDefault).toBeCalled();
+    expect(dragstartEvent.preventDefault).toHaveBeenCalled();
   });
 });
