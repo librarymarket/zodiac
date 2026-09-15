@@ -23,7 +23,6 @@
     "watch:css": "sass --watch src/assets/scss/zodiac.scss:dist/css/zodiac.css",
     "watch:js": "rollup -cmw",
     "watch": "concurrently --kill-others \"npm:watch:css\" \"npm:watch:js\"",
-    "dev": "npm run watch",
     "prepack": "npm run build"
   },
   "author": "jeremyljackson",
