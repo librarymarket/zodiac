@@ -1,6 +1,6 @@
 import { EventBus } from '../../src/eventBus';
 
-let eventBus: EventBus = null;
+let eventBus: EventBus;
 
 describe('EventBus', () => {
   beforeEach(() => {

@@ -8,8 +8,8 @@ describe('Drag', () => {
   beforeEach(() => {
     document.body.innerHTML = htmlFixture;
 
-    document.querySelector<HTMLElement>('.zodiac').style.width = `${sliderWidth}px`;
-    document.querySelector<HTMLElement>('.zodiac-inner').style.width = `${sliderWidth}px`;
+    document.querySelector<HTMLElement>('.zodiac')!.style.width = `${sliderWidth}px`;
+    document.querySelector<HTMLElement>('.zodiac-inner')!.style.width = `${sliderWidth}px`;
   });
 
   test('should move the slider by dragging with a mouse', () => {
@@ -18,7 +18,7 @@ describe('Drag', () => {
     const beforeDrag = document.body.innerHTML;
     expect(zodiac.getPosition()).toBe(0);
 
-    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track')!;
 
     sliderElement.dispatchEvent(new MouseEvent('mousedown', {
       view: window,
@@ -26,7 +26,7 @@ describe('Drag', () => {
       cancelable: true,
     }));
 
-    const trackElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const trackElement = document.querySelector<HTMLElement>('.zodiac-track')!;
     expect(trackElement.classList.contains('dragging')).toBe(true);
 
     sliderElement.dispatchEvent(new MouseEvent('mousemove', {
@@ -60,7 +60,7 @@ describe('Drag', () => {
     const beforeDrag = document.body.innerHTML;
     expect(zodiac.getPosition()).toBe(0);
 
-    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track')!;
 
     sliderElement.dispatchEvent(new MouseEvent('mousedown', {
       view: window,
@@ -68,7 +68,7 @@ describe('Drag', () => {
       cancelable: true,
     }));
 
-    const trackElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const trackElement = document.querySelector<HTMLElement>('.zodiac-track')!;
     expect(trackElement.classList.contains('dragging')).toBe(true);
 
     sliderElement.dispatchEvent(new MouseEvent('mousemove', {
@@ -102,7 +102,7 @@ describe('Drag', () => {
     const beforeDrag = document.body.innerHTML;
     expect(zodiac.getPosition()).toBe(0);
 
-    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track')!;
 
     zodiac.previous();
 
@@ -114,7 +114,7 @@ describe('Drag', () => {
       cancelable: true,
     }));
 
-    const trackElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const trackElement = document.querySelector<HTMLElement>('.zodiac-track')!;
     expect(trackElement.classList.contains('dragging')).toBe(true);
 
     sliderElement.dispatchEvent(new MouseEvent('mousemove', {
@@ -147,7 +147,7 @@ describe('Drag', () => {
 
     const beforeDrag = document.body.innerHTML;
 
-    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const sliderElement = document.querySelector<HTMLElement>('.zodiac-track')!;
 
     sliderElement.dispatchEvent(new TouchEvent('touchstart', {
       bubbles: true,
@@ -161,7 +161,7 @@ describe('Drag', () => {
       ],
     }));
 
-    const trackElement = document.querySelector<HTMLElement>('.zodiac-track');
+    const trackElement = document.querySelector<HTMLElement>('.zodiac-track')!;
     expect(trackElement.classList.contains('dragging')).toBe(true);
 
     sliderElement.dispatchEvent(new TouchEvent('touchmove', {
@@ -192,15 +192,34 @@ describe('Drag', () => {
     expect(beforeDrag).not.toBe(document.body.innerHTML);
   });
 
-  test('should modify link attributes on drag.', () => {
+  test('should use zero when a touch has no screen position', () => {
+    const zodiac = new Zodiac('.zodiac').mount();
+    const sliderElement = zodiac.getTrackElement();
+
+    sliderElement.dispatchEvent(new TouchEvent('touchstart', {
+      touches: [new Touch({ identifier: 125, target: sliderElement })],
+    }));
+
+    sliderElement.dispatchEvent(new TouchEvent('touchmove', {
+      touches: [new Touch({ identifier: 125, target: sliderElement, screenX: -zodiac.getItemWidth() })],
+    }));
+
+    sliderElement.dispatchEvent(new TouchEvent('touchend'));
+
+    expect(zodiac.getPosition()).toBe(1);
+  });
+
+  test('should modify link attributes on drag, including an empty href', () => {
     const zodiac = new Zodiac('.zodiac').mount();
     const eventBus = zodiac.getEventBus();
+
+    document.querySelector<HTMLAnchorElement>('.zodiac-item:not(.zodiac-cloned) a')!.setAttribute('href', '');
 
     const links: Array<{href: string, element: HTMLAnchorElement}> = [];
 
     document.querySelectorAll<HTMLAnchorElement>('.zodiac-item a').forEach((link) => {
       links.push({
-        href: link.getAttribute('href'),
+        href: link.getAttribute('href')!,
         element: link,
       });
     });
@@ -229,7 +248,7 @@ describe('Drag', () => {
   test('should disable item dragging while track is being dragged', () => {
     new Zodiac('.zodiac').mount();
 
-    const firstItem = document.querySelector<HTMLElement>('.zodiac-item:not(.zodiac-cloned)');
+    const firstItem = document.querySelector<HTMLElement>('.zodiac-item:not(.zodiac-cloned)')!;
 
     const dragstartEvent = new Event('dragstart', {
       bubbles: true,
@@ -241,6 +260,6 @@ describe('Drag', () => {
 
     firstItem.dispatchEvent(dragstartEvent);
 
-    expect(dragstartEvent.preventDefault).toBeCalled();
+    expect(dragstartEvent.preventDefault).toHaveBeenCalled();
   });
 });

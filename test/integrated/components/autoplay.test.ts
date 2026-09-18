@@ -15,7 +15,7 @@ describe('Autoplay', () => {
         autoplaySpeed,
       }).mount();
 
-      const zodiacItem = document.querySelector<HTMLElement>('.zodiac-item a');
+      const zodiacItem = document.querySelector<HTMLElement>('.zodiac-item a')!;
 
       zodiacItem.focus();
 
@@ -52,7 +52,7 @@ describe('Autoplay', () => {
         pauseOnHover: true,
       }).mount();
 
-      const zodiacElement = document.querySelector<HTMLElement>('.zodiac');
+      const zodiacElement = document.querySelector<HTMLElement>('.zodiac')!;
 
       zodiacElement.dispatchEvent(new MouseEvent('mouseenter', {
         view: window,
@@ -83,7 +83,7 @@ describe('Autoplay', () => {
         pauseOnHover: false,
       }).mount();
 
-      const zodiacElement = document.querySelector<HTMLElement>('.zodiac');
+      const zodiacElement = document.querySelector<HTMLElement>('.zodiac')!;
 
       zodiacElement.dispatchEvent(new MouseEvent('mouseenter', {
         view: window,

@@ -78,7 +78,7 @@ export class Track extends ComponentBase {
     });
 
     eventBus.on(['disableTransition.after'], () => {
-      trackElement.style.transition = null;
+      trackElement.style.removeProperty('transition');
     });
   }
 
@@ -120,6 +120,10 @@ export class Track extends ComponentBase {
   protected getSliderWidth(): number {
     const selector = this.options.classes.inner;
     const inner = this.zodiac.getSliderElement().querySelector(`.${selector}`);
+
+    if (!inner) {
+      throw new Error(`Slider inner element ".${selector}" was not found.`);
+    }
 
     const { width } = inner.getBoundingClientRect();
 

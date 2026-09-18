@@ -26,7 +26,7 @@ addition to minified and ES module versions.
 <html>
   <head>
     <!-- ... -->
-    <link href="node_modules/@librarymarket/zodiac/dist/zodiac.css" rel="stylesheet">
+    <link href="node_modules/@librarymarket/zodiac/dist/css/zodiac.css" rel="stylesheet">
   </head>
   <body>
     <div id="zodiac" class="zodiac">

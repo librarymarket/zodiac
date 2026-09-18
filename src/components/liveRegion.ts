@@ -10,7 +10,7 @@ export class LiveRegion extends ComponentBase {
   /**
    * The live region element.
    */
-  protected liveRegion: HTMLDivElement;
+  protected liveRegion!: HTMLDivElement;
 
   /**
    * {@inheritDoc ComponentBase.mount}
@@ -53,7 +53,7 @@ export class LiveRegion extends ComponentBase {
     );
 
     if (titleElement) {
-      title = titleElement.dataset.zodiacLiveRegionTitle;
+      title = titleElement.dataset.zodiacLiveRegionTitle ?? '';
     }
 
     return title;

@@ -1,5 +1,5 @@
 import { EventBus } from './eventBus';
-import { Options, OptionsInterface } from './options';
+import { Options, OptionsInput, ResolvedOptions } from './options';
 
 import { ComponentInterface, UpdateEffectiveOptions } from './components/componentBase';
 import { Autoplay } from './components/autoplay';
@@ -22,7 +22,7 @@ export default class Zodiac {
   /**
    * The number of cloned slider items preceding the normal slider items.
    */
-  protected clonedOffset: number;
+  protected clonedOffset!: number;
 
   /**
    * The slider components.
@@ -42,7 +42,7 @@ export default class Zodiac {
   /**
    * The width of each slider item.
    */
-  protected itemWidth: number;
+  protected itemWidth!: number;
 
   /**
    * The slider options.
@@ -75,7 +75,7 @@ export default class Zodiac {
    * @param selector - The base selector to use.
    * @param options - The options to initialize the slider with.
    */
-  public constructor(selector: string, options?: OptionsInterface) {
+  public constructor(selector: string, options?: OptionsInput) {
     this.eventBus = new EventBus();
 
     this.selector = selector;
@@ -85,8 +85,8 @@ export default class Zodiac {
 
     this.components = this.registerComponents();
 
-    this.sliderElement = document.querySelector(this.selector);
-    this.trackElement = this.sliderElement.querySelector(`.${effectiveOptions.classes.track}`);
+    this.sliderElement = document.querySelector<HTMLElement>(this.selector)!;
+    this.trackElement = this.sliderElement.querySelector<HTMLElement>(`.${effectiveOptions.classes.track}`)!;
     this.items = this.sliderElement.querySelectorAll(`.${effectiveOptions.classes.items}`);
 
     this.position = 0;
@@ -120,7 +120,7 @@ export default class Zodiac {
    *
    * @returns The slider's effective options.
    */
-  public getEffectiveOptions(): OptionsInterface {
+  public getEffectiveOptions(): ResolvedOptions {
     return this.options.getEffectiveOptions();
   }
 

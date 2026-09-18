@@ -20,12 +20,12 @@ export class Autoplay extends ComponentBase {
   /**
    * The autoplay interval ID.
    */
-  protected interval: NodeJS.Timeout;
+  protected interval!: ReturnType<typeof setInterval>;
 
   /**
    * An `AbortController` for resetting the mouse events in `this.pauseOnHover()`.
    */
-  protected abortController: AbortController;
+  protected abortController!: AbortController;
 
   /**
    * {@inheritDoc ComponentBase.mount}
@@ -108,7 +108,7 @@ export class Autoplay extends ComponentBase {
     const { autoplay, autoplaySpeed } = this.options;
 
     // Check if autoplay is enabled with a positive interval duration.
-    if (autoplay && autoplaySpeed > 0) {
+    if (autoplay && autoplaySpeed && autoplaySpeed > 0) {
       // Prevent multiple autoplay intervals from occurring simultaneously.
       this.stop();
 

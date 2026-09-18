@@ -22,7 +22,7 @@ describe('LiveRegion', () => {
 
     zodiac.next();
 
-    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region')!;
 
     expect(liveRegion.innerText).toBe('Slide 2 of 9 2. Text');
   });
@@ -31,16 +31,17 @@ describe('LiveRegion', () => {
     const zodiac = new Zodiac(defaultSelector).mount();
 
     zodiac.getItems().forEach((item) => {
-      const title = item.querySelector<HTMLElement>('a').dataset.zodiacLiveRegionTitle;
+      const link = item.querySelector<HTMLElement>('a')!;
+      const title = link.dataset.zodiacLiveRegionTitle;
 
-      item.querySelector<HTMLElement>('a').dataset.zodiacLiveRegionTitle = '';
+      link.dataset.zodiacLiveRegionTitle = '';
 
       item.dataset.zodiacLiveRegionTitle = title;
     });
 
     zodiac.next();
 
-    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region')!;
 
     expect(liveRegion.innerText).toBe('Slide 2 of 9 2. Text');
   });
@@ -49,12 +50,25 @@ describe('LiveRegion', () => {
     const zodiac = new Zodiac(defaultSelector).mount();
 
     zodiac.getItems().forEach((item) => {
-      item.querySelector<HTMLElement>('a').dataset.zodiacLiveRegionTitle = '';
+      item.querySelector<HTMLElement>('a')!.dataset.zodiacLiveRegionTitle = '';
     });
 
     zodiac.next();
 
-    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region')!;
+
+    expect(liveRegion.innerText).toBe('Slide 2 of 9');
+  });
+
+  test('should omit a title that is missing from the matched element dataset', () => {
+    const zodiac = new Zodiac(defaultSelector).mount();
+    const link = zodiac.getItems()[1].querySelector<HTMLElement>('a')!;
+
+    Object.defineProperty(link, 'dataset', { value: {} });
+
+    zodiac.next();
+
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region')!;
 
     expect(liveRegion.innerText).toBe('Slide 2 of 9');
   });
@@ -66,7 +80,7 @@ describe('LiveRegion', () => {
 
     zodiac.next();
 
-    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region');
+    const liveRegion = zodiac.getSliderElement().querySelector<HTMLElement>('.zodiac-live-region')!;
 
     expect(liveRegion.innerText).toBe('Item 2 out of 9 2. Text');
   });

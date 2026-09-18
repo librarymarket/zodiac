@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 
@@ -15,8 +14,6 @@ export default {
   plugins: [
     // Allows node_modules resolution
     resolve({ extensions }),
-
-    commonjs(),
 
     // Compile TypeScript/JavaScript files
     babel({ extensions, include: ['src/**/*'], babelHelpers: 'bundled' }),

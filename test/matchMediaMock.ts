@@ -134,7 +134,7 @@ export default class MatchMediaMock {
    * @returns An array of the registered event listeners.
    */
   public getListeners(mediaQuery: string): MediaQueryListener[] {
-    let listeners = [];
+    let listeners: MediaQueryListener[] = [];
 
     if (this.mediaQueries[mediaQuery]) {
       listeners = this.mediaQueries[mediaQuery];

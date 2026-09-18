@@ -79,7 +79,7 @@ export class ItemState extends ComponentBase {
       this.setTabindex(item, visible);
 
       // Collect a list of focusable items within each slider item.
-      const focusableItems = item.querySelectorAll(Utilities.focusableSelectors.join(', '));
+      const focusableItems = item.querySelectorAll<HTMLElement>(Utilities.focusableSelectors.join(', '));
 
       // Set the tab index for each focusable element within each slider item.
       focusableItems.forEach((element: HTMLElement) => {

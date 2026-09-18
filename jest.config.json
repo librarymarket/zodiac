@@ -4,6 +4,7 @@
     "src/**/*.ts"
   ],
   "coverageDirectory": "<rootDir>/coverage/",
+  "coverageProvider": "v8",
   "coverageThreshold": {
     "global": {
       "branches": 100,
