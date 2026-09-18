@@ -13,22 +13,33 @@
   <div class="vh-100 w-100 d-flex align-items-center">
     <div class="container my-5">
       <div id="zodiac" class="zodiac">
-        <div class="d-flex w-100">
-          <button class="btn btn-outline-dark rounded-pill my-auto me-3" data-zodiac-direction="left">
-            <i class="bi bi-chevron-left"></i>
-            <span class="visually-hidden">Prev</span>
-          </button>
+        <div class="d-flex flex-column w-100">
           <div class="zodiac-inner">
             <div class="zodiac-track"></div>
           </div>
-          <button class="btn btn-outline-dark rounded-pill my-auto ms-3" data-zodiac-direction="right">
+        </div>
+
+        <div class="zodiac-controls d-flex border p-1 rounded-pill mx-auto">
+          <button class="btn d-none" data-zodiac-play>
+            <i class="bi bi-play"></i>
+            <span class="visually-hidden">Play</span>
+          </button>
+          <button class="btn" data-zodiac-pause>
+            <i class="bi bi-pause"></i>
+            <span class="visually-hidden">Pause</span>
+          </button>
+          <button class="btn" data-zodiac-direction="left">
+            <i class="bi bi-chevron-left"></i>
+            <span class="visually-hidden">Prev</span>
+          </button>
+          <button class="btn" data-zodiac-direction="right">
             <i class="bi bi-chevron-right"></i>
             <span class="visually-hidden">Next</span>
           </button>
         </div>
       </div>
 
-      <div id="zodiac--2" class="zodiac mt-3">
+      <!-- <div id="zodiac--2" class="zodiac mt-3">
         <div class="d-flex w-100">
           <button class="btn btn-outline-dark rounded-pill my-auto me-3" data-zodiac-direction="left">
             <i class="bi bi-chevron-left"></i>
@@ -42,7 +53,7 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -91,10 +102,21 @@
 
     window.addEventListener('load', () => {
       const zodiac1 = new Zodiac('#zodiac', settings).mount();
-      const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
+      // const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
+
+      const sliderElement = zodiac1.sliderElement;
+
+      const toggle = () => {
+        console.log('toggle');
+        sliderElement.querySelector('[data-zodiac-play]').classList.toggle('d-none');
+        sliderElement.querySelector('[data-zodiac-pause]').classList.toggle('d-none');
+      };
+
+      zodiac1.on(['play'], () => toggle);
+      zodiac1.on(['pause'], () => toggle);
 
       console.log(zodiac1);
-      console.log(zodiac2);
+      // console.log(zodiac2);
     });
   </script>
 </body>

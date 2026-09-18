@@ -40,9 +40,11 @@ export class Autoplay extends ComponentBase {
     this.pauseOnFocus();
     this.pauseOnHover();
 
+    const eventBus = this.zodiac.getEventBus();
+
     // Reconfigure autoplay and pause on hover configuration when the options
     // are rebuilt.
-    this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
+    eventBus.on(['updateEffectiveOptions.after'], () => {
       this.abortController.abort();
 
       this.abortController = new AbortController();
@@ -50,6 +52,14 @@ export class Autoplay extends ComponentBase {
       this.stop();
       this.start();
       this.pauseOnHover();
+    });
+
+    eventBus.on(['play'], () => {
+      this.start();
+    });
+
+    eventBus.on(['pause'], () => {
+      this.stop();
     });
   }
 

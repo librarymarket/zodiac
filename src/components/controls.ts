@@ -49,6 +49,22 @@ export class Controls extends ComponentBase {
         }
       });
     }
+
+    const playBtn = sliderElement.querySelector('[data-zodiac-play]');
+
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        eventBus.emit(['play']);
+      });
+    }
+
+    const pauseBtn = sliderElement.querySelector('[data-zodiac-pause]');
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        eventBus.emit(['pause']);
+      });
+    }
   }
 
 }

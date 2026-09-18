@@ -330,15 +330,22 @@ var Zodiac = (function () {
       this.pauseOnDrag();
       this.pauseOnFocus();
       this.pauseOnHover();
+      const eventBus = this.zodiac.getEventBus();
 
       // Reconfigure autoplay and pause on hover configuration when the options
       // are rebuilt.
-      this.zodiac.getEventBus().on(['updateEffectiveOptions.after'], () => {
+      eventBus.on(['updateEffectiveOptions.after'], () => {
         this.abortController.abort();
         this.abortController = new AbortController();
         this.stop();
         this.start();
         this.pauseOnHover();
+      });
+      eventBus.on(['play'], () => {
+        this.start();
+      });
+      eventBus.on(['pause'], () => {
+        this.stop();
       });
     }
 
@@ -458,6 +465,18 @@ var Zodiac = (function () {
           if (allowMove) {
             this.zodiac.previous();
           }
+        });
+      }
+      const playBtn = sliderElement.querySelector('[data-zodiac-play]');
+      if (playBtn) {
+        playBtn.addEventListener('click', () => {
+          eventBus.emit(['play']);
+        });
+      }
+      const pauseBtn = sliderElement.querySelector('[data-zodiac-pause]');
+      if (pauseBtn) {
+        pauseBtn.addEventListener('click', () => {
+          eventBus.emit(['pause']);
         });
       }
     }
