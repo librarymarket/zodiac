@@ -113,7 +113,9 @@ export type OptionsInput = OptionsInterface;
  */
 export type ResolvedOptions = Required<Omit<OptionsInterface, 'classes' | 'mediaQueryLists' | 'mediaQueryOptions'>> & {
   classes: Required<ClassesInterface>;
-} & Pick<OptionsInterface, 'mediaQueryLists' | 'mediaQueryOptions'>;
+  mediaQueryLists?: OptionsInterface['mediaQueryLists'];
+  mediaQueryOptions?: OptionsInterface['mediaQueryOptions'];
+};
 
 /**
  * A collection of options applied at the specific media query.
