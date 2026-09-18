@@ -13,7 +13,7 @@ describe('Controls', () => {
 
       expect(zodiac.getPosition()).toBe(0);
 
-      document.querySelector<HTMLElement>('[data-zodiac-direction="right"]').click();
+      document.querySelector<HTMLElement>('[data-zodiac-direction="right"]')!.click();
 
       expect(zodiac.getPosition()).toBe(1);
     });
@@ -23,7 +23,7 @@ describe('Controls', () => {
 
       expect(zodiac.getPosition()).toBe(0);
 
-      document.querySelector<HTMLElement>('[data-zodiac-direction="left"]').click();
+      document.querySelector<HTMLElement>('[data-zodiac-direction="left"]')!.click();
 
       expect(zodiac.getPosition()).toBe(8);
     });

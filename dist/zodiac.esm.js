@@ -75,6 +75,14 @@ class EventBus {
  */
 
 /**
+ * User supplied options. Omitted values are filled from the defaults.
+ */
+
+/**
+ * Options after defaults have been applied.
+ */
+
+/**
  * A collection of options applied at the specific media query.
  */
 
@@ -142,7 +150,12 @@ class Options {
     this.eventBus = eventBus;
 
     // Override the default base options with those provided by the user.
+    const defaultClasses = this.baseOptions.classes;
     Object.assign(this.baseOptions, options);
+    this.baseOptions.classes = {
+      ...defaultClasses,
+      ...options.classes
+    };
 
     // Check if any media query options were provided.
     if (options.mediaQueryOptions) {
@@ -384,7 +397,7 @@ class Autoplay extends ComponentBase {
     } = this.options;
 
     // Check if autoplay is enabled with a positive interval duration.
-    if (autoplay && autoplaySpeed > 0) {
+    if (autoplay && autoplaySpeed && autoplaySpeed > 0) {
       // Prevent multiple autoplay intervals from occurring simultaneously.
       this.stop();
 
@@ -607,7 +620,7 @@ class LiveRegion extends ComponentBase {
     const sliderElement = this.zodiac.getSliderElement();
     const titleElement = sliderElement.querySelector('.zodiac-item.active[data-zodiac-live-region-title], .zodiac-item.active [data-zodiac-live-region-title]');
     if (titleElement) {
-      title = titleElement.dataset.zodiacLiveRegionTitle;
+      title = titleElement.dataset.zodiacLiveRegionTitle ?? '';
     }
     return title;
   }
@@ -692,7 +705,7 @@ class Track extends ComponentBase {
       trackElement.style.transition = 'none';
     });
     eventBus.on(['disableTransition.after'], () => {
-      trackElement.style.transition = null;
+      trackElement.style.removeProperty('transition');
     });
   }
 
@@ -730,6 +743,9 @@ class Track extends ComponentBase {
   getSliderWidth() {
     const selector = this.options.classes.inner;
     const inner = this.zodiac.getSliderElement().querySelector(`.${selector}`);
+    if (!inner) {
+      throw new Error(`Slider inner element ".${selector}" was not found.`);
+    }
     const {
       width
     } = inner.getBoundingClientRect();
@@ -827,7 +843,6 @@ class Drag extends ComponentBase {
   /**
    * The `AbortController` for the `this.move()` method.
    */
-  moveController = null;
 
   /**
    * Events that move the slider when dragging.
@@ -857,7 +872,6 @@ class Drag extends ComponentBase {
   /**
    * The `AbortController` for the `this.stop()` method.
    */
-  stopController = null;
 
   /**
    * Events that signal when dragging should end.
@@ -927,7 +941,7 @@ class Drag extends ComponentBase {
    * @returns The `screenX` value of the event.
    */
   getScreenX(event) {
-    let screenX = null;
+    let screenX = 0;
     if (window.TouchEvent && event instanceof TouchEvent) {
       screenX = event.touches[0].screenX ?? 0;
     } else if (event instanceof MouseEvent) {
@@ -976,8 +990,11 @@ class Drag extends ComponentBase {
 
         // Add or remove the draggable attribute on the link element.
         link.draggable = draggable;
-        link.setAttribute(destination, link.getAttribute(source));
-        link.removeAttribute(source);
+        const sourceAttribute = link.getAttribute(source);
+        if (sourceAttribute !== null) {
+          link.setAttribute(destination, sourceAttribute);
+          link.removeAttribute(source);
+        }
       });
 
       // Indicate click has or hasn't been prevented.

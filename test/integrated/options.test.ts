@@ -2,7 +2,7 @@ import MatchMediaMock from '../matchMediaMock';
 import { htmlFixture } from '../fixtures/html';
 
 import Zodiac from '../../src/zodiac';
-import { Options } from '../../src/options';
+import { Options, OptionsInterface } from '../../src/options';
 import { EventBus } from '../../src/eventBus';
 
 const defaultSelector = '.zodiac';
@@ -17,6 +17,33 @@ describe('Options', () => {
 
     afterEach(() => {
       matchMedia.clear();
+    });
+
+    test.each([undefined, {}])('fills omitted options from defaults', (input) => {
+      const options = new Options(new EventBus(), input).getEffectiveOptions();
+
+      expect(options.autoplay).toBe(true);
+      expect(options.itemsPerView).toBe(5);
+      expect(options.classes).toEqual({
+        inner: 'zodiac-inner',
+        items: 'zodiac-item',
+        track: 'zodiac-track',
+      });
+      expect(options).not.toHaveProperty('mediaQueryLists');
+      expect(options).not.toHaveProperty('mediaQueryOptions');
+    });
+
+    test('fills omitted class names when one is supplied', () => {
+      const input: OptionsInterface = {
+        classes: {track: 'custom-track'},
+      };
+      const options = new Options(new EventBus(), input).getEffectiveOptions();
+
+      expect(options.classes).toEqual({
+        inner: 'zodiac-inner',
+        items: 'zodiac-item',
+        track: 'custom-track',
+      });
     });
 
     test.each([

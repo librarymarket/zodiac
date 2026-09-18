@@ -34,8 +34,8 @@ describe('Track', () => {
     beforeEach(() => {
       document.body.innerHTML = htmlFixture;
 
-      document.querySelector<HTMLElement>('.zodiac').style.width = `${sliderWidth}px`;
-      document.querySelector<HTMLElement>('.zodiac-inner').style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac')!.style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac-inner')!.style.width = `${sliderWidth}px`;
     });
 
     test('should calculate item and track widths', () => {
@@ -44,8 +44,8 @@ describe('Track', () => {
         gap: 8,
       }).mount();
 
-      const trackWidth = document.querySelector<HTMLElement>('.zodiac-track').getBoundingClientRect().width;
-      const itemWidth = document.querySelector<HTMLElement>('.zodiac-item').getBoundingClientRect().width;
+      const trackWidth = document.querySelector<HTMLElement>('.zodiac-track')!.getBoundingClientRect().width;
+      const itemWidth = document.querySelector<HTMLElement>('.zodiac-item')!.getBoundingClientRect().width;
 
       expect(trackWidth).toBe(7700);
       expect(itemWidth).toBe(342);
@@ -58,11 +58,18 @@ describe('Track', () => {
         gap: 8,
       }).mount();
 
-      const trackWidth = document.querySelector<HTMLElement>('.zodiac-track').getBoundingClientRect().width;
-      const itemWidth = document.querySelector<HTMLElement>('.zodiac-item').getBoundingClientRect().width;
+      const trackWidth = document.querySelector<HTMLElement>('.zodiac-track')!.getBoundingClientRect().width;
+      const itemWidth = document.querySelector<HTMLElement>('.zodiac-item')!.getBoundingClientRect().width;
 
       expect(trackWidth).toBe(3150);
       expect(itemWidth).toBe(342);
+    });
+
+    test('should throw when the inner element is missing', () => {
+      document.querySelector<HTMLElement>('.zodiac-inner')!.classList.remove('zodiac-inner');
+
+      expect(() => new Zodiac(defaultSelector).mount())
+        .toThrow('Slider inner element ".zodiac-inner" was not found.');
     });
   });
 
@@ -70,8 +77,8 @@ describe('Track', () => {
     beforeEach(() => {
       document.body.innerHTML = htmlFixture;
 
-      document.querySelector<HTMLElement>('.zodiac').style.width = `${sliderWidth}px`;
-      document.querySelector<HTMLElement>('.zodiac-inner').style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac')!.style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac-inner')!.style.width = `${sliderWidth}px`;
     });
 
     afterEach(() => {
@@ -96,8 +103,8 @@ describe('Track', () => {
 
       // Simulate the slider width changing with the media query change.
       sliderWidth = 300;
-      document.querySelector<HTMLElement>('.zodiac').style.width = `${sliderWidth}px`;
-      document.querySelector<HTMLElement>('.zodiac-inner').style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac')!.style.width = `${sliderWidth}px`;
+      document.querySelector<HTMLElement>('.zodiac-inner')!.style.width = `${sliderWidth}px`;
 
       matchMedia.useMediaQuery('(min-width: 400px)');
 

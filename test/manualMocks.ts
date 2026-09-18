@@ -28,42 +28,38 @@ window.HTMLElement.prototype.getBoundingClientRect = function(): DOMRect {
  */
 window.Touch = class implements Touch {
 
-  altitudeAngle: number;
+  altitudeAngle!: number;
 
-  azimuthAngle: number;
+  azimuthAngle!: number;
 
-  clientX: number;
+  clientX!: number;
 
-  clientY: number;
+  clientY!: number;
 
-  force: number;
+  force!: number;
 
-  identifier: number;
+  identifier!: number;
 
-  pageX: number;
+  pageX!: number;
 
-  pageY: number;
+  pageY!: number;
 
-  radiusX: number;
+  radiusX!: number;
 
-  radiusY: number;
+  radiusY!: number;
 
-  rotationAngle: number;
+  rotationAngle!: number;
 
-  screenX: number;
+  screenX!: number;
 
-  screenY: number;
+  screenY!: number;
 
-  target: EventTarget;
+  target!: EventTarget;
 
-  touchType: TouchType;
+  touchType!: TouchType;
 
   constructor(touchInitDict: TouchInit) {
-    for (const key in touchInitDict) {
-      if (touchInitDict[key]) {
-        this[key] = touchInitDict[key];
-      }
-    }
+    Object.assign(this, touchInitDict);
   }
 
 };

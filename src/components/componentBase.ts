@@ -1,4 +1,4 @@
-import { OptionsInterface } from '../options';
+import { ResolvedOptions } from '../options';
 
 import Zodiac from '../zodiac';
 
@@ -27,12 +27,12 @@ export abstract class ComponentBase implements ComponentInterface {
   /**
    * The slider's options.
    */
-  protected options: OptionsInterface;
+  protected options!: ResolvedOptions;
 
   /**
    * The slider instance.
    */
-  protected zodiac: Zodiac;
+  protected zodiac!: Zodiac;
 
   /**
    * {@inheritDoc ComponentInterface.mount}

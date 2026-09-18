@@ -38,7 +38,7 @@ export class Drag extends ComponentBase {
   /**
    * The `AbortController` for the `this.move()` method.
    */
-  protected moveController: AbortController = null;
+  protected moveController!: AbortController;
 
   /**
    * Events that move the slider when dragging.
@@ -74,7 +74,7 @@ export class Drag extends ComponentBase {
   /**
    * The `AbortController` for the `this.stop()` method.
    */
-  protected stopController: AbortController = null;
+  protected stopController!: AbortController;
 
   /**
    * Events that signal when dragging should end.
@@ -148,7 +148,7 @@ export class Drag extends ComponentBase {
    * @returns The `screenX` value of the event.
    */
   protected getScreenX(event: DragEvent): number {
-    let screenX: number = null;
+    let screenX: number = 0;
 
     if (window.TouchEvent && event instanceof TouchEvent) {
       screenX = event.touches[0].screenX ?? 0;
@@ -201,8 +201,11 @@ export class Drag extends ComponentBase {
         // Add or remove the draggable attribute on the link element.
         link.draggable = draggable;
 
-        link.setAttribute(destination, link.getAttribute(source));
-        link.removeAttribute(source);
+        const sourceAttribute = link.getAttribute(source);
+        if (sourceAttribute !== null) {
+          link.setAttribute(destination, sourceAttribute);
+          link.removeAttribute(source);
+        }
       });
 
       // Indicate click has or hasn't been prevented.

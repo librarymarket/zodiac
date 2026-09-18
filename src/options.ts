@@ -104,11 +104,23 @@ export interface OptionsInterface {
 }
 
 /**
+ * User supplied options. Omitted values are filled from the defaults.
+ */
+export type OptionsInput = OptionsInterface;
+
+/**
+ * Options after defaults have been applied.
+ */
+export type ResolvedOptions = Required<Omit<OptionsInterface, 'classes' | 'mediaQueryLists' | 'mediaQueryOptions'>> & {
+  classes: Required<ClassesInterface>;
+} & Pick<OptionsInterface, 'mediaQueryLists' | 'mediaQueryOptions'>;
+
+/**
  * A collection of options applied at the specific media query.
  */
 export interface MediaQueryOptionsInterface {
 
-  [key: string]: OptionsInterface;
+  [key: string]: OptionsInput;
 
 }
 
@@ -125,7 +137,7 @@ export interface MediaQueryListsInterface {
   /**
    * The options for the provided `MediaQueryList`.
    */
-  options: OptionsInterface;
+  options: OptionsInput;
 }
 
 /**
@@ -136,7 +148,7 @@ export class Options {
   /**
    * The base options unrestricted by any media query.
    */
-  protected baseOptions: OptionsInterface = {
+  protected baseOptions: ResolvedOptions = {
     autoplay: true,
     autoplaySpeed: 5000,
     classes: {
@@ -156,7 +168,7 @@ export class Options {
   /**
    * The active options based on the computed media queries.
    */
-  protected effectiveOptions: OptionsInterface;
+  protected effectiveOptions!: ResolvedOptions;
 
   /**
    * The event bus.
@@ -187,11 +199,16 @@ export class Options {
    * @param eventBus - The event bus.
    * @param options - The user supplied options.
    */
-  public constructor(eventBus: EventBus, options: OptionsInterface = {}) {
+  public constructor(eventBus: EventBus, options: OptionsInput = {}) {
     this.eventBus = eventBus;
 
     // Override the default base options with those provided by the user.
+    const defaultClasses = this.baseOptions.classes;
     Object.assign(this.baseOptions, options);
+    this.baseOptions.classes = {
+      ...defaultClasses,
+      ...options.classes,
+    };
 
     // Check if any media query options were provided.
     if (options.mediaQueryOptions) {
@@ -223,7 +240,7 @@ export class Options {
    *
    * @returns The effective options.
    */
-  public getEffectiveOptions(): OptionsInterface {
+  public getEffectiveOptions(): ResolvedOptions {
     return this.effectiveOptions;
   }
 
@@ -256,7 +273,7 @@ export class Options {
    * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
    * options are found in the `mediaQueryOptions`.
    */
-  protected validateMediaQueryOptions(options: OptionsInterface) {
+  protected validateMediaQueryOptions(options: OptionsInput) {
     const invalidOptions = [
       'classes',
       'enableLiveRegion',
