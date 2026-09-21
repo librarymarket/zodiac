@@ -321,6 +321,11 @@ var Zodiac = (function () {
      */
 
     /**
+     * Whether the autoplay has been stopped by the controls.
+     */
+    stoppedByControls = false;
+
+    /**
      * {@inheritDoc ComponentBase.mount}
      */
     mount(zodiac) {
@@ -342,9 +347,11 @@ var Zodiac = (function () {
         this.pauseOnHover();
       });
       eventBus.on(['play'], () => {
+        this.stoppedByControls = false;
         this.start();
       });
       eventBus.on(['pause'], () => {
+        this.stoppedByControls = true;
         this.stop();
       });
     }
@@ -407,7 +414,7 @@ var Zodiac = (function () {
       } = this.options;
 
       // Check if autoplay is enabled with a positive interval duration.
-      if (autoplay && autoplaySpeed && autoplaySpeed > 0) {
+      if (autoplay && autoplaySpeed && autoplaySpeed > 0 && !this.stoppedByControls) {
         // Prevent multiple autoplay intervals from occurring simultaneously.
         this.stop();
 

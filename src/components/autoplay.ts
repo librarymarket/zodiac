@@ -28,6 +28,11 @@ export class Autoplay extends ComponentBase {
   protected abortController!: AbortController;
 
   /**
+   * Whether the autoplay has been stopped by the controls.
+   */
+  protected stoppedByControls: boolean = false;
+
+  /**
    * {@inheritDoc ComponentBase.mount}
    */
   public mount(zodiac: Zodiac): void {
@@ -55,10 +60,12 @@ export class Autoplay extends ComponentBase {
     });
 
     eventBus.on(['play'], () => {
+      this.stoppedByControls = false;
       this.start();
     });
 
     eventBus.on(['pause'], () => {
+      this.stoppedByControls = true;
       this.stop();
     });
   }
@@ -118,7 +125,7 @@ export class Autoplay extends ComponentBase {
     const { autoplay, autoplaySpeed } = this.options;
 
     // Check if autoplay is enabled with a positive interval duration.
-    if (autoplay && autoplaySpeed && autoplaySpeed > 0) {
+    if (autoplay && autoplaySpeed && autoplaySpeed > 0 && !this.stoppedByControls) {
       // Prevent multiple autoplay intervals from occurring simultaneously.
       this.stop();
 

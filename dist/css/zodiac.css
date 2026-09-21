@@ -28,7 +28,14 @@
 }
 
 .zodiac-controls {
-  position: absolute;
+  display: flex;
+  width: fit-content;
+  padding: 0.25rem;
+  margin-top: 1rem;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 50rem;
 }
 
 .zodiac-live-region {

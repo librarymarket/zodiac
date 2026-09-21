@@ -19,7 +19,7 @@
           </div>
         </div>
 
-        <div class="zodiac-controls d-flex border p-1 rounded-pill mx-auto">
+        <div class="zodiac-controls">
           <button class="btn d-none" data-zodiac-play>
             <i class="bi bi-play"></i>
             <span class="visually-hidden">Play</span>
@@ -83,6 +83,7 @@
   <script src="dist/zodiac.js"></script>
   <script>
     const settings = {
+      autoplay: true,
       itemsPerView: 2,
       mediaQueryOptions: {
         "(min-width: 768px)": {
@@ -107,13 +108,15 @@
       const sliderElement = zodiac1.sliderElement;
 
       const toggle = () => {
-        console.log('toggle');
-        sliderElement.querySelector('[data-zodiac-play]').classList.toggle('d-none');
-        sliderElement.querySelector('[data-zodiac-pause]').classList.toggle('d-none');
+        const playBtn = sliderElement.querySelector('button[data-zodiac-play]');
+        const pauseBtn = sliderElement.querySelector('button[data-zodiac-pause]');
+
+        playBtn.classList.toggle('d-none');
+        pauseBtn.classList.toggle('d-none');
       };
 
-      zodiac1.on(['play'], () => toggle);
-      zodiac1.on(['pause'], () => toggle);
+      zodiac1.on(['play'], toggle);
+      zodiac1.on(['pause'], toggle);
 
       console.log(zodiac1);
       // console.log(zodiac2);
