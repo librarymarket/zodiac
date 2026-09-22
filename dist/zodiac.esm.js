@@ -447,6 +447,7 @@ class Controls extends ComponentBase {
   mount(zodiac) {
     super.mount(zodiac);
     this.determineIfControlMovementAllowed();
+    this.setUpIndicatorControls();
     this.setUpNextPreviousControls();
     this.setUpPlayPauseControls();
   }
@@ -460,6 +461,33 @@ class Controls extends ComponentBase {
     const eventBus = this.zodiac.getEventBus();
     eventBus.on(['transitionDuration.before'], () => this.allowControlMovement = false);
     eventBus.on(['transitionDuration.after'], () => this.allowControlMovement = true);
+  }
+
+  /**
+   * Set up indicator controls.
+   */
+  setUpIndicatorControls() {
+    const sliderElement = this.zodiac.getSliderElement();
+    const indicators = sliderElement.querySelectorAll('.zodiac-indicator');
+    indicators.forEach(indicator => {
+      indicator.addEventListener('click', event => {
+        event.preventDefault();
+        const position = indicator.dataset.zodiacPosition;
+        if (position) {
+          this.zodiac.move(Number(position));
+        }
+      });
+    });
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
+      const currentPosition = this.zodiac.getPosition();
+      indicators.forEach(indicator => {
+        indicator.setAttribute('aria-current', 'false');
+        indicator.classList.remove('active');
+      });
+      const activeIndicator = sliderElement.querySelector(`[data-zodiac-position="${currentPosition}"]`);
+      activeIndicator?.classList?.add('active');
+      activeIndicator?.setAttribute('aria-current', 'true');
+    });
   }
 
   /**
@@ -491,18 +519,21 @@ class Controls extends ComponentBase {
   setUpPlayPauseControls() {
     const sliderElement = this.zodiac.getSliderElement();
     const eventBus = this.zodiac.getEventBus();
+    const toggleHidden = element => element.classList.toggle('zodiac-hidden');
     const playBtn = sliderElement.querySelector('[data-zodiac-play]');
     if (playBtn) {
       playBtn.classList.add('zodiac-hidden');
       playBtn.addEventListener('click', () => {
-        eventBus.emit(['play']);
+        eventBus.emit(['play'], playBtn);
       });
+      eventBus.on(['play'], toggleHidden);
     }
     const pauseBtn = sliderElement.querySelector('[data-zodiac-pause]');
     if (pauseBtn) {
       pauseBtn.addEventListener('click', () => {
-        eventBus.emit(['pause']);
+        eventBus.emit(['pause'], pauseBtn);
       });
+      eventBus.on(['pause'], toggleHidden);
     }
     if (playBtn && pauseBtn) {
       eventBus.on(['play', 'pause'], () => {

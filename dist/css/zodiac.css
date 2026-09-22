@@ -54,4 +54,43 @@
   display: none;
 }
 
+.zodiac-indicators {
+  display: flex;
+  align-items: center;
+}
+
+.zodiac-indicator {
+  position: relative;
+  flex: 0 1 auto;
+  width: 24px;
+  height: 24px;
+  min-height: auto;
+  padding: 0;
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+  font-size: 0;
+  background-color: transparent;
+  border: 0;
+}
+.zodiac-indicator::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  background-color: #000;
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: opacity 250ms, transform 250ms;
+  transform: scale(0.7);
+}
+.zodiac-indicator:hover::after, .zodiac-indicator:focus::after, .zodiac-indicator:active::after {
+  opacity: 1;
+}
+.zodiac-indicator.active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /*# sourceMappingURL=zodiac.css.map */
