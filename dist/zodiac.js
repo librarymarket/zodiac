@@ -440,28 +440,40 @@ var Zodiac = (function () {
    */
   class Controls extends ComponentBase {
     /**
+     * A flag that determines whether movement by controls is allowed.
+     */
+    allowControlMovement = true;
+
+    /**
      * {@inheritDoc ComponentBase.mount}
      */
     mount(zodiac) {
       super.mount(zodiac);
-      this.setUpControls();
+      this.determineIfControlMovementAllowed();
+      this.setUpNextPreviousControls();
+      this.setUpPlayPauseControls();
     }
 
     /**
-     * Attaches navigation buttons to the next & previous slider controls.
+     * Determines if movement by controls is allowed.
+     *
+     * Movement by controls is disabled when the slider is actively transitioning.
      */
-    setUpControls() {
-      // Create a flag that will disable control movement, if the slider is
-      // transitioning.
-      let allowMove = true;
+    determineIfControlMovementAllowed() {
       const eventBus = this.zodiac.getEventBus();
-      eventBus.on(['transitionDuration.before'], () => allowMove = false);
-      eventBus.on(['transitionDuration.after'], () => allowMove = true);
+      eventBus.on(['transitionDuration.before'], () => this.allowControlMovement = false);
+      eventBus.on(['transitionDuration.after'], () => this.allowControlMovement = true);
+    }
+
+    /**
+     * Set up the next and previous controls.
+     */
+    setUpNextPreviousControls() {
       const sliderElement = this.zodiac.getSliderElement();
       const nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
       if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-          if (allowMove) {
+          if (this.allowControlMovement) {
             this.zodiac.next();
           }
         });
@@ -469,13 +481,22 @@ var Zodiac = (function () {
       const prevBtn = sliderElement.querySelector('[data-zodiac-direction="left"]');
       if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-          if (allowMove) {
+          if (this.allowControlMovement) {
             this.zodiac.previous();
           }
         });
       }
+    }
+
+    /**
+     * Set up the play and pause controls.
+     */
+    setUpPlayPauseControls() {
+      const sliderElement = this.zodiac.getSliderElement();
+      const eventBus = this.zodiac.getEventBus();
       const playBtn = sliderElement.querySelector('[data-zodiac-play]');
       if (playBtn) {
+        playBtn.classList.add('zodiac-hidden');
         playBtn.addEventListener('click', () => {
           eventBus.emit(['play']);
         });
@@ -484,6 +505,12 @@ var Zodiac = (function () {
       if (pauseBtn) {
         pauseBtn.addEventListener('click', () => {
           eventBus.emit(['pause']);
+        });
+      }
+      if (playBtn && pauseBtn) {
+        eventBus.on(['play', 'pause'], () => {
+          playBtn.classList.toggle('zodiac-hidden');
+          pauseBtn.classList.toggle('zodiac-hidden');
         });
       }
     }

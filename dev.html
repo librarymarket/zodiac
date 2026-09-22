@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dev</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="dist/css/zodiac.css">
 </head>
@@ -20,19 +20,19 @@
         </div>
 
         <div class="zodiac-controls">
-          <button class="btn d-none" data-zodiac-play>
+          <button class="btn rounded-pill" data-zodiac-play>
             <i class="bi bi-play"></i>
             <span class="visually-hidden">Play</span>
           </button>
-          <button class="btn" data-zodiac-pause>
+          <button class="btn rounded-pill" data-zodiac-pause>
             <i class="bi bi-pause"></i>
             <span class="visually-hidden">Pause</span>
           </button>
-          <button class="btn" data-zodiac-direction="left">
+          <button class="btn rounded-pill" data-zodiac-direction="left">
             <i class="bi bi-chevron-left"></i>
             <span class="visually-hidden">Prev</span>
           </button>
-          <button class="btn" data-zodiac-direction="right">
+          <button class="btn rounded-pill" data-zodiac-direction="right">
             <i class="bi bi-chevron-right"></i>
             <span class="visually-hidden">Next</span>
           </button>
@@ -104,19 +104,6 @@
     window.addEventListener('load', () => {
       const zodiac1 = new Zodiac('#zodiac', settings).mount();
       // const zodiac2 = new Zodiac('#zodiac--2', settings).mount();
-
-      const sliderElement = zodiac1.sliderElement;
-
-      const toggle = () => {
-        const playBtn = sliderElement.querySelector('button[data-zodiac-play]');
-        const pauseBtn = sliderElement.querySelector('button[data-zodiac-pause]');
-
-        playBtn.classList.toggle('d-none');
-        pauseBtn.classList.toggle('d-none');
-      };
-
-      zodiac1.on(['play'], toggle);
-      zodiac1.on(['pause'], toggle);
 
       console.log(zodiac1);
       // console.log(zodiac2);

@@ -8,33 +8,45 @@ import { ComponentBase } from './componentBase';
 export class Controls extends ComponentBase {
 
   /**
+   * A flag that determines whether movement by controls is allowed.
+   */
+  protected allowControlMovement = true;
+
+  /**
    * {@inheritDoc ComponentBase.mount}
    */
   public mount(zodiac: Zodiac): void {
     super.mount(zodiac);
 
-    this.setUpControls();
+    this.determineIfControlMovementAllowed();
+    this.setUpNextPreviousControls();
+    this.setUpPlayPauseControls();
+  }
+
+
+  /**
+   * Determines if movement by controls is allowed.
+   *
+   * Movement by controls is disabled when the slider is actively transitioning.
+   */
+  protected determineIfControlMovementAllowed(): void {
+    const eventBus = this.zodiac.getEventBus();
+
+    eventBus.on(['transitionDuration.before'], () => this.allowControlMovement = false);
+    eventBus.on(['transitionDuration.after'], () => this.allowControlMovement = true);
   }
 
   /**
-   * Attaches navigation buttons to the next & previous slider controls.
+   * Set up the next and previous controls.
    */
-  protected setUpControls(): void {
-    // Create a flag that will disable control movement, if the slider is
-    // transitioning.
-    let allowMove = true;
-
-    const eventBus = this.zodiac.getEventBus();
-    eventBus.on(['transitionDuration.before'], () => allowMove = false);
-    eventBus.on(['transitionDuration.after'], () => allowMove = true);
-
+  protected setUpNextPreviousControls(): void {
     const sliderElement = this.zodiac.getSliderElement();
 
     const nextBtn = sliderElement.querySelector('[data-zodiac-direction="right"]');
 
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
-        if (allowMove) {
+        if (this.allowControlMovement) {
           this.zodiac.next();
         }
       });
@@ -44,15 +56,25 @@ export class Controls extends ComponentBase {
 
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
-        if (allowMove) {
+        if (this.allowControlMovement) {
           this.zodiac.previous();
         }
       });
     }
+  }
+
+  /**
+   * Set up the play and pause controls.
+   */
+  protected setUpPlayPauseControls() {
+    const sliderElement = this.zodiac.getSliderElement();
+    const eventBus = this.zodiac.getEventBus();
 
     const playBtn = sliderElement.querySelector('[data-zodiac-play]');
 
     if (playBtn) {
+      playBtn.classList.add('zodiac-hidden');
+
       playBtn.addEventListener('click', () => {
         eventBus.emit(['play']);
       });
@@ -63,6 +85,13 @@ export class Controls extends ComponentBase {
     if (pauseBtn) {
       pauseBtn.addEventListener('click', () => {
         eventBus.emit(['pause']);
+      });
+    }
+
+    if (playBtn && pauseBtn) {
+      eventBus.on(['play', 'pause'], () => {
+        playBtn.classList.toggle('zodiac-hidden');
+        pauseBtn.classList.toggle('zodiac-hidden');
       });
     }
   }
