@@ -47,6 +47,13 @@ export interface OptionsInterface {
   classes?: ClassesInterface;
 
   /**
+   * Enables indicator controls.
+   *
+   * This option cannot be set in the media query options.
+   */
+  enableIndicators?: boolean;
+
+  /**
    * Enables the live region element.
    */
   enableLiveRegion?: boolean;
@@ -95,6 +102,13 @@ export interface OptionsInterface {
    * Whether or not autoplay should pause on hover.
    */
   pauseOnHover?: boolean;
+
+  /**
+   * Whether or not autoplay should be paused when the slider loads.
+   *
+   * This option cannot be set in the media query options.
+   */
+  pauseOnLoad?: boolean;
 
   /**
    * The speed at which slides will transition.
@@ -158,12 +172,14 @@ export class Options {
       items: 'zodiac-item',
       track: 'zodiac-track',
     },
+    enableIndicators: true,
     enableLiveRegion: true,
     gap: 8,
     infiniteScrolling: true,
     itemsPerView: 5,
     liveRegionText: 'Slide @position of @total @title',
     pauseOnHover: true,
+    pauseOnLoad: false,
     transitionSpeed: 500,
   };
 
@@ -195,8 +211,8 @@ export class Options {
    * A default set of options is used if no user options are provided.
    *
    * @throws {@link TypeError}
-   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
-   * options are found in the `mediaQueryOptions`.
+   * Throws an error if an option that can only be set once is found in the
+   * `mediaQueryOptions`.
    *
    * @param eventBus - The event bus.
    * @param options - The user supplied options.
@@ -272,15 +288,17 @@ export class Options {
    * Checks the media query options for invalid properties.
    *
    * @throws {@link TypeError}
-   * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
-   * options are found in the `mediaQueryOptions`.
+   * Throws an error if an option that can only be set once is found in the
+   * `mediaQueryOptions`.
    */
   protected validateMediaQueryOptions(options: OptionsInput) {
     const invalidOptions = [
       'classes',
+      'enableIndicators',
       'enableLiveRegion',
       'infiniteScrolling',
       'liveRegionText',
+      'pauseOnLoad',
     ];
 
     invalidOptions.forEach((invalidOption) => {

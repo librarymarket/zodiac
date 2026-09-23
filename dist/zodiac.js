@@ -114,6 +114,7 @@ var Zodiac = (function () {
       itemsPerView: 5,
       liveRegionText: 'Slide @position of @total @title',
       pauseOnHover: true,
+      pauseOnLoad: false,
       transitionSpeed: 500
     };
 
@@ -143,8 +144,8 @@ var Zodiac = (function () {
      * A default set of options is used if no user options are provided.
      *
      * @throws {@link TypeError}
-     * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
-     * options are found in the `mediaQueryOptions`.
+     * Throws an error if an option that can only be set once is found in the
+     * `mediaQueryOptions`.
      *
      * @param eventBus - The event bus.
      * @param options - The user supplied options.
@@ -211,11 +212,11 @@ var Zodiac = (function () {
      * Checks the media query options for invalid properties.
      *
      * @throws {@link TypeError}
-     * Throws an error if the `classes`, `enableLiveRegion` or `liveRegionText`
-     * options are found in the `mediaQueryOptions`.
+     * Throws an error if an option that can only be set once is found in the
+     * `mediaQueryOptions`.
      */
     validateMediaQueryOptions(options) {
-      const invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText'];
+      const invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText', 'pauseOnLoad'];
       invalidOptions.forEach(invalidOption => {
         if (Object.hasOwnProperty.call(options, invalidOption)) {
           throw new TypeError(`The ${invalidOption} property can only be set once.`);
@@ -331,6 +332,7 @@ var Zodiac = (function () {
     mount(zodiac) {
       super.mount(zodiac);
       this.abortController = new AbortController();
+      this.stoppedByControls = this.options.pauseOnLoad;
       this.start();
       this.pauseOnDrag();
       this.pauseOnFocus();
@@ -521,28 +523,29 @@ var Zodiac = (function () {
      */
     setUpPlayPauseControls() {
       const sliderElement = this.zodiac.getSliderElement();
-      const eventBus = this.zodiac.getEventBus();
-      const toggleHidden = element => element.classList.toggle('zodiac-hidden');
       const playBtn = sliderElement.querySelector('[data-zodiac-play]');
-      if (playBtn) {
-        playBtn.classList.add('zodiac-hidden');
-        playBtn.addEventListener('click', () => {
-          eventBus.emit(['play'], playBtn);
-        });
-        eventBus.on(['play'], toggleHidden);
-      }
       const pauseBtn = sliderElement.querySelector('[data-zodiac-pause]');
-      if (pauseBtn) {
-        pauseBtn.addEventListener('click', () => {
-          eventBus.emit(['pause'], pauseBtn);
-        });
-        eventBus.on(['pause'], toggleHidden);
+      if (!playBtn || !pauseBtn) {
+        return;
       }
-      if (playBtn && pauseBtn) {
-        eventBus.on(['play', 'pause'], () => {
-          playBtn.classList.toggle('zodiac-hidden');
-          pauseBtn.classList.toggle('zodiac-hidden');
+      if (this.options.autoplay && this.options.autoplaySpeed > 0) {
+        const updateControls = playing => {
+          playBtn.classList.toggle('zodiac-hidden', playing);
+          pauseBtn.classList.toggle('zodiac-hidden', !playing);
+        };
+        updateControls(!this.options.pauseOnLoad);
+        const eventBus = this.zodiac.getEventBus();
+        playBtn.addEventListener('click', () => {
+          eventBus.emit(['play']);
         });
+        pauseBtn.addEventListener('click', () => {
+          eventBus.emit(['pause']);
+        });
+        eventBus.on(['play'], () => updateControls(true));
+        eventBus.on(['pause'], () => updateControls(false));
+      } else {
+        playBtn.setAttribute('disabled', 'true');
+        pauseBtn.setAttribute('disabled', 'true');
       }
     }
   }

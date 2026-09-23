@@ -19,11 +19,38 @@ export class Controls extends ComponentBase {
     super.mount(zodiac);
 
     this.determineIfControlMovementAllowed();
-    this.setUpIndicatorControls();
+
+    if (this.options.enableIndicators) {
+      this.createIndicatorControls();
+      this.setUpIndicatorControls();
+    }
+
     this.setUpNextPreviousControls();
     this.setUpPlayPauseControls();
   }
 
+  /**
+   * Create an indicator control for each slider item.
+   */
+  protected createIndicatorControls(): void {
+    const indicatorList = this.zodiac.getSliderElement().querySelector('.zodiac-indicators');
+
+    if (!indicatorList || indicatorList.querySelector('.zodiac-indicator')) {
+      return;
+    }
+
+    this.zodiac.getItems().forEach((_item, index) => {
+      const indicator = document.createElement('button');
+
+      indicator.classList.add('zodiac-indicator');
+      indicator.setAttribute('aria-label', `Go to ${index + 1}`);
+      indicator.setAttribute('aria-current', 'false');
+      indicator.setAttribute('type', 'button');
+      indicator.dataset.zodiacPosition = index.toString();
+
+      indicatorList.appendChild(indicator);
+    });
+  }
 
   /**
    * Determines if movement by controls is allowed.
@@ -51,13 +78,13 @@ export class Controls extends ComponentBase {
 
         const position = indicator.dataset.zodiacPosition;
 
-        if (position) {
+        if (position !== undefined) {
           this.zodiac.move(Number(position));
         }
       });
     });
 
-    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
+    const updateIndicators = () => {
       const currentPosition = this.zodiac.getPosition();
 
       indicators.forEach((indicator) => {
@@ -69,7 +96,10 @@ export class Controls extends ComponentBase {
 
       activeIndicator?.classList?.add('active');
       activeIndicator?.setAttribute('aria-current', 'true');
-    });
+    };
+
+    updateIndicators();
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], updateIndicators);
   }
 
   /**
@@ -104,38 +134,39 @@ export class Controls extends ComponentBase {
    */
   protected setUpPlayPauseControls() {
     const sliderElement = this.zodiac.getSliderElement();
-    const eventBus = this.zodiac.getEventBus();
 
-    const toggleHidden = (element: HTMLElement) => element.classList.toggle('zodiac-hidden');
+    const playBtn = sliderElement.querySelector<HTMLElement>('[data-zodiac-play]');
+    const pauseBtn = sliderElement.querySelector<HTMLElement>('[data-zodiac-pause]');
 
-    const playBtn = sliderElement.querySelector('[data-zodiac-play]');
+    if (!playBtn || !pauseBtn) {
+      return;
+    }
 
-    if (playBtn) {
-      playBtn.classList.add('zodiac-hidden');
+    if (this.options.autoplay && this.options.autoplaySpeed > 0) {
+      const updateControls = (playing: boolean) => {
+        playBtn.classList.toggle('zodiac-hidden', playing);
+        pauseBtn.classList.toggle('zodiac-hidden', !playing);
+      };
+
+      updateControls(!this.options.pauseOnLoad);
+
+      const eventBus = this.zodiac.getEventBus();
 
       playBtn.addEventListener('click', () => {
-        eventBus.emit(['play'], playBtn);
+        eventBus.emit(['play']);
       });
 
-      eventBus.on(['play'], toggleHidden);
-    }
-
-    const pauseBtn = sliderElement.querySelector('[data-zodiac-pause]');
-
-    if (pauseBtn) {
       pauseBtn.addEventListener('click', () => {
-        eventBus.emit(['pause'], pauseBtn);
+        eventBus.emit(['pause']);
       });
 
-      eventBus.on(['pause'], toggleHidden);
+      eventBus.on(['play'], () => updateControls(true));
+      eventBus.on(['pause'], () => updateControls(false));
+    } else {
+      playBtn.setAttribute('disabled', 'true');
+      pauseBtn.setAttribute('disabled', 'true');
     }
 
-    if (playBtn && pauseBtn) {
-      eventBus.on(['play', 'pause'], () => {
-        playBtn.classList.toggle('zodiac-hidden');
-        pauseBtn.classList.toggle('zodiac-hidden');
-      });
-    }
   }
 
 }

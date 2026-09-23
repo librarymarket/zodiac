@@ -39,6 +39,7 @@ export class Autoplay extends ComponentBase {
     super.mount(zodiac);
 
     this.abortController = new AbortController();
+    this.stoppedByControls = this.options.pauseOnLoad;
 
     this.start();
     this.pauseOnDrag();

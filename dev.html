@@ -70,33 +70,13 @@
       ].join('');
     }
 
-    const indicatorList = document.querySelector('.zodiac-indicators');
-
-    document.querySelectorAll('.zodiac-track').forEach((track, index) => {
+    document.querySelectorAll('.zodiac-track').forEach((track) => {
       for (let i = 0; i < 7; i++) {
         const template = document.createElement('template');
 
         template.innerHTML = createItem(i + 1);
 
         track.appendChild(template.content.firstChild);
-
-        const button = document.createElement('button');
-
-        button.classList.add('zodiac-indicator');
-
-        button.setAttribute('aria-label', `Go to ${i + 1}`);
-        button.setAttribute('aria-current', 'false');
-        button.setAttribute('type', 'button');
-
-        button.dataset.zodiacPosition = i;
-
-        if (i === 0) {
-          button.classList.add('active');
-
-          button.setAttribute('aria-current', 'true');
-        }
-
-        indicatorList.appendChild(button);
       }
     });
   </script>

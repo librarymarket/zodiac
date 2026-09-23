@@ -108,5 +108,21 @@ describe('Autoplay', () => {
 
       expect(zodiac.getPosition()).toBe(0);
     });
+
+    test('should start paused when pauseOnLoad is true', () => {
+      const zodiac = new Zodiac('.zodiac', {
+        autoplaySpeed,
+        pauseOnLoad: true,
+      }).mount();
+
+      jest.advanceTimersByTime(autoplaySpeed);
+
+      expect(zodiac.getPosition()).toBe(0);
+
+      zodiac.getEventBus().emit(['play']);
+      jest.advanceTimersByTime(autoplaySpeed);
+
+      expect(zodiac.getPosition()).toBe(1);
+    });
   });
 });

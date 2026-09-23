@@ -23,6 +23,8 @@ describe('Options', () => {
       const options = new Options(new EventBus(), input).getEffectiveOptions();
 
       expect(options.autoplay).toBe(true);
+      expect(options.enableIndicators).toBe(true);
+      expect(options.pauseOnLoad).toBe(false);
       expect(options.itemsPerView).toBe(5);
       expect(options.classes).toEqual({
         inner: 'zodiac-inner',
@@ -104,8 +106,10 @@ describe('Options', () => {
 
     test.each([
       {optionName: 'classes', value: {track: 'test'}},
+      {optionName: 'enableIndicators', value: true},
       {optionName: 'enableLiveRegion', value: true},
       {optionName: 'liveRegionText', value: 'test'},
+      {optionName: 'pauseOnLoad', value: true},
     ])('should throw error if $optionName is set in the media query options', ({ optionName, value }) => {
       const eventBus = new EventBus();
 

@@ -18,6 +18,16 @@ export const htmlFixture = `
 </div>
 `;
 
+export const htmlFixtureIndicators = htmlFixture.replace(
+  '<button data-zodiac-direction="left">',
+  '<div class="zodiac-indicators"></div><button data-zodiac-direction="left">',
+);
+
+export const htmlFixturePlayPauseControls = htmlFixture.replace(
+  '<button data-zodiac-direction="left">',
+  '<button data-zodiac-play>Play</button><button data-zodiac-pause>Pause</button><button data-zodiac-direction="left">',
+);
+
 export const htmlFixtureMultipleSliders = `
 <div id="zodiac-1" class="zodiac">
   <div class="zodiac-inner">
