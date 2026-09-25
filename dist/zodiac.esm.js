@@ -105,6 +105,7 @@ class Options {
       items: 'zodiac-item',
       track: 'zodiac-track'
     },
+    enableIndicators: true,
     enableLiveRegion: true,
     gap: 8,
     infiniteScrolling: true,
@@ -213,7 +214,7 @@ class Options {
    * `mediaQueryOptions`.
    */
   validateMediaQueryOptions(options) {
-    const invalidOptions = ['classes', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText', 'pauseOnLoad'];
+    const invalidOptions = ['classes', 'enableIndicators', 'enableLiveRegion', 'infiniteScrolling', 'liveRegionText', 'pauseOnLoad'];
     invalidOptions.forEach(invalidOption => {
       if (Object.hasOwnProperty.call(options, invalidOption)) {
         throw new TypeError(`The ${invalidOption} property can only be set once.`);
@@ -449,9 +450,31 @@ class Controls extends ComponentBase {
   mount(zodiac) {
     super.mount(zodiac);
     this.determineIfControlMovementAllowed();
-    this.setUpIndicatorControls();
+    if (this.options.enableIndicators) {
+      this.createIndicatorControls();
+      this.setUpIndicatorControls();
+    }
     this.setUpNextPreviousControls();
     this.setUpPlayPauseControls();
+  }
+
+  /**
+   * Create an indicator control for each slider item.
+   */
+  createIndicatorControls() {
+    const indicatorList = this.zodiac.getSliderElement().querySelector('.zodiac-indicators');
+    if (!indicatorList || indicatorList.querySelector('.zodiac-indicator')) {
+      return;
+    }
+    this.zodiac.getItems().forEach((_item, index) => {
+      const indicator = document.createElement('button');
+      indicator.classList.add('zodiac-indicator');
+      indicator.setAttribute('aria-label', `Go to ${index + 1}`);
+      indicator.setAttribute('aria-current', 'false');
+      indicator.setAttribute('type', 'button');
+      indicator.dataset.zodiacPosition = index.toString();
+      indicatorList.appendChild(indicator);
+    });
   }
 
   /**
@@ -475,12 +498,12 @@ class Controls extends ComponentBase {
       indicator.addEventListener('click', event => {
         event.preventDefault();
         const position = indicator.dataset.zodiacPosition;
-        if (position) {
+        if (position !== undefined) {
           this.zodiac.move(Number(position));
         }
       });
     });
-    this.zodiac.getEventBus().on(['move.after', 'drag.after'], () => {
+    const updateIndicators = () => {
       const currentPosition = this.zodiac.getPosition();
       indicators.forEach(indicator => {
         indicator.setAttribute('aria-current', 'false');
@@ -489,7 +512,9 @@ class Controls extends ComponentBase {
       const activeIndicator = sliderElement.querySelector(`[data-zodiac-position="${currentPosition}"]`);
       activeIndicator?.classList?.add('active');
       activeIndicator?.setAttribute('aria-current', 'true');
-    });
+    };
+    updateIndicators();
+    this.zodiac.getEventBus().on(['move.after', 'drag.after'], updateIndicators);
   }
 
   /**
