@@ -28,26 +28,26 @@
   "author": "jeremyljackson",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.29.7",
+    "@babel/core": "^7.29.13",
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@eslint/js": "^10.0.1",
     "@rollup/plugin-babel": "^7.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-terser": "^1.0.2",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/jest": "^30.0.0",
-    "concurrently": "^10.0.6",
-    "eslint": "^10.13.0",
+    "concurrently": "^10.0.7",
+    "eslint": "^10.14.0",
     "eslint-plugin-tsdoc": "^0.5.4",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
-    "rollup": "^4.64.12",
-    "sass": "^1.106.0",
+    "rollup": "^4.68.2",
+    "sass": "^1.108.1",
     "stylelint": "^16.26.1",
     "stylelint-config-twbs-bootstrap": "^16.1.0",
     "ts-jest": "^29.4.15",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.2"
   }
 }
